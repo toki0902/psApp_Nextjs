@@ -7,4 +7,64 @@ info:
 servers:
   - url: https://localhost:3000/api/v1
 
+components:
+  schemas:
+    Video:
+      type: object
+      properties:
+        url:
+          type: string
+        uploadData:
+          type: string
+        views:
+          type: integer
+        thumbnail:
+          type: string
+        title:
+          type: string
+
 paths:
+  /search:
+    get:
+      summary: Get video list from keyword user entered
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successfull response containing searth results array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Video"
+
+  /users/{userId}/playlists:
+    get:
+      summary: Get playlist from userId
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successfull response containing playlist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  videos:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Video"
+                  playlistId:
+                    type: string
+                  createdAt:
+                    type: string
