@@ -14,7 +14,7 @@ components:
       properties:
         url:
           type: string
-        uploadData:
+        uploadAt:
           type: string
         views:
           type: integer
@@ -67,4 +67,53 @@ paths:
                   playlistId:
                     type: string
                   createdAt:
+                    type: string
+    post:
+      summary: Create new playlist
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        201:
+          description: successfull response containing new info of new playlist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  videos:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Video"
+                  playlistId:
+                    type: string
+                  createdAt:
+                    type: string
+
+  /users/{userId}/playlists/{playlistId}/videos:
+    post:
+      summary: Add new video to an already existing playlist
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: playlistId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        201:
+          description: successfull response containing a message that the new video has been added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
                     type: string
