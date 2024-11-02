@@ -22,6 +22,19 @@ components:
           type: string
         title:
           type: string
+    Playlist:
+      type: object
+      properties:
+        playlistTitle:
+          type: string
+        videos:
+          type: array
+          items:
+            $ref: "#/components/schemas/Video"
+        playlistId:
+          type: string
+        createdAt:
+          type: string
 
 paths:
   /search:
@@ -58,16 +71,9 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  videos:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Video"
-                  playlistId:
-                    type: string
-                  createdAt:
-                    type: string
+                type: array
+                items:
+                  $ref: "#/components/schemas/Playlist"
     post:
       summary: Create new playlist
       parameters:
@@ -76,22 +82,21 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                playlistTitle:
+                  type: string
       responses:
         201:
-          description: successfull response containing new info of new playlist
+          description: successfull response containing info of new playlist
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  videos:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Video"
-                  playlistId:
-                    type: string
-                  createdAt:
-                    type: string
+                $ref: "#/components/schemas/Playlist"
 
   /users/{userId}/playlists/{playlistId}/videos:
     post:
@@ -107,6 +112,14 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                videoUrl:
+                  type: string
       responses:
         201:
           description: successfull response containing a message that the new video has been added
