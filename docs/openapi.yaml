@@ -130,12 +130,32 @@ paths:
                 properties:
                   message:
                     type: string
+# TODO nextAuthはリダイレクト必須。よってリダイレクト先で認証が成功した時にJWTが生成される前提として、Oauthリダイレクト、JWT生成、それをクライアントに保存するまでをアプリケーション層では実装したい。
+# なので、ドメイン層ではOauthリダイレクト,JWTを生成するインターフェースなどを抽象実装し、インフラストラクチャ層で具現化する。
 
-  # /sessions:
-  #   post:
-  #     summary: success response containing a message that the new sessions has been createdAt
-  #     requestBody:
-  #       content:
-  #         application/json:
-  #           schema:
-  #             type:
+# /sessions/{provider}:
+#   post:
+#     summary: success response containing a message that the new sessions has been created
+#     parameters:
+#       - name: provider
+#         in: path
+#         required: true
+#         schema:
+#           type: string
+#     responses:
+#       201:
+#         description: Successful login
+#         headers:
+#           Set-Cookie:
+#             description: set JWT to cookie
+#             schema:
+#               type: string
+#               example: token=<JWT>; HttpOnly; Secure; Path=/; SameSite=Strict
+#         content:
+#           application/json:
+#             schema:
+#               type: object
+#               properties:
+#                 message:
+#                   type: string
+#                   example: created new sessions!
