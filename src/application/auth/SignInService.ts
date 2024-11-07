@@ -22,13 +22,9 @@ export class SignInService {
     if (!user.image || !user.name) {
       return undefined;
     }
-    const selectedUser = await this._userGateway.findBySocialId(conn, user.id);
+    const selectedUser = await this._userGateway.findBySocialId(user.id);
     if (!selectedUser) {
-      const insertResult = await this._userGateway.insert(
-        conn,
-        user.id,
-        user.name
-      );
+      const insertResult = await this._userGateway.insert(user.id, user.name);
 
       return new User(
         insertResult.userId,
