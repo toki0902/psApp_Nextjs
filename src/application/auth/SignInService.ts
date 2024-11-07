@@ -1,12 +1,12 @@
-import { ISignInRepository } from "@/src/domain/auth/ISignInRepository";
-import { JWT as DefaultJWT, JWT } from "next-auth/jwt";
+import { ISignInRepository } from "@/src/domain/auth/ISigninRepository";
+import { JWT } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 
 //実装すべきなのはproviderへのリダイレクト、callback内での処理。
 export class SignInService {
   constructor(private _signInRepository: ISignInRepository) {}
   redirectAuthProvider = async (provider: string): Promise<NextResponse> => {
-    return await this._signInRepository.signInAndCallback(provider);
+    return await this._signInRepository.createProviderURL(provider);
   };
 
   //DBへの保存をしてtokenを返却。

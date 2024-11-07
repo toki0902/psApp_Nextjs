@@ -130,12 +130,10 @@ paths:
                 properties:
                   message:
                     type: string
-  # TODO nextAuthはリダイレクト必須。よってリダイレクト先で認証が成功した時にJWTが生成される前提として、Oauthリダイレクト、JWT生成、それをクライアントに保存するまでをアプリケーション層では実装したい。
-  # なので、ドメイン層ではOauthリダイレクト,JWTを生成するインターフェースなどを抽象実装し、インフラストラクチャ層で具現化する。
 
   /sessions/{provider}:
     post:
-      summary: success response containing a message that the new sessions has been created
+      summary: create and return provider auth URL
       parameters:
         - name: provider
           in: path
@@ -143,19 +141,31 @@ paths:
           schema:
             type: string
       responses:
-        201:
-          description: Successful login
+        302:
+          description: successful response containing created provider URL
           headers:
-            Set-Cookie:
-              description: set JWT to cookie
+            Location:
+              description: the URL the client should be redirected
               schema:
                 type: string
-                example: token=<JWT>; HttpOnly; Secure; Path=/; SameSite=Strict
-          content:
-            application/json:
+                format: uri
+              example: ${process.env.NEXTAUTH_URL}/signin/${provider}?callbackUrl=${callbackUrl}
+
+  /sessions/callback:
+    get:
+      summary: after signIn or signUp, Returns a response that causes the client to store a JWT token created by the provider in a cookie
+      responses:
+        302:
+          description: redirect home page and set authentication cookie
+          headers:
+            Location:
+              description: home page URL
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: created new sessions!
+                type: string
+                format: uri
+              example: https://example.ps.app
+            Set-Cookie:
+              description: set authentication token in cookie
+              schema:
+                type: string
+              example: "authToken=your-token; HttpOnly; Max-Age=86400; SameSite=Strict"
