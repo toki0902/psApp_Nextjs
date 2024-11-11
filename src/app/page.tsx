@@ -1,7 +1,6 @@
 "use client";
 
-import { SessionProvider, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface User {
   email: string;
@@ -28,10 +27,11 @@ const App = () => {
     const res = await fetch(`http://localhost:3000/v1/api/auth/session`, {
       method: "GET",
     });
-
-    const resJson = await res.json();
-
-    setUser(resJson);
+    if (res.ok) {
+      console.log("OK!!");
+      const resJson = await res.json();
+      setUser(resJson);
+    }
   };
 
   console.log(user);

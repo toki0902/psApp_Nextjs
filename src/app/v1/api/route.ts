@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { createConnectionPool } from "@/src/infrastructure/db/MySQLConnection";
 import { MySQLUserGateway } from "@/src/infrastructure/user/MySQLUserGateway";
 
 const userGateway = new MySQLUserGateway();
 
-export const GET = async (req: Request) => {
+export const GET = async () => {
   const user = await userGateway.findBySocialId("1");
 
   console.log(user);

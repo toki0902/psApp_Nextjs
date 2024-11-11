@@ -7,4 +7,4 @@ source .env
 echo "Using MySQL root password: $MYSQL_ROOT_PASSWORD"
 
 # sql実行
-docker exec -i psapp_nextjs-db-1 mysql -u root -p"$MYSQL_ROOT_PASSWORD" < "./src/infrastructure/db/initialDDL.sql"
+docker exec -i psapp_nextjs-mysql-1 mysql -h mysql -u root -p"$MYSQL_ROOT_PASSWORD" < "./src/infrastructure/db/initialDDL.sql"

@@ -35,11 +35,13 @@ export class MySQLUserGateway implements IUserGateway {
     return new UserRecord(record.user_id, record.name, record.social_id);
   }
 
+  //fix: 名前が???になります
   async insert(
     socialId: string,
     name: string
     //一時的にレコードにしている。
   ): Promise<UserRecord> {
+    console.log("\x1b[31m%s\x1b[0m", name);
     const insertResult = await (
       await this.pool
     ).execute<mysql.ResultSetHeader>(
@@ -50,6 +52,6 @@ export class MySQLUserGateway implements IUserGateway {
     //一時的にオートインクリメントの体
     const insertId = String(insertResult[0].insertId);
 
-    return new UserRecord(insertId, socialId, name);
+    return new UserRecord(insertId, name, socialId);
   }
 }

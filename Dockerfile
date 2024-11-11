@@ -1,7 +1,18 @@
-FROM mysql:8.0-debian
-RUN apt-get update && \
-    apt-get install -y locales
-RUN locale-gen ja_JP.UTF-8
-RUN localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
-ENV LANG=ja_JP.UTF-8
-ENV TZ=Asia/Tokyo
+# 1. ベースイメージとしてNode.jsを使用
+FROM node:latest
+
+# 2. 作業ディレクトリを設定
+WORKDIR /usr/src/app
+
+# 3. パッケージファイルをコピーして依存関係をインストール
+COPY package*.json ./
+RUN npm install
+
+# 4. アプリケーションファイルをコピー
+COPY . .
+
+# 6. Next.jsサーバーを起動
+CMD ["npm", "run", "dev"]
+
+# 7. ホストのポート3000をコンテナに公開
+EXPOSE 3000

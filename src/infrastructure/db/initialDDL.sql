@@ -27,3 +27,6 @@ CREATE TABLE playlist_members (
     video_id CHAR(11) NOT NULL,
     FOREIGN KEY (playlist_id) REFERENCES playlists(playlist_id) ON DELETE CASCADE
 );
+
+ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4;
+

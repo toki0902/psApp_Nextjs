@@ -4,7 +4,6 @@ import Google from "next-auth/providers/google";
 import { NextAuthSignInRepository } from "./NextAuthSignInRepository";
 import { SignInService } from "@/src/application/auth/SignInService";
 import { MySQLUserGateway } from "../user/MySQLUserGateway";
-import { User } from "@/src/domain/entities/User";
 
 //todo: useSessionを使用すると/v1/apiではなく/apiを参照してしまう。
 
@@ -27,11 +26,10 @@ export const nextAuthOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       const userToken = await signInService.fetchUserAndRegister(user);
-      token = { ...token, ...userToken };
-      console.log(token);
+
       return token;
     },
-    async session({ session, user }) {
+    async session({ session }) {
       return session;
     },
   },

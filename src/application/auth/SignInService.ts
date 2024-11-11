@@ -13,7 +13,7 @@ export class SignInService {
   ) {}
 
   redirectAuthProvider = async (provider: string): Promise<NextResponse> => {
-    return await this._signInRepository.createProviderURL(provider);
+    return this._signInRepository.createProviderURL(provider);
   };
 
   fetchUserAndRegister = async (
@@ -22,6 +22,7 @@ export class SignInService {
     if (!user.image || !user.name) {
       return undefined;
     }
+    console.log(`this is user ${JSON.stringify(user)}`);
     const selectedUser = await this._userGateway.findBySocialId(user.id);
     if (!selectedUser) {
       const insertResult = await this._userGateway.insert(user.id, user.name);
