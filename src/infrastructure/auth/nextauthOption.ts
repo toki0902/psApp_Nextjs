@@ -28,6 +28,7 @@ export const nextAuthOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       const userToken = await signInService.fetchUserAndRegister(user);
       token = { ...token, ...userToken };
+      console.log(token);
       return token;
     },
     async session({ session, user }) {

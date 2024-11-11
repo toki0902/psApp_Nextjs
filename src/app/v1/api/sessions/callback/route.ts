@@ -22,14 +22,14 @@ export const GET = async (req: NextRequest) => {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
+  console.log(`this is token ${JWT}`);
+
   if (!JWT_str || !JWT) {
     return new NextResponse(JSON.stringify({ message: "unauthorized" }), {
       status: 401,
       headers: { "Content-Type": "application/json" },
     });
   }
-
-  // await signInService.save(JWT);
 
   const response = NextResponse.redirect(new URL("/", process.env.ROOT_URL));
 
