@@ -42,26 +42,4 @@ export class SignInService {
       user.image || null
     );
   };
-
-  // //DBへの保存をしてtokenを返却。
-  // save = async (token: JWT): Promise<void> => {
-  //   if (!token.name) {
-  //     return;
-  //   }
-  //   //既に存在しているかの確認
-  //   const socialId = token.sub;
-
-  //   if (!socialId) {
-  //     //メールでの認証になるかも？
-  //     return undefined;
-  //   }
-
-  //   const user = await this._userGateway.findById(conn, socialId);
-
-  //   if (user) {
-  //     return;
-  //   } else {
-  //     await this._userGateway.insert(conn, socialId, token.name);
-  //   }
-  // };
 }

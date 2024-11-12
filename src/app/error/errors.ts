@@ -13,3 +13,11 @@ export class UnAuthorizeError extends Error {
     this.name = "UnAuthorizeError";
   }
 }
+
+export class MissingParamsError extends Error {
+  statusCode = 400;
+  constructor(message: string = "Resource not found") {
+    super(message);
+    this.name = "MissingParamsError";
+  }
+}
