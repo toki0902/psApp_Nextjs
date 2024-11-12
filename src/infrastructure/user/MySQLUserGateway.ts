@@ -41,7 +41,6 @@ export class MySQLUserGateway implements IUserGateway {
     name: string
     //一時的にレコードにしている。
   ): Promise<UserRecord> {
-    console.log("\x1b[31m%s\x1b[0m", name);
     const insertResult = await (
       await this.pool
     ).execute<mysql.ResultSetHeader>(

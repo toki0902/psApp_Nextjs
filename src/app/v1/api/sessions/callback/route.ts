@@ -1,3 +1,5 @@
+import { errorHandler } from "@/src/app/error/errorHandler";
+import { UnAuthorizeError } from "@/src/app/error/errors";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -13,19 +15,14 @@ export const GET = async (req: NextRequest) => {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  console.log(`this is token ${JSON.stringify(JWT)}`);
-
   if (!JWT_str || !JWT) {
-    return new NextResponse(JSON.stringify({ message: "unauthorized" }), {
-      status: 401,
-      headers: { "Content-Type": "application/json" },
-    });
+    errorHandler(new UnAuthorizeError("JWT token is not valid"));
   }
 
   const response = NextResponse.redirect(new URL("/", process.env.ROOT_URL));
 
-  response.cookies.set("authToken", JWT_str, {
-    httpOnly: true,
+  response.cookies.set("next-auth.session-token", JWT_str, {
+    // httpOnly: true,
     maxAge: 60 * 60 * 24,
     sameSite: "strict",
   });

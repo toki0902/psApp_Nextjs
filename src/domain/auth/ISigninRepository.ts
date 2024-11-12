@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-
 export interface ISignInRepository {
-  createProviderURL: (provider: string) => Promise<NextResponse>;
+  createSignInURL: (provider: string) => Promise<string>;
 }

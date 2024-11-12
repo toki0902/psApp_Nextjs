@@ -30,7 +30,8 @@ const App = () => {
     if (res.ok) {
       console.log("OK!!");
       const resJson = await res.json();
-      setUser(resJson);
+      console.log(resJson);
+      // setUser(resJson);
     }
   };
 
@@ -40,7 +41,6 @@ const App = () => {
     <div>
       <button onClick={fetchData}>login!!</button>
       <button onClick={fetchUser}>getUSER!!</button>
-      <h2>{user ? user.user.name : null}</h2>
     </div>
   );
 };

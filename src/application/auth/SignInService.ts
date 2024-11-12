@@ -1,7 +1,6 @@
 import { ISignInRepository } from "@/src/domain/auth/ISigninRepository";
 import { IUserGateway } from "@/src/domain/dataAccess/IUserGateway";
 import { User } from "@/src/domain/entities/User";
-import { NextResponse } from "next/server";
 
 import type { User as NextAuthUser } from "next-auth";
 
@@ -12,18 +11,19 @@ export class SignInService {
     private _userGateway: IUserGateway
   ) {}
 
-  redirectAuthProvider = async (provider: string): Promise<NextResponse> => {
-    return this._signInRepository.createProviderURL(provider);
+  createSignInURL = async (provider: string): Promise<string> => {
+    return this._signInRepository.createSignInURL(provider);
   };
 
   fetchUserAndRegister = async (
     user: NextAuthUser
   ): Promise<User | undefined> => {
-    if (!user.image || !user.name) {
+    if (!user?.name) {
       return undefined;
     }
-    console.log(`this is user ${JSON.stringify(user)}`);
+
     const selectedUser = await this._userGateway.findBySocialId(user.id);
+
     if (!selectedUser) {
       const insertResult = await this._userGateway.insert(user.id, user.name);
 
@@ -31,7 +31,7 @@ export class SignInService {
         insertResult.userId,
         insertResult.name,
         insertResult.socialId,
-        user.image
+        user.image || null
       );
     }
 
@@ -39,7 +39,7 @@ export class SignInService {
       selectedUser.userId,
       selectedUser.name,
       selectedUser.socialId,
-      user.image
+      user.image || null
     );
   };
 

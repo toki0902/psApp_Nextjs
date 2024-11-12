@@ -14,5 +14,7 @@ export const POST = async (
   //なぜかawaitをけすと参照できない
   const { provider } = await params;
 
-  return signInService.redirectAuthProvider(provider);
+  const URL = await signInService.createSignInURL(provider);
+
+  return NextResponse.redirect(URL, 302);
 };
