@@ -1,12 +1,13 @@
 import { IUserGateway } from "@/src/domain/dataAccess/IUserGateway";
 import mysql from "mysql2/promise";
-import { UserRecord } from "./UserRecord";
+import { User } from "@/src/domain/entities/User";
 
 import { createConnectionPool } from "../db/MySQLConnection";
 
 export class MySQLUserGateway implements IUserGateway {
   private pool = createConnectionPool();
-  async findById(id: string): Promise<UserRecord | undefined> {
+  //undefinedを返しても問題ない！
+  async findById(id: string): Promise<User | undefined> {
     const userResult = await (
       await this.pool
     ).execute<mysql.RowDataPacket[]>("select * from users where user_id = ?", [
@@ -17,10 +18,10 @@ export class MySQLUserGateway implements IUserGateway {
     if (!record) {
       return undefined;
     }
-    return new UserRecord(record.user_id, record.name, record.social_id);
+    return new User(record.user_id, record.name, record.social_id, null);
   }
 
-  async findBySocialId(socialId: string): Promise<UserRecord | undefined> {
+  async findBySocialId(socialId: string): Promise<User | undefined> {
     const userResult = await (
       await this.pool
     ).execute<mysql.RowDataPacket[]>(
@@ -32,7 +33,7 @@ export class MySQLUserGateway implements IUserGateway {
     if (!record) {
       return undefined;
     }
-    return new UserRecord(record.user_id, record.name, record.social_id);
+    return new User(record.user_id, record.name, record.social_id, null);
   }
 
   //fix: 名前が???になります
@@ -40,7 +41,7 @@ export class MySQLUserGateway implements IUserGateway {
     socialId: string,
     name: string
     //一時的にレコードにしている。
-  ): Promise<UserRecord> {
+  ): Promise<User> {
     const insertResult = await (
       await this.pool
     ).execute<mysql.ResultSetHeader>(
@@ -51,6 +52,6 @@ export class MySQLUserGateway implements IUserGateway {
     //一時的にオートインクリメントの体
     const insertId = String(insertResult[0].insertId);
 
-    return new UserRecord(insertId, name, socialId);
+    return new User(insertId, name, socialId, null);
   }
 }

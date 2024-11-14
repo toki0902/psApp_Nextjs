@@ -1,5 +1,9 @@
-import { VideoRecord } from "@/src/infrastructure/search/VideoRecord";
+import { Video } from "../entities/Video";
 
 export interface ISearchRepository {
-  fetchVideoData: (keyword: string) => Promise<VideoRecord[]>;
+  fetchAccessToken: () => Promise<string>;
+  fetchVideoByAccessToken: (
+    accessToken: string,
+    keyword: string
+  ) => Promise<Video[]>;
 }

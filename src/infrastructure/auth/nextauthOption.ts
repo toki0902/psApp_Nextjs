@@ -6,7 +6,6 @@ import { SignInService } from "@/src/application/auth/SignInService";
 import { MySQLUserGateway } from "../user/MySQLUserGateway";
 import { NotFoundError, UnAuthorizeError } from "@/src/app/error/errors";
 import { errorHandler } from "@/src/app/error/errorHandler";
-import { User } from "@/src/domain/entities/User";
 
 //todo: useSessionを使用すると/v1/apiではなく/apiを参照してしまう。
 
@@ -32,17 +31,13 @@ export const nextAuthOptions: NextAuthOptions = {
         return token;
       }
       const userToken = await signInService.fetchUserAndRegister(user);
-      if (!userToken) {
-        errorHandler(
-          new NotFoundError("Insufficient information provided by provider")
-        );
-      }
+
       token = { ...userToken };
       return token;
     },
     async session({ token, session }) {
       if (!token) {
-        errorHandler(new UnAuthorizeError("JWT token not granted"));
+        throw new UnAuthorizeError("JWT token not granted");
       }
 
       console.log(token);

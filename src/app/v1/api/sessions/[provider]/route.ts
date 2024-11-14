@@ -2,6 +2,8 @@ import { NextAuthSignInRepository } from "@/src/infrastructure/auth/NextAuthSign
 import { SignInService } from "@/src/application/auth/SignInService";
 import { NextResponse } from "next/server";
 import { MySQLUserGateway } from "@/src/infrastructure/user/MySQLUserGateway";
+import { errorHandler } from "@/src/app/error/errorHandler";
+import { MissingParamsError } from "@/src/app/error/errors";
 
 const signInRepository = new NextAuthSignInRepository();
 const userGateway = new MySQLUserGateway();
@@ -11,10 +13,16 @@ export const POST = async (
   req: Request,
   { params }: { params: Promise<{ provider: string }> }
 ): Promise<NextResponse> => {
-  //なぜかawaitをけすと参照できない
-  const { provider } = await params;
+  try {
+    const { provider } = await params;
+    if (!provider) {
+      throw new MissingParamsError("provider is not found");
+    }
 
-  const URL = await signInService.createSignInURL(provider);
+    const URL = await signInService.createSignInURL(provider);
 
-  return NextResponse.redirect(URL, 302);
+    return NextResponse.redirect(URL, 302);
+  } catch (err) {
+    return errorHandler(err);
+  }
 };

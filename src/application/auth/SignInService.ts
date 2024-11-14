@@ -1,3 +1,4 @@
+import { NotFoundError } from "@/src/app/error/errors";
 import { ISignInRepository } from "@/src/domain/auth/ISigninRepository";
 import { IUserGateway } from "@/src/domain/dataAccess/IUserGateway";
 import { User } from "@/src/domain/entities/User";
@@ -15,11 +16,10 @@ export class SignInService {
     return this._signInRepository.createSignInURL(provider);
   };
 
-  fetchUserAndRegister = async (
-    user: NextAuthUser
-  ): Promise<User | undefined> => {
+  fetchUserAndRegister = async (user: NextAuthUser): Promise<User> => {
     if (!user?.name) {
-      return undefined;
+      //fix: インターフェース層のerror.tsに依存している、、。
+      throw new NotFoundError("Insufficient information provided by provider");
     }
 
     const selectedUser = await this._userGateway.findBySocialId(user.id);
