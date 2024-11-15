@@ -6,11 +6,16 @@ export class SearchService {
   findVideosByKeyword = async (keyword: string): Promise<Video[]> => {
     const accessToken = await this._searchRepository.fetchAccessToken();
 
-    const youtubeVideos = await this._searchRepository.fetchVideoByAccessToken(
-      accessToken,
+    const allUploadedVideos =
+      await this._searchRepository.fetchVideoByAccessToken(accessToken);
+
+    console.log(allUploadedVideos);
+
+    const searchedVideos = await this._searchRepository.filterAndSortVideo(
+      allUploadedVideos,
       keyword
     );
 
-    return youtubeVideos;
+    return searchedVideos;
   };
 }
