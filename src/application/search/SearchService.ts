@@ -9,12 +9,12 @@ export class SearchService {
     const allUploadedVideos =
       await this._searchRepository.fetchVideoByAccessToken(accessToken);
 
-    console.log(allUploadedVideos);
-
     const searchedVideos = await this._searchRepository.filterAndSortVideo(
       allUploadedVideos,
       keyword
     );
+
+    console.log(`hit ${searchedVideos.length} videos`);
 
     return searchedVideos;
   };

@@ -14,8 +14,6 @@ components:
       properties:
         url:
           type: string
-        uploadAt:
-          type: string
         views:
           type: integer
         thumbnail:

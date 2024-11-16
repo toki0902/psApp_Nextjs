@@ -3,7 +3,7 @@ import Google from "next-auth/providers/google";
 
 import { NextAuthSignInRepository } from "./NextAuthSignInRepository";
 import { SignInService } from "@/src/application/auth/SignInService";
-import { MySQLUserGateway } from "../user/MySQLUserGateway";
+import { MySQLUserGateway } from "../gateways/MySQLUserGateway";
 import { NotFoundError, UnAuthorizeError } from "@/src/app/error/errors";
 import { errorHandler } from "@/src/app/error/errorHandler";
 

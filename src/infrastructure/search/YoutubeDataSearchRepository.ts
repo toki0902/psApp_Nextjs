@@ -1,6 +1,7 @@
 import { UnAuthorizeError } from "@/src/app/error/errors";
 import { Video } from "@/src/domain/entities/Video";
 import Fuse from "fuse.js";
+import { MySQLVideoGateway } from "../gateways/MySQLVideoGateway";
 
 export class YoutubeDataSearchRepository {
   fetchAccessToken = async (): Promise<string> => {
@@ -29,74 +30,112 @@ export class YoutubeDataSearchRepository {
     return tokenData.access_token;
   };
 
+  //fix: errorレスポンスがHTML形式っぽい
   fetchVideoByAccessToken = async (accessToken: string): Promise<Video[]> => {
-    const fetchViewCountsByVideoIds = async (
-      videoIds: (string | undefined)[]
-    ) => {
-      if (!videoIds.length) {
-        return [];
-      }
-
-      const statisticsResponse = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoIds.join(
-          ","
-        )}`,
-        {
-          method: "GET",
-          headers: { Authorization: `Bearer ${accessToken}` },
+    const videoGateway = new MySQLVideoGateway();
+    const cacheId = await videoGateway.fetchValidCacheId();
+    if (!cacheId) {
+      const fetchViewCountsByVideoIds = async (
+        videoIds: (string | undefined)[]
+      ) => {
+        if (!videoIds.length) {
+          return [];
         }
-      );
 
-      if (!statisticsResponse.ok) {
-        const errorData = await statisticsResponse.json();
-        throw new UnAuthorizeError(
-          `failed to fetch video statistics: ${JSON.stringify(errorData)}`
+        const statisticsResponse = await fetch(
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoIds.join(
+            ","
+          )}`,
+          {
+            method: "GET",
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
         );
-      }
 
-      const statisticsData: YoutubeVideoResponse =
-        await statisticsResponse.json();
+        if (!statisticsResponse.ok) {
+          const errorData = await statisticsResponse.text();
+          throw new UnAuthorizeError(
+            `failed to fetch video statistics: ${JSON.stringify(errorData)}`
+          );
+        }
 
-      return statisticsData.items.map((item) => {
-        return Number(item.statistics.viewCount);
-      });
-    };
+        const statisticsData: YoutubeVideoResponse =
+          await statisticsResponse.json();
 
-    const YoutubeUploadPlaylistResponse = await fetch(
-      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${process.env.GOOGLE_UPLOADPLAYLIST_ID}`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
+        return statisticsData.items.map((item) => {
+          return Number(item.statistics.viewCount);
+        });
+      };
 
-    if (!YoutubeUploadPlaylistResponse.ok) {
-      const errorData = await YoutubeUploadPlaylistResponse.json();
-      throw new UnAuthorizeError(
-        `failed to fetch upload playlist${JSON.stringify(errorData)}`
+      const fetchAllVideos = async () => {
+        let videos: PlaylistItem[] = [];
+        let views: number[] = [];
+        let nextPageToken = undefined;
+
+        do {
+          const response = await fetch(
+            `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${
+              process.env.GOOGLE_UPLOADPLAYLIST_ID
+            }&maxResults=50&pageToken=${nextPageToken || ""}`,
+            {
+              method: "GET",
+              headers: { Authorization: `Bearer ${accessToken}` },
+            }
+          );
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new UnAuthorizeError(
+              `failed to fetch upload playlist${JSON.stringify(errorData)}`
+            );
+          }
+
+          const data: PlaylistItemsResponse = await response.json();
+
+          const videoIds = data.items.map(
+            (item) => item.snippet.resourceId.videoId
+          );
+
+          const arr_view = await fetchViewCountsByVideoIds(videoIds);
+
+          videos = [...videos, ...data.items];
+          views = [...views, ...arr_view];
+          nextPageToken = data.nextPageToken;
+        } while (nextPageToken);
+
+        return { videos, views };
+      };
+
+      const allVideoData = await fetchAllVideos();
+
+      const uploadPlaylistData: PlaylistItem[] = allVideoData.videos;
+
+      const arr_videoId = uploadPlaylistData.map(
+        (item) => item.snippet.resourceId.videoId
       );
+
+      const arr_viewCount = allVideoData.views;
+
+      const arr_video = uploadPlaylistData.map((item, index) => {
+        const url = `https://www.youtube.com/watch?v=${arr_videoId[index]}`;
+        const views = arr_viewCount[index];
+        const thumbnail = item?.snippet?.thumbnails?.default?.url || "";
+        const title = item.snippet.title;
+        return new Video(url, views, thumbnail, title);
+      });
+
+      console.log(arr_video.length);
+
+      await videoGateway.insert(arr_video);
+
+      return arr_video;
+    } else {
+      const arr_video = await videoGateway.fetchVideosByCacheId(cacheId);
+
+      console.log(arr_video.length);
+
+      return arr_video;
     }
-
-    const uploadPlaylistData: PlaylistItemsResponse =
-      await YoutubeUploadPlaylistResponse.json();
-
-    const arr_videoId = uploadPlaylistData.items.map((item) => {
-      return item.snippet.resourceId.videoId;
-    });
-
-    console.log(arr_videoId);
-
-    const arr_viewCount = await fetchViewCountsByVideoIds(arr_videoId);
-
-    const arr_video = uploadPlaylistData.items.map((item, index) => {
-      const url = `https://www.youtube.com/watch?v=${arr_videoId[index]}`;
-      const views = arr_viewCount[index];
-      const thumbnail = item.snippet.thumbnails.default.url;
-      const title = item.snippet.title;
-      return new Video(url, views, thumbnail, title);
-    });
-
-    return arr_video;
   };
 
   filterAndSortVideo = async (
@@ -106,7 +145,7 @@ export class YoutubeDataSearchRepository {
     const fuseOptions = {
       keys: ["title"],
       shouldSort: true,
-      threshold: 0.8,
+      threshold: 0.5,
       distance: 100,
     };
 

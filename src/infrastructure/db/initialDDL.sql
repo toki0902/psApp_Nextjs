@@ -1,6 +1,6 @@
 -- データベースの作成
 DROP DATABASE IF EXISTS `ps-app`;
-CREATE DATABASE `ps-app`;
+CREATE DATABASE `ps-app` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 -- データベースの使用
 USE `ps-app`;
@@ -28,5 +28,27 @@ CREATE TABLE playlist_members (
     FOREIGN KEY (playlist_id) REFERENCES playlists(playlist_id) ON DELETE CASCADE
 );
 
-ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4;
+-- video_caches テーブルの作成
+CREATE TABLE video_caches (
+    video_cache_id INT PRIMARY KEY AUTO_INCREMENT,
+    expires DATE NOT NULL
+);
 
+-- videos テーブルの作成
+CREATE TABLE videos (
+    video_id INT PRIMARY KEY AUTO_INCREMENT,
+    url VARCHAR(100) NOT NULL,
+    video_cache_id INT NOT NULL,
+    views INT NOT NULL,
+    thumbnail VARCHAR(100) NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    FOREIGN KEY (video_cache_id) REFERENCES video_caches(video_cache_id) ON DELETE CASCADE
+);
+
+-- 文字セットの統一
+ALTER DATABASE `ps-app` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE playlists CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE playlist_members CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE video_caches CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE videos CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;

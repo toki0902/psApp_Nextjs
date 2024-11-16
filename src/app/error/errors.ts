@@ -21,3 +21,11 @@ export class MissingParamsError extends Error {
     this.name = "MissingParamsError";
   }
 }
+
+export class MySQLError extends Error {
+  statusCode = 500;
+  constructor(message: string = "Resource not found") {
+    super(message);
+    this.name = "MySQLError";
+  }
+}

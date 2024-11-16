@@ -1,7 +1,7 @@
 import { NextAuthSignInRepository } from "@/src/infrastructure/auth/NextAuthSignInRepository";
 import { SignInService } from "@/src/application/auth/SignInService";
 import { NextResponse } from "next/server";
-import { MySQLUserGateway } from "@/src/infrastructure/user/MySQLUserGateway";
+import { MySQLUserGateway } from "@/src/infrastructure/gateways/MySQLUserGateway";
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError } from "@/src/app/error/errors";
 
