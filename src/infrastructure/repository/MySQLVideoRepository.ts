@@ -1,10 +1,10 @@
-import { IVideoGateway } from "@/src/domain/dataAccess/IVideoGateway";
+import { IVideoRepository } from "@/src/domain/dataAccess/repository/IVideoRepository";
 import { createConnectionPool } from "../db/MySQLConnection";
 import { Video } from "@/src/domain/entities/Video";
 import mysql from "mysql2/promise";
 import { MySQLError, NotFoundError } from "@/src/app/error/errors";
 
-export class MySQLVideoGateway implements IVideoGateway {
+export class MySQLVideoRepository implements IVideoRepository {
   private pool = createConnectionPool();
 
   fetchVideosByCacheId = async (cacheId: number): Promise<Video[]> => {

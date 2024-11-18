@@ -1,16 +1,14 @@
 import { NextAuthOptions } from "next-auth";
 import Google from "next-auth/providers/google";
 
-import { NextAuthSignInRepository } from "./NextAuthSignInRepository";
 import { SignInService } from "@/src/application/auth/SignInService";
-import { MySQLUserGateway } from "../gateways/MySQLUserGateway";
+import { MySQLUserRepository } from "../repository/MySQLUserRepository";
 import { UnAuthorizeError } from "@/src/app/error/errors";
 
 //todo: useSessionを使用すると/v1/apiではなく/apiを参照してしまう。
 
-const signInRepository = new NextAuthSignInRepository();
-const userGateway = new MySQLUserGateway();
-const signInService = new SignInService(signInRepository, userGateway);
+const userRepository = new MySQLUserRepository();
+const signInService = new SignInService(userRepository);
 
 export const nextAuthOptions: NextAuthOptions = {
   debug: false,

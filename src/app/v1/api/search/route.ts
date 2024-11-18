@@ -1,12 +1,13 @@
 import { errorHandler } from "@/src/app/error/errorHandler";
-import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
+import { MissingParamsError } from "@/src/app/error/errors";
 import { SearchService } from "@/src/application/search/SearchService";
-import { YoutubeDataSearchRepository } from "@/src/infrastructure/search/YoutubeDataSearchRepository";
-import { NotFoundError } from "next/dist/client/components/not-found";
+import { YoutubeDataSearchGateway } from "@/src/infrastructure/gateways/YoutubeDataSearchGateway";
+import { MySQLVideoRepository } from "@/src/infrastructure/repository/MySQLVideoRepository";
 import { NextRequest, NextResponse } from "next/server";
 
-const searchRepository = new YoutubeDataSearchRepository();
-const searchService = new SearchService(searchRepository);
+const searchGateway = new YoutubeDataSearchGateway();
+const videoRepository = new MySQLVideoRepository();
+const searchService = new SearchService(searchGateway, videoRepository);
 
 export const GET = async (req: NextRequest): Promise<NextResponse> => {
   try {

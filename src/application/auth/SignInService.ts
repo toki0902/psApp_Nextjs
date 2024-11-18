@@ -1,19 +1,16 @@
 import { NotFoundError } from "@/src/app/error/errors";
-import { ISignInRepository } from "@/src/domain/auth/ISigninRepository";
-import { IUserGateway } from "@/src/domain/dataAccess/IUserGateway";
+import { IUserRepository } from "@/src/domain/dataAccess/repository/IUserRepository";
 import { User } from "@/src/domain/entities/User";
 
 import type { User as NextAuthUser } from "next-auth";
 
-//実装すべきなのはproviderへのリダイレクト、callback内での処理。
 export class SignInService {
-  constructor(
-    private _signInRepository: ISignInRepository,
-    private _userGateway: IUserGateway
-  ) {}
+  constructor(private _userRepository: IUserRepository) {}
 
   createSignInURL = async (provider: string): Promise<string> => {
-    return this._signInRepository.createSignInURL(provider);
+    const callbackUrl = `${process.env.ROOT_URL}/v1/api/sessions/callback`;
+    const redirectUrl = `${process.env.NEXTAUTH_URL}/signin/${provider}?callbackUrl=${callbackUrl}`;
+    return redirectUrl;
   };
 
   fetchUserAndRegister = async (user: NextAuthUser): Promise<User> => {
@@ -22,10 +19,13 @@ export class SignInService {
       throw new NotFoundError("Insufficient information provided by provider");
     }
 
-    const selectedUser = await this._userGateway.findBySocialId(user.id);
+    const selectedUser = await this._userRepository.findBySocialId(user.id);
 
     if (!selectedUser) {
-      const insertResult = await this._userGateway.insert(user.id, user.name);
+      const insertResult = await this._userRepository.insert(
+        user.id,
+        user.name
+      );
 
       return new User(
         insertResult.userId,

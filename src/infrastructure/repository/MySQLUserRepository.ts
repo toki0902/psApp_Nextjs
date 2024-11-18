@@ -1,10 +1,10 @@
-import { IUserGateway } from "@/src/domain/dataAccess/IUserGateway";
 import mysql from "mysql2/promise";
+import { IUserRepository } from "@/src/domain/dataAccess/repository/IUserRepository";
 import { User } from "@/src/domain/entities/User";
 
 import { createConnectionPool } from "../db/MySQLConnection";
 
-export class MySQLUserGateway implements IUserGateway {
+export class MySQLUserRepository implements IUserRepository {
   private pool = createConnectionPool();
   //undefinedを返しても問題ない！
   async findById(id: string): Promise<User | undefined> {
@@ -36,12 +36,8 @@ export class MySQLUserGateway implements IUserGateway {
     return new User(record.user_id, record.name, record.social_id, null);
   }
 
-  //fix: 名前が???になります
-  async insert(
-    socialId: string,
-    name: string
-    //一時的にレコードにしている。
-  ): Promise<User> {
+  //fix: 名前が???になります, idをランダム文字列へ
+  async insert(socialId: string, name: string): Promise<User> {
     const insertResult = await (
       await this.pool
     ).execute<mysql.ResultSetHeader>(
