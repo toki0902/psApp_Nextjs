@@ -3,8 +3,10 @@ import { Video } from "./Video";
 export class Playlist {
   constructor(
     public playlistId: string,
-    public videos: Video[],
+    public videos: { videoMemberId: number; video: Video }[],
     public title: string,
-    public createdAt: Date
+    public createdAt: string,
+    //一時的にnumber
+    public ownerId: number
   ) {}
 }

@@ -4,4 +4,8 @@ export interface IVideoRepository {
   fetchVideosByCacheId: (cacheId: number) => Promise<Video[]>;
   fetchValidCacheId: () => Promise<number | undefined>;
   insert: (videos: Video[]) => Promise<void>;
+  fetchVideoByYoutubeIdsAndCacheId: (
+    ids: string[],
+    cacheId: number
+  ) => Promise<Video[]>;
 }

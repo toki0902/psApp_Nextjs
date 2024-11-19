@@ -1,13 +1,11 @@
-import { NextAuthSignInRepository } from "@/src/infrastructure/auth/NextAuthSignInRepository";
 import { SignInService } from "@/src/application/auth/SignInService";
 import { NextResponse } from "next/server";
-import { MySQLUserGateway } from "@/src/infrastructure/repository/MySQLUserRepository";
+import { MySQLUserRepository } from "@/src/infrastructure/repository/MySQLUserRepository";
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError } from "@/src/app/error/errors";
 
-const signInRepository = new NextAuthSignInRepository();
-const userGateway = new MySQLUserGateway();
-const signInService = new SignInService(signInRepository, userGateway);
+const userRepository = new MySQLUserRepository();
+const signInService = new SignInService(userRepository);
 
 export const POST = async (
   req: Request,

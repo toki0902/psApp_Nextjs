@@ -50,7 +50,7 @@ type Thumbnail = {
 
 //リソースが動画以外である場合があるため識別用オブジェクト
 type ResourceId = {
-  kind: "youtube#video";
+  kind: string;
   videoId: string;
 };
 
@@ -65,8 +65,11 @@ interface YoutubeVideoResponse {
 }
 
 interface VideoDetails {
+  kind: "youtube#video";
+  etag: string;
   id: string;
-  statistics: VideoStatistics;
+  snippet?: Snippet;
+  statistics?: VideoStatistics;
 }
 
 interface VideoStatistics {

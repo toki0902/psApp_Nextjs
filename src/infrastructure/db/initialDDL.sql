@@ -15,9 +15,10 @@ CREATE TABLE users (
 -- playlists テーブルの作成
 CREATE TABLE playlists (
     playlist_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
+    owner_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    title VARCHAR(100) NOT NULL,
+    FOREIGN KEY (owner_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 -- playlist_members テーブルの作成
@@ -37,7 +38,7 @@ CREATE TABLE video_caches (
 -- videos テーブルの作成
 CREATE TABLE videos (
     video_id INT PRIMARY KEY AUTO_INCREMENT,
-    url VARCHAR(100) NOT NULL,
+    video_youtube_id VARCHAR(100) NOT NULL,
     video_cache_id INT NOT NULL,
     views INT NOT NULL,
     thumbnail VARCHAR(100) NOT NULL,

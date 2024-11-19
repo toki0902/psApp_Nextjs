@@ -21,7 +21,8 @@ export class MySQLVideoRepository implements IVideoRepository {
     }
 
     return record.map(
-      (item) => new Video(item.url, item.views, item.thumbnail, item.title)
+      (item) =>
+        new Video(item.video_youtube_id, item.views, item.thumbnail, item.title)
     );
   };
 
@@ -56,14 +57,14 @@ export class MySQLVideoRepository implements IVideoRepository {
       const cacheId = cacheRecord.insertId;
 
       const values = videos.flatMap((item) => [
-        item.url || null,
+        item.videoId || null,
         cacheId,
         item.views || 0,
         item.thumbnail || "none",
         item.title || "Untitled",
       ]);
 
-      const videoQuery = `INSERT INTO videos (url, video_cache_id, views, thumbnail, title) VALUES ${videos
+      const videoQuery = `INSERT INTO videos (video_youtube_id, video_cache_id, views, thumbnail, title) VALUES ${videos
         .map(() => "(?,?,?,?,?)")
         .join(",")}`;
 
@@ -83,6 +84,46 @@ export class MySQLVideoRepository implements IVideoRepository {
     } finally {
       // 接続を解放
       connection.release();
+    }
+  };
+
+  fetchVideoByYoutubeIdsAndCacheId = async (
+    ids: string[],
+    cacheId: number
+  ): Promise<Video[]> => {
+    try {
+      if (ids.length === 0) {
+        return [];
+      }
+      const query = `select * from videos where video_cache_id = ? and video_youtube_id in (${ids
+        .map(() => {
+          return "?";
+        })
+        .join(",")})`;
+
+      const value = [cacheId, ...ids];
+      console.log(query, value);
+      const selectResult = await (
+        await this.pool
+      ).execute<mysql.RowDataPacket[]>(query, value);
+
+      const record = selectResult[0];
+      if (!record.length) {
+        return [];
+      }
+
+      const videos = record.map((data) => {
+        return new Video(
+          data.video_youtube_id,
+          data.views,
+          data.thumbnail,
+          data.title
+        );
+      });
+
+      return videos;
+    } catch (err) {
+      throw new MySQLError(`failed to fetch video from cache: ${err}`);
     }
   };
 }

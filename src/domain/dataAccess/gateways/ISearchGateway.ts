@@ -1,6 +1,10 @@
 import { Video } from "../../entities/Video";
 
-export interface ISearchRepository {
+export interface ISearchGateway {
   fetchAccessToken: () => Promise<string>;
-  fetchVideoByAccessToken: (accessToken: string) => Promise<Video[]>;
+  fetchAllVideoByAccessToken: (accessToken: string) => Promise<Video[]>;
+  fetchVideoByVideoIds: (
+    videoIds: string[],
+    accessToken: string
+  ) => Promise<Video[]>;
 }
