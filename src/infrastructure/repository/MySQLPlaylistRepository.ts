@@ -2,6 +2,8 @@ import { IPlaylistRepository } from "@/src/domain/dataAccess/repository/IPlaylis
 import { createConnectionPool } from "../db/MySQLConnection";
 import { MySQLError } from "@/src/app/error/errors";
 import mysql from "mysql2/promise";
+import { nanoid } from "nanoid";
+import { errorHandler } from "@/src/app/error/errorHandler";
 
 export class MySQLPlaylistRepository implements IPlaylistRepository {
   private pool = createConnectionPool();
@@ -34,7 +36,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
         playlistId: string;
         createdAt: string;
         title: string;
-        ownerId: number;
+        ownerId: string;
       }[]
   > => {
     try {
@@ -59,6 +61,49 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       return playlistData;
     } catch (err) {
       throw new MySQLError(`failed to fetch playlistInfo ${err}`);
+    }
+  };
+
+  fetchPlaylistIdByPlaylistTitleAndUserId = async (
+    playlistId: string,
+    userId: string
+  ): Promise<string> => {
+    return "";
+  };
+
+  insertPlaylist = async (title: string, ownerId: string): Promise<void> => {
+    try {
+      const query = `INSERT INTO playlists (playlist_id, title, owner_id) VALUES (?, ?, ?)`;
+      const playlist_id = nanoid(15);
+      const value = [playlist_id, title, ownerId];
+      const insertResult = await (
+        await this.pool
+      ).execute<mysql.ResultSetHeader>(query, value);
+
+      console.log(`create new playlist with userId:${ownerId}`);
+    } catch (err) {
+      throw new MySQLError(
+        `failed create new playlist in process 'insert' due to ${JSON.stringify(
+          err
+        )}`
+      );
+    }
+  };
+
+  insertPlaylistMember = async (
+    videoId: string,
+    playlistId: string
+  ): Promise<void> => {
+    try {
+      const query = `INSERT INTO playlist_members (playlist_id, video_id) VALUES (?, ?)`;
+      const value = [playlistId, videoId];
+      const insertResult = await (
+        await this.pool
+      ).execute<mysql.ResultSetHeader>(query, value);
+
+      console.log(`add video to playlist videoId:${videoId}`);
+    } catch (err) {
+      errorHandler(err);
     }
   };
 }

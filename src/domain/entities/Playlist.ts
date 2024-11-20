@@ -6,7 +6,6 @@ export class Playlist {
     public videos: { videoMemberId: number; video: Video }[],
     public title: string,
     public createdAt: string,
-    //一時的にnumber
-    public ownerId: number
+    public ownerId: string
   ) {}
 }

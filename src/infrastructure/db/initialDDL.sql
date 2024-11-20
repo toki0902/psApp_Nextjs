@@ -7,24 +7,25 @@ USE `ps-app`;
 
 -- users テーブルの作成
 CREATE TABLE users (
-    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id CHAR(21) PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     social_id VARCHAR(100) NOT NULL
 );
 
 -- playlists テーブルの作成
 CREATE TABLE playlists (
-    playlist_id INT PRIMARY KEY AUTO_INCREMENT,
-    owner_id INT NOT NULL,
+    playlist_id CHAR(15) PRIMARY KEY,
+    owner_id CHAR(21) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     title VARCHAR(100) NOT NULL,
+    UNIQUE (title, owner_id),
     FOREIGN KEY (owner_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 -- playlist_members テーブルの作成
 CREATE TABLE playlist_members (
     member_id INT PRIMARY KEY AUTO_INCREMENT,
-    playlist_id INT NOT NULL,
+    playlist_id CHAR(15) NOT NULL,
     video_id CHAR(11) NOT NULL,
     FOREIGN KEY (playlist_id) REFERENCES playlists(playlist_id) ON DELETE CASCADE
 );

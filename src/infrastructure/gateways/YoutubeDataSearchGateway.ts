@@ -85,7 +85,7 @@ export class YoutubeDataSearchGateway {
         if (!response.ok) {
           const errorData = await response.json();
           throw new UnAuthorizeError(
-            `failed to fetch upload playlist in process'fetchAllVideoByAccessToken${JSON.stringify(
+            `failed to fetch upload playlist in process 'fetchAllVideoByAccessToken': ${JSON.stringify(
               errorData
             )}`
           );
@@ -162,110 +162,3 @@ export class YoutubeDataSearchGateway {
     });
   };
 }
-
-[
-  {
-    kind: "youtube#video",
-    etag: "HCZkf3DWRRb-tJbpBEJqn6t76f8",
-    id: "VEYLDC2njbI",
-    snippet: {
-      publishedAt: "2023-10-29T14:03:23Z",
-      channelId: "UC9qNGppDijyO8ydJy7UD9Jg",
-      title: "バラの花/くるり【2023/10/07 P.S.10月ミニライブ】",
-      description: "【2023/10/07 P.S.10月ミニライブ】\nなんとか社会人",
-      thumbnails: {
-        default: {
-          url: "https://i.ytimg.com/vi/VEYLDC2njbI/default.jpg",
-          width: 120,
-          height: 90,
-        },
-        medium: {
-          url: "https://i.ytimg.com/vi/VEYLDC2njbI/mqdefault.jpg",
-          width: 320,
-          height: 180,
-        },
-        high: {
-          url: "https://i.ytimg.com/vi/VEYLDC2njbI/hqdefault.jpg",
-          width: 480,
-          height: 360,
-        },
-        standard: {
-          url: "https://i.ytimg.com/vi/VEYLDC2njbI/sddefault.jpg",
-          width: 640,
-          height: 480,
-        },
-        maxres: {
-          url: "https://i.ytimg.com/vi/VEYLDC2njbI/maxresdefault.jpg",
-          width: 1280,
-          height: 720,
-        },
-      },
-      channelTitle: "同志社アコースティック音楽P.S.",
-      categoryId: "10",
-      liveBroadcastContent: "none",
-      localized: {
-        title: "バラの花/くるり【2023/10/07 P.S.10月ミニライブ】",
-        description: "【2023/10/07 P.S.10月ミニライブ】\nなんとか社会人",
-      },
-    },
-    statistics: {
-      viewCount: "13",
-      likeCount: "0",
-      dislikeCount: "0",
-      favoriteCount: "0",
-      commentCount: "0",
-    },
-  },
-  {
-    kind: "youtube#video",
-    etag: "4u6tv4VUtoXZKUiCoTndp95-IZo",
-    id: "nBc7SEzsvSE",
-    snippet: {
-      publishedAt: "2019-11-27T14:40:38Z",
-      channelId: "UC9qNGppDijyO8ydJy7UD9Jg",
-      title: "ばらの花/くるり【2019年度　同志社EVE２日目】",
-      description: "",
-      thumbnails: {
-        default: {
-          url: "https://i.ytimg.com/vi/nBc7SEzsvSE/default.jpg",
-          width: 120,
-          height: 90,
-        },
-        medium: {
-          url: "https://i.ytimg.com/vi/nBc7SEzsvSE/mqdefault.jpg",
-          width: 320,
-          height: 180,
-        },
-        high: {
-          url: "https://i.ytimg.com/vi/nBc7SEzsvSE/hqdefault.jpg",
-          width: 480,
-          height: 360,
-        },
-        standard: {
-          url: "https://i.ytimg.com/vi/nBc7SEzsvSE/sddefault.jpg",
-          width: 640,
-          height: 480,
-        },
-        maxres: {
-          url: "https://i.ytimg.com/vi/nBc7SEzsvSE/maxresdefault.jpg",
-          width: 1280,
-          height: 720,
-        },
-      },
-      channelTitle: "同志社アコースティック音楽P.S.",
-      categoryId: "10",
-      liveBroadcastContent: "none",
-      localized: {
-        title: "ばらの花/くるり【2019年度　同志社EVE２日目】",
-        description: "",
-      },
-    },
-    statistics: {
-      viewCount: "382",
-      likeCount: "13",
-      dislikeCount: "0",
-      favoriteCount: "0",
-      commentCount: "1",
-    },
-  },
-];

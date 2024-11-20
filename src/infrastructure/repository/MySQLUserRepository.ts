@@ -3,6 +3,8 @@ import { IUserRepository } from "@/src/domain/dataAccess/repository/IUserReposit
 import { User } from "@/src/domain/entities/User";
 
 import { createConnectionPool } from "../db/MySQLConnection";
+import { nanoid } from "nanoid";
+import { MySQLError } from "@/src/app/error/errors";
 
 export class MySQLUserRepository implements IUserRepository {
   private pool = createConnectionPool();
@@ -38,16 +40,19 @@ export class MySQLUserRepository implements IUserRepository {
 
   //fix: 名前が???になります, idをランダム文字列へ
   async insert(socialId: string, name: string): Promise<User> {
-    const insertResult = await (
-      await this.pool
-    ).execute<mysql.ResultSetHeader>(
-      "insert into users (name, social_id) values (?, ?)",
-      [name, socialId]
-    );
+    try {
+      const userId = nanoid();
 
-    //一時的にオートインクリメントの体
-    const insertId = String(insertResult[0].insertId);
+      const insertResult = await (
+        await this.pool
+      ).execute<mysql.ResultSetHeader>(
+        "insert into users (user_id, name, social_id) values (?, ?, ?)",
+        [userId, name, socialId]
+      );
 
-    return new User(insertId, name, socialId, null);
+      return new User(userId, name, socialId, null);
+    } catch (err) {
+      throw new MySQLError("failed to register new user in process 'insert'");
+    }
   }
 }

@@ -80,4 +80,15 @@ export class PlaylistService {
     console.log(playlists);
     return playlists;
   };
+
+  registerNewPlaylist = async (title: string, ownerId: string) => {
+    await this._playlistRepository.insertPlaylist(title, ownerId);
+    return;
+  };
+
+  registerNewPlaylistMember = async (
+    playlistTitle: string,
+    userId: string,
+    videoId: string
+  ) => {};
 }

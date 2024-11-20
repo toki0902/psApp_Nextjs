@@ -45,10 +45,3 @@ export const GET = async (
     return errorHandler(err);
   }
 };
-
-export const POST = async (req: NextRequest) => {
-  try {
-  } catch (err) {
-    return errorHandler(err);
-  }
-};
