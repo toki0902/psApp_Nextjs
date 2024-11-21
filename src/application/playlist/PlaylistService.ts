@@ -62,9 +62,6 @@ export class PlaylistService {
       );
     }
 
-    console.log(arr_videos);
-
-    //整形して返却
     const playlists: Playlist[] = await Promise.all(
       arr_videos.map(async (videos, index) => {
         return new Playlist(
@@ -90,5 +87,14 @@ export class PlaylistService {
     playlistTitle: string,
     userId: string,
     videoId: string
-  ) => {};
+  ) => {
+    const playlistId =
+      await this._playlistRepository.fetchPlaylistIdByPlaylistTitleAndUserId(
+        playlistTitle,
+        userId
+      );
+
+    await this._playlistRepository.insertPlaylistMember(videoId, playlistId);
+    return;
+  };
 }

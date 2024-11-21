@@ -5,6 +5,9 @@ import { PlaylistService } from "@/src/application/playlist/PlaylistService";
 import { MySQLPlaylistRepository } from "@/src/infrastructure/repository/MySQLPlaylistRepository";
 import { YoutubeDataSearchGateway } from "@/src/infrastructure/gateways/YoutubeDataSearchGateway";
 import { MySQLVideoRepository } from "@/src/infrastructure/repository/MySQLVideoRepository";
+import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
+import { getServerSession } from "next-auth";
+import { nextAuthOptions } from "@/src/infrastructure/auth/nextauthOption";
 
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
@@ -22,6 +25,21 @@ export const GET = async (
 ): Promise<NextResponse> => {
   try {
     const { userId } = await params;
+
+    if (!userId) {
+      console.log("Required parameter is missing");
+      throw new MissingParamsError("Required parameter is missing");
+    }
+
+    const session = await getServerSession(nextAuthOptions);
+
+    if (!(session?.user?.userId === userId)) {
+      console.log("Unauthorized!");
+      throw new UnAuthorizeError(
+        "You are not authenticated. Please log in and try again"
+      );
+    }
+
     const playlists = await playlistService.fetchPlaylistAndVideos(userId);
 
     //getterからURLを追加

@@ -3,7 +3,6 @@ import { createConnectionPool } from "../db/MySQLConnection";
 import { MySQLError } from "@/src/app/error/errors";
 import mysql from "mysql2/promise";
 import { nanoid } from "nanoid";
-import { errorHandler } from "@/src/app/error/errorHandler";
 
 export class MySQLPlaylistRepository implements IPlaylistRepository {
   private pool = createConnectionPool();
@@ -11,22 +10,30 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
   fetchPlaylistMemberIdsByPlaylistId = async (
     playlistId: string
   ): Promise<{ videoId: string; memberId: number }[]> => {
-    const query = "select * from playlist_members where playlist_id = ?";
+    try {
+      const query = "select * from playlist_members where playlist_id = ?";
 
-    const selectResult = await (
-      await this.pool
-    ).execute<mysql.RowDataPacket[]>(query, [playlistId]);
+      const selectResult = await (
+        await this.pool
+      ).execute<mysql.RowDataPacket[]>(query, [playlistId]);
 
-    const record = selectResult[0];
-    if (!record.length) {
-      return [];
+      const record = selectResult[0];
+      if (!record.length) {
+        return [];
+      }
+
+      const arr_videoInfo = record.map((item) => {
+        return { videoId: item.video_id, memberId: item.member_id };
+      });
+
+      return arr_videoInfo;
+    } catch (err) {
+      throw new MySQLError(
+        `failed to fetch playlistInfo in process 'fetchPlaylistMemberIdsByPlaylistId' due to: ${JSON.stringify(
+          err
+        )}`
+      );
     }
-
-    const arr_videoInfo = record.map((item) => {
-      return { videoId: item.video_id, memberId: item.member_id };
-    });
-
-    return arr_videoInfo;
   };
 
   fetchPlaylistByUserId = async (
@@ -60,15 +67,38 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       });
       return playlistData;
     } catch (err) {
-      throw new MySQLError(`failed to fetch playlistInfo ${err}`);
+      throw new MySQLError(
+        `failed create new playlistInfo in process 'fetchPlaylistByUserId' due to: ${JSON.stringify(
+          err
+        )}`
+      );
     }
   };
 
   fetchPlaylistIdByPlaylistTitleAndUserId = async (
-    playlistId: string,
+    playlistTitle: string,
     userId: string
   ): Promise<string> => {
-    return "";
+    try {
+      const query = "select * from playlists where title = ? and owner_id = ?";
+      const value = [playlistTitle, userId];
+      const selectResult = await (
+        await this.pool
+      ).execute<mysql.RowDataPacket[]>(query, value);
+
+      const record = selectResult[0][0];
+      if (!record) {
+        return "";
+      }
+
+      return record.playlist_id;
+    } catch (err) {
+      throw new MySQLError(
+        `failed create new playlistInfo in process 'fetchPlaylistIdByPlaylistTitleAndUserId' due to: ${JSON.stringify(
+          err
+        )}`
+      );
+    }
   };
 
   insertPlaylist = async (title: string, ownerId: string): Promise<void> => {
@@ -83,7 +113,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       console.log(`create new playlist with userId:${ownerId}`);
     } catch (err) {
       throw new MySQLError(
-        `failed create new playlist in process 'insert' due to ${JSON.stringify(
+        `failed create new playlist in process 'insertPlaylist' due to: ${JSON.stringify(
           err
         )}`
       );
@@ -103,7 +133,11 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
 
       console.log(`add video to playlist videoId:${videoId}`);
     } catch (err) {
-      errorHandler(err);
+      throw new MySQLError(
+        `failed create new playlist in process 'insertPlaylistMember' due to: ${JSON.stringify(
+          err
+        )}`
+      );
     }
   };
 }

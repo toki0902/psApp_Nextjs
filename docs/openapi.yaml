@@ -12,6 +12,8 @@ components:
     Video:
       type: object
       properties:
+        videoId:
+          type: string
         url:
           type: string
         views:
@@ -28,7 +30,12 @@ components:
         videos:
           type: array
           items:
-            $ref: "#/components/schemas/Video"
+            type: object
+            properties:
+              video:
+                $ref: "#/components/schemas/Video"
+              videoMemberId:
+                type: number
         playlistId:
           type: string
         createdAt:
@@ -69,9 +76,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Playlist"
+                type: object
+                properties:
+                  playlists:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Playlist"
+
+  /users/{userId}/playlists/{playlistTitle}:
     post:
       summary: Create new playlist
       parameters:
@@ -80,14 +92,11 @@ paths:
           required: true
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                playlistTitle:
-                  type: string
+        - name: playlistTitle
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         201:
           description: success response containing info of new playlist
@@ -96,7 +105,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Playlist"
 
-  /users/{userId}/playlists/{playlistId}/videos:
+  /users/{userId}/playlists/{playlistTitle}/videos/{videoId}:
     post:
       summary: Add new video to an already existing playlist
       parameters:
@@ -105,19 +114,16 @@ paths:
           required: true
           schema:
             type: string
-        - name: playlistId
+        - name: playlistTitle
           in: path
           required: true
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                videoUrl:
-                  type: string
+        - name: videoId
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         201:
           description: success response containing a message that the new video has been added
