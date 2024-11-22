@@ -1,22 +1,16 @@
-import { errorHandler } from "@/src/app/error/errorHandler";
-import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
-import { PlaylistService } from "@/src/application/playlist/PlaylistService";
-import { nextAuthOptions } from "@/src/infrastructure/auth/nextauthOption";
-import { YoutubeDataSearchGateway } from "@/src/infrastructure/gateways/YoutubeDataSearchGateway";
-import { MySQLPlaylistRepository } from "@/src/infrastructure/repository/MySQLPlaylistRepository";
-import { MySQLVideoRepository } from "@/src/infrastructure/repository/MySQLVideoRepository";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { nextAuthOptions } from "@/src/infrastructure/auth/nextauthOption";
+
+import { RegisterNewPlaylist } from "@/src/application/playlist/RegisterNewPlaylist";
+import { MySQLPlaylistRepository } from "@/src/infrastructure/repository/MySQLPlaylistRepository";
+
+import { errorHandler } from "@/src/app/error/errorHandler";
+import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
 
 const playlistRepository = new MySQLPlaylistRepository();
-const videoRepository = new MySQLVideoRepository();
-const searchGateway = new YoutubeDataSearchGateway();
 
-const playlistService = new PlaylistService(
-  playlistRepository,
-  videoRepository,
-  searchGateway
-);
+const registerNewPlaylist = new RegisterNewPlaylist(playlistRepository);
 
 export const POST = async (
   req: NextRequest,
@@ -39,7 +33,7 @@ export const POST = async (
       );
     }
 
-    await playlistService.registerNewPlaylist(playlistTitle, userId);
+    await registerNewPlaylist.run(playlistTitle, userId);
 
     return new NextResponse(JSON.stringify({ msg: "create new playlist!" }), {
       status: 201,

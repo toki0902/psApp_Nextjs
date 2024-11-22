@@ -1,11 +1,11 @@
-import { SignInService } from "@/src/application/auth/SignInService";
 import { NextResponse } from "next/server";
-import { MySQLUserRepository } from "@/src/infrastructure/repository/MySQLUserRepository";
+
+import { CreateSignInURL } from "@/src/application/auth/CreateSignInURL";
+
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError } from "@/src/app/error/errors";
 
-const userRepository = new MySQLUserRepository();
-const signInService = new SignInService(userRepository);
+const createSignInURL = new CreateSignInURL();
 
 export const POST = async (
   req: Request,
@@ -17,7 +17,7 @@ export const POST = async (
       throw new MissingParamsError("provider is not found");
     }
 
-    const URL = await signInService.createSignInURL(provider);
+    const URL = await createSignInURL.run(provider);
 
     return NextResponse.redirect(URL, 302);
   } catch (err) {

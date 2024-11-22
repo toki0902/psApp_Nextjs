@@ -1,7 +1,8 @@
-import { errorHandler } from "@/src/app/error/errorHandler";
-import { UnAuthorizeError } from "@/src/app/error/errors";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+
+import { errorHandler } from "@/src/app/error/errorHandler";
+import { UnAuthorizeError } from "@/src/app/error/errors";
 
 export const GET = async (req: NextRequest): Promise<NextResponse> => {
   try {

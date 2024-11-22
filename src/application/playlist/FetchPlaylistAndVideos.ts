@@ -4,13 +4,14 @@ import { IVideoRepository } from "@/src/domain/dataAccess/repository/IVideoRepos
 import { Playlist } from "@/src/domain/entities/Playlist";
 import { Video } from "@/src/domain/entities/Video";
 
-export class PlaylistService {
+export class FetchPlaylistAndVideos {
   constructor(
     private _playlistRepository: IPlaylistRepository,
     private _videoRepository: IVideoRepository,
     private _searchGateway: ISearchGateway
   ) {}
-  fetchPlaylistAndVideos = async (userId: string): Promise<Playlist[]> => {
+
+  run = async (userId: string): Promise<Playlist[]> => {
     const arr_playlistData =
       await this._playlistRepository.fetchPlaylistByUserId(userId);
 
@@ -76,25 +77,5 @@ export class PlaylistService {
 
     console.log(playlists);
     return playlists;
-  };
-
-  registerNewPlaylist = async (title: string, ownerId: string) => {
-    await this._playlistRepository.insertPlaylist(title, ownerId);
-    return;
-  };
-
-  registerNewPlaylistMember = async (
-    playlistTitle: string,
-    userId: string,
-    videoId: string
-  ) => {
-    const playlistId =
-      await this._playlistRepository.fetchPlaylistIdByPlaylistTitleAndUserId(
-        playlistTitle,
-        userId
-      );
-
-    await this._playlistRepository.insertPlaylistMember(videoId, playlistId);
-    return;
   };
 }

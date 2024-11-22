@@ -1,19 +1,20 @@
-import { errorHandler } from "@/src/app/error/errorHandler";
 import { NextRequest, NextResponse } from "next/server";
-
-import { PlaylistService } from "@/src/application/playlist/PlaylistService";
-import { MySQLPlaylistRepository } from "@/src/infrastructure/repository/MySQLPlaylistRepository";
-import { YoutubeDataSearchGateway } from "@/src/infrastructure/gateways/YoutubeDataSearchGateway";
-import { MySQLVideoRepository } from "@/src/infrastructure/repository/MySQLVideoRepository";
-import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
 import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "@/src/infrastructure/auth/nextauthOption";
+
+import { FetchPlaylistAndVideos } from "@/src/application/playlist/FetchPlaylistAndVideos";
+import { MySQLPlaylistRepository } from "@/src/infrastructure/repository/MySQLPlaylistRepository";
+import { MySQLVideoRepository } from "@/src/infrastructure/repository/MySQLVideoRepository";
+import { YoutubeDataSearchGateway } from "@/src/infrastructure/gateways/YoutubeDataSearchGateway";
+
+import { errorHandler } from "@/src/app/error/errorHandler";
+import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
 
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
 const searchGateway = new YoutubeDataSearchGateway();
 
-const playlistService = new PlaylistService(
+const fetchPlaylistAndVideos = new FetchPlaylistAndVideos(
   playlistRepository,
   videoRepository,
   searchGateway
@@ -40,7 +41,7 @@ export const GET = async (
       );
     }
 
-    const playlists = await playlistService.fetchPlaylistAndVideos(userId);
+    const playlists = await fetchPlaylistAndVideos.run(userId);
 
     //getterからURLを追加
     const responseData = playlists.map((playlist) => {

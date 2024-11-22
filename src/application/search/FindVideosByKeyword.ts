@@ -3,12 +3,13 @@ import { ISearchGateway } from "@/src/domain/dataAccess/gateways/ISearchGateway"
 import { IVideoRepository } from "@/src/domain/dataAccess/repository/IVideoRepository";
 import Fuse from "fuse.js";
 
-export class SearchService {
+export class FindVideosByKeyword {
   constructor(
     private _searchGateway: ISearchGateway,
     private _videoRepository: IVideoRepository
   ) {}
-  findVideosByKeyword = async (keyword: string): Promise<Video[]> => {
+
+  run = async (keyword: string): Promise<Video[]> => {
     const cacheId = await this._videoRepository.fetchValidCacheId();
 
     let allUploadedVideos;

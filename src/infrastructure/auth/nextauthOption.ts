@@ -1,14 +1,16 @@
 import { NextAuthOptions } from "next-auth";
 import Google from "next-auth/providers/google";
 
-import { SignInService } from "@/src/application/auth/SignInService";
+import { FetchUserAndRegister } from "@/src/application/auth/FetchUserAndRegister";
+
 import { MySQLUserRepository } from "../repository/MySQLUserRepository";
+
 import { UnAuthorizeError } from "@/src/app/error/errors";
 
 //todo: useSessionを使用すると/v1/apiではなく/apiを参照してしまう。
 
 const userRepository = new MySQLUserRepository();
-const signInService = new SignInService(userRepository);
+const fetchUserAndRegister = new FetchUserAndRegister(userRepository);
 
 export const nextAuthOptions: NextAuthOptions = {
   debug: false,
@@ -27,7 +29,7 @@ export const nextAuthOptions: NextAuthOptions = {
       if (!user) {
         return token;
       }
-      const userToken = await signInService.fetchUserAndRegister(user);
+      const userToken = await fetchUserAndRegister.run(user);
 
       token = { ...userToken };
       return token;

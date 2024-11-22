@@ -4,16 +4,10 @@ import { User } from "@/src/domain/entities/User";
 
 import type { User as NextAuthUser } from "next-auth";
 
-export class SignInService {
+export class FetchUserAndRegister {
   constructor(private _userRepository: IUserRepository) {}
 
-  createSignInURL = async (provider: string): Promise<string> => {
-    const callbackUrl = `${process.env.ROOT_URL}/v1/api/sessions/callback`;
-    const redirectUrl = `${process.env.NEXTAUTH_URL}/signin/${provider}?callbackUrl=${callbackUrl}`;
-    return redirectUrl;
-  };
-
-  fetchUserAndRegister = async (user: NextAuthUser): Promise<User> => {
+  run = async (user: NextAuthUser): Promise<User> => {
     if (!user?.name) {
       //fix: インターフェース層のerror.tsに依存している、、。
       throw new NotFoundError("Insufficient information provided by provider");
