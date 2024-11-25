@@ -1,11 +1,11 @@
 <mxfile host="65bd71144e">
     <diagram id="kK-X1QI5sNb91Lrv-UDP" name="ページ1">
-        <mxGraphModel dx="1429" dy="907" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="583" math="0" shadow="0">
+        <mxGraphModel dx="2851" dy="1121" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="583" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="3" value="ps-app" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;" parent="1" vertex="1">
-                    <mxGeometry x="169" y="12" width="569" height="560" as="geometry"/>
+                    <mxGeometry x="109" y="208" width="620" height="652" as="geometry"/>
                 </mxCell>
                 <mxCell id="8" style="edgeStyle=none;html=1;" parent="1" source="4" target="7" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -19,23 +19,26 @@
                 <mxCell id="17" style="edgeStyle=none;html=1;" parent="1" source="4" target="15" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="27" style="edgeStyle=none;html=1;" parent="1" source="4" target="25" edge="1">
+                <mxCell id="45" style="edgeStyle=none;html=1;" edge="1" parent="1" source="4" target="44">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="52" style="edgeStyle=none;html=1;" edge="1" parent="1" source="4" target="50">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="4" value="user" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="90" y="262" width="30" height="60" as="geometry"/>
+                    <mxGeometry x="39" y="680" width="30" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="7" value="動画を検索する" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="375" y="157" width="156" height="80" as="geometry"/>
+                    <mxGeometry x="258" y="412" width="156" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="9" value="プレイリストの&lt;br&gt;作成、閲覧する" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="377" y="247" width="154" height="80" as="geometry"/>
+                    <mxGeometry x="349" y="492" width="154" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="12" value="会員登録&lt;br&gt;ログインする" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="377" y="67" width="156" height="80" as="geometry"/>
+                    <mxGeometry x="347" y="250" width="156" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="15" value="動画を閲覧する" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="376" y="337" width="154" height="80" as="geometry"/>
+                    <mxGeometry x="449" y="410" width="154" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="21" style="edgeStyle=none;html=1;" parent="1" source="18" target="15" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -46,7 +49,7 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="18" value="YouTube上？&lt;br&gt;今回はこっち！！" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="590" y="282" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="589" y="290" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="22" style="edgeStyle=none;html=1;" parent="1" source="20" target="15" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -57,16 +60,31 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="20" value="ps-app上？" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="590" y="392" width="120" height="80" as="geometry"/>
-                </mxCell>
-                <mxCell id="25" value="ランキングを閲覧する" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="378" y="432" width="154" height="80" as="geometry"/>
+                    <mxGeometry x="603" y="492" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="29" style="edgeStyle=none;html=1;" parent="1" source="28" target="12" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="28" value="p.s.に入っていない人には見せられないようにしたい。" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;align=left;" parent="1" vertex="1">
-                    <mxGeometry x="580" y="62" width="110" height="85" as="geometry"/>
+                    <mxGeometry x="258" y="110" width="110" height="85" as="geometry"/>
+                </mxCell>
+                <mxCell id="48" style="edgeStyle=none;html=1;" edge="1" parent="1" source="33" target="46">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="live cordinator" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+                    <mxGeometry x="759" y="640" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="p.s.leader" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+                    <mxGeometry x="499" y="890" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="44" value="出演登録をする" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="259" y="630" width="154" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="46" value="バンド情報を整理する" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="449" y="630" width="154" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="50" value="特殊楽器(カホン)の&lt;br&gt;配置場所を管理する" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="356.5" y="750" width="154" height="80" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

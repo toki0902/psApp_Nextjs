@@ -23,7 +23,7 @@ export const GET = async (req: NextRequest): Promise<NextResponse> => {
         "This request does not contain the required parameters"
       );
     }
-    FindVideosByKeyword;
+
     const videos = await findVideosByKeyword.run(keyword);
 
     const resObj = videos.map((videoObj) => {

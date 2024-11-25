@@ -43,20 +43,7 @@ export const GET = async (
 
     const playlists = await fetchPlaylistAndVideos.run(userId);
 
-    //getterからURLを追加
-    const responseData = playlists.map((playlist) => {
-      return {
-        ...playlist,
-        videos: playlist.videos.map((videoObj) => {
-          return {
-            video: { ...videoObj.video, url: videoObj.video.url },
-            videoMemberId: videoObj.videoMemberId,
-          };
-        }),
-      };
-    });
-
-    return new NextResponse(JSON.stringify({ playlists: responseData }), {
+    return new NextResponse(JSON.stringify({ playlists: playlists }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
