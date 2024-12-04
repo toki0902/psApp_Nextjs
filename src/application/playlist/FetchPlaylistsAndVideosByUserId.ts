@@ -4,7 +4,7 @@ import { IVideoRepository } from "@/src/domain/dataAccess/repository/IVideoRepos
 import { Playlist } from "@/src/domain/entities/Playlist";
 import { Video } from "@/src/domain/entities/Video";
 
-export class FetchPlaylistAndVideos {
+export class FetchPlaylistsAndVideosByUserId {
   constructor(
     private _playlistRepository: IPlaylistRepository,
     private _videoRepository: IVideoRepository,

@@ -104,6 +104,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Playlist"
+    get:
+      summary: Get playlist from userId and playlistTitle
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: playlistId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success response containing playlist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  playlist:
+                    $ref: "#/components/schemas/Playlist"
 
   /users/{userId}/playlists/{playlistTitle}/videos/{videoId}:
     post:

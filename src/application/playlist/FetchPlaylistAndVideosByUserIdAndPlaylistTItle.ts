@@ -1,0 +1,65 @@
+import { ISearchGateway } from "@/src/domain/dataAccess/gateways/ISearchGateway";
+import { IPlaylistRepository } from "@/src/domain/dataAccess/repository/IPlaylistRepository";
+import { IVideoRepository } from "@/src/domain/dataAccess/repository/IVideoRepository";
+import { Playlist } from "@/src/domain/entities/Playlist";
+
+export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
+  constructor(
+    private _playlistRepository: IPlaylistRepository,
+    private _videoRepository: IVideoRepository,
+    private _searchGateway: ISearchGateway
+  ) {}
+
+  run = async (
+    userId: string,
+    playlistTitle: string
+  ): Promise<Playlist | undefined> => {
+    const playlistData =
+      await this._playlistRepository.fetchPlaylistByPlaylistTitleAndUserId(
+        playlistTitle,
+        userId
+      );
+
+    if (!playlistData) {
+      return undefined;
+    }
+
+    const videoObjs =
+      await this._playlistRepository.fetchPlaylistMemberIdsByPlaylistId(
+        playlistData.playlistId
+      );
+
+    const cacheId = await this._videoRepository.fetchValidCacheId();
+
+    let arr_videoInfo;
+    if (!cacheId) {
+      const accessToken = await this._searchGateway.fetchAccessToken();
+      const videos = await this._searchGateway.fetchVideoByVideoIds(
+        videoObjs.map((i) => i.videoId),
+        accessToken
+      );
+      const memberIds = videoObjs.map((obj) => obj.memberId);
+      arr_videoInfo = memberIds.map((id, index) => {
+        return { videoMemberId: id, video: videos[index] };
+      });
+    } else {
+      const videos =
+        await this._videoRepository.fetchVideoByYoutubeIdsAndCacheId(
+          videoObjs.map((i) => i.videoId),
+          cacheId
+        );
+      const memberIds = videoObjs.map((i) => i.memberId);
+      arr_videoInfo = memberIds.map((id, index) => {
+        return { videoMemberId: id, video: videos[index] };
+      });
+    }
+
+    return new Playlist(
+      playlistData.playlistId,
+      arr_videoInfo,
+      playlistData.title,
+      playlistData.createdAt,
+      playlistData.ownerId
+    );
+  };
+}

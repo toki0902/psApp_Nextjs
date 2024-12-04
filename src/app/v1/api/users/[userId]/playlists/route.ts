@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "@/src/infrastructure/auth/nextauthOption";
 
-import { FetchPlaylistAndVideos } from "@/src/application/playlist/FetchPlaylistAndVideos";
+import { FetchPlaylistsAndVideosByUserId } from "@/src/application/playlist/FetchPlaylistsAndVideosByUserId";
 import { MySQLPlaylistRepository } from "@/src/infrastructure/repository/MySQLPlaylistRepository";
 import { MySQLVideoRepository } from "@/src/infrastructure/repository/MySQLVideoRepository";
 import { YoutubeDataSearchGateway } from "@/src/infrastructure/gateways/YoutubeDataSearchGateway";
@@ -14,7 +14,7 @@ const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
 const searchGateway = new YoutubeDataSearchGateway();
 
-const fetchPlaylistAndVideos = new FetchPlaylistAndVideos(
+const fetchPlaylistAndVideos = new FetchPlaylistsAndVideosByUserId(
   playlistRepository,
   videoRepository,
   searchGateway

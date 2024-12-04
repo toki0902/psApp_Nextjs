@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import Google from "next-auth/providers/google";
+import LINE from "next-auth/providers/line";
 
 import { FetchUserAndRegister } from "@/src/application/auth/FetchUserAndRegister";
 
@@ -19,6 +20,10 @@ export const nextAuthOptions: NextAuthOptions = {
     Google({
       clientId: process.env.GOOGLE_CLIENT!,
       clientSecret: process.env.GOOGLE_SECRET!,
+    }),
+    LINE({
+      clientId: process.env.LINE_CLIENT!,
+      clientSecret: process.env.LINE_SECRET!,
     }),
   ],
   session: {

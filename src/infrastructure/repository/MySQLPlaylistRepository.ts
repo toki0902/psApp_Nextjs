@@ -39,12 +39,12 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
   fetchPlaylistByUserId = async (
     userId: string
   ): Promise<
-    | {
-        playlistId: string;
-        createdAt: string;
-        title: string;
-        ownerId: string;
-      }[]
+    {
+      playlistId: string;
+      createdAt: string;
+      title: string;
+      ownerId: string;
+    }[]
   > => {
     try {
       const query = "select * from playlists where owner_id = ?";
@@ -75,10 +75,18 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     }
   };
 
-  fetchPlaylistIdByPlaylistTitleAndUserId = async (
+  fetchPlaylistByPlaylistTitleAndUserId = async (
     playlistTitle: string,
     userId: string
-  ): Promise<string> => {
+  ): Promise<
+    | {
+        playlistId: string;
+        createdAt: string;
+        title: string;
+        ownerId: string;
+      }
+    | undefined
+  > => {
     try {
       const query = "select * from playlists where title = ? and owner_id = ?";
       const value = [playlistTitle, userId];
@@ -88,13 +96,18 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
 
       const record = selectResult[0][0];
       if (!record) {
-        return "";
+        return undefined;
       }
 
-      return record.playlist_id;
+      return {
+        playlistId: record.playlist_id,
+        createdAt: record.created_at,
+        title: record.title,
+        ownerId: record.owner_id,
+      };
     } catch (err) {
       throw new MySQLError(
-        `failed create new playlistInfo in process 'fetchPlaylistIdByPlaylistTitleAndUserId' due to: ${JSON.stringify(
+        `failed create new playlistInfo in process 'fetchPlaylistByPlaylistTitleAndUserId' due to: ${JSON.stringify(
           err
         )}`
       );

@@ -4,8 +4,8 @@ import { Video } from "@/src/domain/entities/Video";
 export class YoutubeDataSearchGateway {
   fetchAccessToken = async (): Promise<string> => {
     const tokenFetchBody = new URLSearchParams({
-      client_id: process.env.GOOGLE_PS_CLIENT || "",
-      client_secret: process.env.GOOGLE_PS_SECRET || "",
+      client_id: process.env.GOOGLE_CLIENT || "",
+      client_secret: process.env.GOOGLE_SECRET || "",
       refresh_token: process.env.GOOGLE_REFRESH_TOKEN || "",
       grant_type: "refresh_token",
     });
@@ -130,7 +130,10 @@ export class YoutubeDataSearchGateway {
     return arr_video;
   };
 
-  fetchVideoByVideoIds = async (videoIds: string[], accessToken: string) => {
+  fetchVideoByVideoIds = async (
+    videoIds: string[],
+    accessToken: string
+  ): Promise<Video[]> => {
     const videoResponse = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=${videoIds.join(
         ","

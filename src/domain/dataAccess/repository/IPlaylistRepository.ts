@@ -10,10 +10,18 @@ export interface IPlaylistRepository {
   fetchPlaylistMemberIdsByPlaylistId: (
     playlistId: string
   ) => Promise<{ videoId: string; memberId: number }[]>;
-  fetchPlaylistIdByPlaylistTitleAndUserId: (
+  fetchPlaylistByPlaylistTitleAndUserId: (
     playlistTitle: string,
     userId: string
-  ) => Promise<string>;
+  ) => Promise<
+    | {
+        playlistId: string;
+        createdAt: string;
+        title: string;
+        ownerId: string;
+      }
+    | undefined
+  >;
   insertPlaylist: (title: string, ownerId: string) => Promise<void>;
   insertPlaylistMember: (videoId: string, playlistId: string) => Promise<void>;
 }
