@@ -19,11 +19,12 @@ export const POST = async (
   {
     params,
   }: {
-    params: Promise<{ userId: string; playlistTitle: string; videoId: string }>;
+    params: Promise<{ userId: string; playlistTitle: string }>;
   }
 ): Promise<NextResponse> => {
   try {
-    const { userId, playlistTitle, videoId } = await params;
+    const { videoId } = await req.json();
+    const { userId, playlistTitle } = await params;
 
     if (!userId || !playlistTitle || !videoId) {
       console.log("Required parameter is missing");

@@ -9,6 +9,7 @@ import { YoutubeDataSearchGateway } from "@/src/infrastructure/gateways/YoutubeD
 
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
+import { RegisterNewPlaylist } from "@/src/application/playlist/RegisterNewPlaylist";
 
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
@@ -19,6 +20,7 @@ const fetchPlaylistAndVideos = new FetchPlaylistsAndVideosByUserId(
   videoRepository,
   searchGateway
 );
+const registerNewPlaylist = new RegisterNewPlaylist(playlistRepository);
 
 export const GET = async (
   req: NextRequest,
@@ -45,6 +47,39 @@ export const GET = async (
 
     return new NextResponse(JSON.stringify({ playlists: playlists }), {
       status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (err) {
+    return errorHandler(err);
+  }
+};
+
+export const POST = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ userId: string; playlistTitle: string }> }
+): Promise<NextResponse> => {
+  try {
+    const { playlistTitle } = await req.json();
+    const { userId } = await params;
+
+    if (!userId || !playlistTitle) {
+      console.log("Required parameter is missing");
+      throw new MissingParamsError("Required parameter is missing");
+    }
+
+    const session = await getServerSession(nextAuthOptions);
+
+    if (!(session?.user?.userId === userId)) {
+      console.log("Unauthorized!");
+      throw new UnAuthorizeError(
+        "You are not authenticated. Please log in and try again"
+      );
+    }
+
+    await registerNewPlaylist.run(playlistTitle, userId);
+
+    return new NextResponse(JSON.stringify({ msg: "create new playlist!" }), {
+      status: 201,
       headers: { "Content-Type": "application/json" },
     });
   } catch (err) {
