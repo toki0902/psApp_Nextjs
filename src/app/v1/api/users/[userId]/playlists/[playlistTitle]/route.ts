@@ -1,11 +1,11 @@
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { nextAuthOptions } from "@/src/infrastructure/auth/nextauthOption";
+import { nextAuthOptions } from "@/src/backend/infrastructure/auth/nextauthOption";
 
-import { FetchPlaylistAndVideosByUserIdAndPlaylistTitle } from "@/src/application/playlist/FetchPlaylistAndVideosByUserIdAndPlaylistTItle";
-import { MySQLPlaylistRepository } from "@/src/infrastructure/repository/MySQLPlaylistRepository";
-import { MySQLVideoRepository } from "@/src/infrastructure/repository/MySQLVideoRepository";
-import { YoutubeDataSearchGateway } from "@/src/infrastructure/gateways/YoutubeDataSearchGateway";
+import { FetchPlaylistAndVideosByUserIdAndPlaylistTitle } from "@/src/backend/application/playlist/FetchPlaylistAndVideosByUserIdAndPlaylistTItle";
+import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
+import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
+import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/YoutubeDataSearchGateway";
 
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";

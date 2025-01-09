@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { nextAuthOptions } from "@/src/infrastructure/auth/nextauthOption";
+import { nextAuthOptions } from "@/src/backend/infrastructure/auth/nextauthOption";
 import { getServerSession } from "next-auth";
 
-import { RegisterNewPlaylistMember } from "@/src/application/playlist/RegisterNewPlaylistMember";
-import { MySQLPlaylistRepository } from "@/src/infrastructure/repository/MySQLPlaylistRepository";
+import { RegisterNewPlaylistMember } from "@/src/backend/application/playlist/RegisterNewPlaylistMember";
+import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
 
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";

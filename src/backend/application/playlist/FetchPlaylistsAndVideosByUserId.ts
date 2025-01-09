@@ -1,8 +1,8 @@
-import { ISearchGateway } from "@/src/domain/dataAccess/gateways/ISearchGateway";
-import { IPlaylistRepository } from "@/src/domain/dataAccess/repository/IPlaylistRepository";
-import { IVideoRepository } from "@/src/domain/dataAccess/repository/IVideoRepository";
-import { Playlist } from "@/src/domain/entities/Playlist";
-import { Video } from "@/src/domain/entities/Video";
+import { ISearchGateway } from "@/src/backend/domain/dataAccess/gateways/ISearchGateway";
+import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
+import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";
+import { Playlist } from "@/src/backend/domain/entities/Playlist";
+import { Video } from "@/src/backend/domain/entities/Video";
 
 export class FetchPlaylistsAndVideosByUserId {
   constructor(

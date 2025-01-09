@@ -2,7 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import Google from "next-auth/providers/google";
 import LINE from "next-auth/providers/line";
 
-import { FetchUserAndRegister } from "@/src/application/auth/FetchUserAndRegister";
+import { FetchUserAndRegister } from "@/src/backend/application/auth/FetchUserAndRegister";
 
 import { MySQLUserRepository } from "../repository/MySQLUserRepository";
 

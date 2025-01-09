@@ -1,4 +1,4 @@
-import { IPlaylistRepository } from "@/src/domain/dataAccess/repository/IPlaylistRepository";
+import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 
 export class RegisterNewPlaylist {
   constructor(private _playlistRepository: IPlaylistRepository) {}

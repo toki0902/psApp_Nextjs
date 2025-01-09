@@ -1,4 +1,4 @@
-import { IPlaylistRepository } from "@/src/domain/dataAccess/repository/IPlaylistRepository";
+import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 import { createConnectionPool } from "../db/MySQLConnection";
 import { MySQLError } from "@/src/app/error/errors";
 import mysql from "mysql2/promise";

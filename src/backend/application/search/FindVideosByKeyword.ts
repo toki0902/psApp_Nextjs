@@ -1,6 +1,6 @@
-import { Video } from "@/src/domain/entities/Video";
-import { ISearchGateway } from "@/src/domain/dataAccess/gateways/ISearchGateway";
-import { IVideoRepository } from "@/src/domain/dataAccess/repository/IVideoRepository";
+import { Video } from "@/src/backend/domain/entities/Video";
+import { ISearchGateway } from "@/src/backend/domain/dataAccess/gateways/ISearchGateway";
+import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";
 import Fuse from "fuse.js";
 
 export class FindVideosByKeyword {

@@ -1,6 +1,6 @@
-import { IVideoRepository } from "@/src/domain/dataAccess/repository/IVideoRepository";
+import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";
 import { createConnectionPool } from "../db/MySQLConnection";
-import { Video } from "@/src/domain/entities/Video";
+import { Video } from "@/src/backend/domain/entities/Video";
 import mysql from "mysql2/promise";
 import { MySQLError, NotFoundError } from "@/src/app/error/errors";
 

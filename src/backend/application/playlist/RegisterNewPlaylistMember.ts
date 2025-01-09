@@ -1,5 +1,5 @@
 import { NotFoundError } from "@/src/app/error/errors";
-import { IPlaylistRepository } from "@/src/domain/dataAccess/repository/IPlaylistRepository";
+import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 
 export class RegisterNewPlaylistMember {
   constructor(private _playlistRepository: IPlaylistRepository) {}

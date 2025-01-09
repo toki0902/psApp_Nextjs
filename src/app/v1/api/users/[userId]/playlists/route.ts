@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { nextAuthOptions } from "@/src/infrastructure/auth/nextauthOption";
+import { nextAuthOptions } from "@/src/backend/infrastructure/auth/nextauthOption";
 
-import { FetchPlaylistsAndVideosByUserId } from "@/src/application/playlist/FetchPlaylistsAndVideosByUserId";
-import { MySQLPlaylistRepository } from "@/src/infrastructure/repository/MySQLPlaylistRepository";
-import { MySQLVideoRepository } from "@/src/infrastructure/repository/MySQLVideoRepository";
-import { YoutubeDataSearchGateway } from "@/src/infrastructure/gateways/YoutubeDataSearchGateway";
+import { FetchPlaylistsAndVideosByUserId } from "@/src/backend/application/playlist/FetchPlaylistsAndVideosByUserId";
+import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
+import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
+import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/YoutubeDataSearchGateway";
 
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
-import { RegisterNewPlaylist } from "@/src/application/playlist/RegisterNewPlaylist";
+import { RegisterNewPlaylist } from "@/src/backend/application/playlist/RegisterNewPlaylist";
 
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { CreateSignInURL } from "@/src/application/auth/CreateSignInURL";
+import { CreateSignInURL } from "@/src/backend/application/auth/CreateSignInURL";
 
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError } from "@/src/app/error/errors";

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { FindVideosByKeyword } from "@/src/application/search/FindVideosByKeyword";
+import { FindVideosByKeyword } from "@/src/backend/application/search/FindVideosByKeyword";
 
-import { YoutubeDataSearchGateway } from "@/src/infrastructure/gateways/YoutubeDataSearchGateway";
-import { MySQLVideoRepository } from "@/src/infrastructure/repository/MySQLVideoRepository";
+import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/YoutubeDataSearchGateway";
+import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
 
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError } from "@/src/app/error/errors";

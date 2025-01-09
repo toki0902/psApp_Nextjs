@@ -1,6 +1,6 @@
 import { NotFoundError } from "@/src/app/error/errors";
-import { IUserRepository } from "@/src/domain/dataAccess/repository/IUserRepository";
-import { User } from "@/src/domain/entities/User";
+import { IUserRepository } from "@/src/backend/domain/dataAccess/repository/IUserRepository";
+import { User } from "@/src/backend/domain/entities/User";
 
 import type { User as NextAuthUser } from "next-auth";
 

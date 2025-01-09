@@ -1,6 +1,6 @@
 import mysql from "mysql2/promise";
-import { IUserRepository } from "@/src/domain/dataAccess/repository/IUserRepository";
-import { User } from "@/src/domain/entities/User";
+import { IUserRepository } from "@/src/backend/domain/dataAccess/repository/IUserRepository";
+import { User } from "@/src/backend/domain/entities/User";
 
 import { createConnectionPool } from "../db/MySQLConnection";
 import { nanoid } from "nanoid";
