@@ -1,0 +1,9 @@
+:root {
+  --red: #823a42;
+  --white: #f1ebe5;
+  --blue: #2c4a52;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
