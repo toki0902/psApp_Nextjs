@@ -1,7 +1,12 @@
 import "@/src/frontend/assets/styles/global.css";
+import Loading from "../frontend/components/Loading";
 
 const App = () => {
-  return <div className="h-max w-max border-4 bg-red-500">example</div>;
+  return (
+    <>
+      <Loading></Loading>
+    </>
+  );
 };
 
 export default App;
