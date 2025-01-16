@@ -9,6 +9,9 @@ const config: Config = {
         white: "var(--white)",
         blue: "var(--blue)",
       },
+      animation: {
+        slowSpin: "spin 8s linear infinite",
+      },
     },
   },
   plugins: [],

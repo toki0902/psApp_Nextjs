@@ -7,7 +7,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className="bg-white w-screen h-screen">{children}</body>
+      <body className="bg-white">
+        <div className="w-screen h-screen flex justify-center items-center">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
