@@ -6,7 +6,7 @@ const config: Config = {
     extend: {
       colors: {
         red: "var(--red)",
-        white: "var(--white)",
+        back: "var(--white)",
         blue: "var(--blue)",
       },
       animation: {

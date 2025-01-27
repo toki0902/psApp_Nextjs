@@ -12,8 +12,10 @@ import { Caveat_thin } from "@/fonts";
 import { Baloo_thin } from "@/fonts";
 
 import coffeeLogo from "public/images/coffee.svg";
+import SearchField from "../frontend/components/SearchField";
 
 const App = () => {
+  //fix : できるだけサーバサイドコンポーネントとしてレンダリングしたいので、useEffectを使用せずにアニメーション発火を起こしたい。
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     setTimeout(() => {
@@ -41,11 +43,12 @@ const App = () => {
           MUSIC CIRCLE
         </div>
       </div>
+      <SearchField></SearchField>
       <div
         className={`${Caveat_thin.className} w-1/3 h-full flex flex-col justify-center items-center border-red space-y-10`}
       >
-        <Button>FAVORITE</Button>
-        <Button>SEARCH</Button>
+        <Button href="/asdf">FAVORITE</Button>
+        <Button href="/search">SEARCH</Button>
         <Button>LOGIN</Button>
       </div>
     </>

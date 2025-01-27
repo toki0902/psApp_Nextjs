@@ -22,7 +22,8 @@
     "paths": {
       "@/*": ["./*"],
       "@/components/*": ["src/frontend/components/*"],
-      "@/fonts": ["src/frontend/assets/fonts/fonts.ts"]
+      "@/fonts": ["src/frontend/assets/fonts/fonts.ts"],
+      "@/utils": ["src/frontend/utils/*"]
     }
   },
   "include": [

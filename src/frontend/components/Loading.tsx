@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import "@/src/frontend/assets/styles/global.css";
 
 import Image from "next/image";
 import psLogo from "public/images/p.s.logo.png";
