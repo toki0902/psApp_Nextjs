@@ -8,37 +8,54 @@ export class MySQLVideoRepository implements IVideoRepository {
   private pool = createConnectionPool();
 
   fetchVideosByCacheId = async (cacheId: number): Promise<Video[]> => {
-    const videoResult = await (
-      await this.pool
-    ).execute<mysql.RowDataPacket[]>(
-      "select * from videos where video_cache_id = ?",
-      [cacheId]
-    );
+    try {
+      const videoResult = await (
+        await this.pool
+      ).execute<mysql.RowDataPacket[]>(
+        "select * from videos where video_cache_id = ?",
+        [cacheId]
+      );
 
-    const record = videoResult[0];
-    if (record.length === 0) {
-      throw new NotFoundError("invalid cacheId");
+      const record = videoResult[0];
+      if (record.length === 0) {
+        throw new NotFoundError("invalid cacheId");
+      }
+
+      return record.map(
+        (item) =>
+          new Video(
+            item.video_youtube_id,
+            item.views,
+            item.thumbnail,
+            item.title
+          )
+      );
+    } catch (err) {
+      throw new MySQLError(
+        `failed to fetch video by cacheId in process 'fetchVideosByCacheId': ${err}`
+      );
     }
-
-    return record.map(
-      (item) =>
-        new Video(item.video_youtube_id, item.views, item.thumbnail, item.title)
-    );
   };
 
   fetchValidCacheId = async (): Promise<number | undefined> => {
-    const videoCacheResult = await (
-      await this.pool
-    ).execute<mysql.RowDataPacket[]>(
-      "select * from video_caches where expires > now()"
-    );
+    try {
+      const videoCacheResult = await (
+        await this.pool
+      ).execute<mysql.RowDataPacket[]>(
+        "select * from video_caches where expires > now()"
+      );
 
-    const record = videoCacheResult[0];
-    if (record.length === 0) {
-      return undefined;
+      const record = videoCacheResult[0];
+      if (record.length === 0) {
+        return undefined;
+      }
+
+      return Number(record[0].video_cache_id);
+    } catch (err) {
+      throw new MySQLError(
+        `failed to fetch valid cacheId in process 'fetchValidCacheId': ${err}`
+      );
     }
-
-    return Number(record[0].video_cache_id);
   };
 
   insert = async (videos: Video[]): Promise<void> => {

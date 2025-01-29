@@ -1,7 +1,15 @@
 import { NextResponse } from "next/server";
-import { MissingParamsError, NotFoundError, UnAuthorizeError } from "./errors";
+import {
+  MissingParamsError,
+  MySQLError,
+  NotFoundError,
+  UnAuthorizeError,
+} from "./errors";
 
-export const errorHandler = (error: any): NextResponse => {
+export const errorHandler = (
+  error: MissingParamsError | NotFoundError | UnAuthorizeError | MySQLError
+): NextResponse => {
+  console.log(error);
   console.error(`${error.name}!: ${error.message}`);
   return new NextResponse(
     JSON.stringify({ message: error.message, errorType: error.name }),

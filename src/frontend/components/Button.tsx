@@ -1,8 +1,6 @@
+"use client";
 import React from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-import { buildEncodedUrl } from "../utils/url";
 
 type ButtonChild = {
   children?: React.ReactNode;
@@ -11,16 +9,17 @@ type ButtonChild = {
 
 const Button = ({ children, href }: ButtonChild) => {
   const router = useRouter();
-  const encodedUri = href ? buildEncodedUrl(href) : null;
 
   const redirect = () => {
-    if (encodedUri) router.push(encodedUri);
-    return;
+    if (!href) {
+      return;
+    }
+    router.push(href);
   };
   return (
     <button
       onClick={redirect}
-      className="bg-[url('/images/buttonFlame_2C4A52.svg')] hover:bg-[url('/images/buttonFlame_823A42.svg')] bg-contain bg-no-repeat bg-center w-80 h-20 flex justify-center items-center text-blue hover:text-red cursor-pointer text-3xl"
+      className="bg-[url('/images/buttonFlame_2C4A52.svg')] hover:bg-[url('/images/buttonFlame_823A42.svg')] bg-contain bg-no-repeat bg-center w-80 h-14 lg:h-16 xl:h-20 flex justify-center items-center text-blue hover:text-red cursor-pointer text-3xl"
     >
       {children}
     </button>

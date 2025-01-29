@@ -1,27 +1,36 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
 import psLogo from "public/images/p.s.logo.png";
 
-const Loading = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  useEffect(() => {
-    setTimeout(() => {
-      setIsOpen(true);
-    }, 200);
-  }, []);
+const STATUS = {
+  visible: "visible",
+  hiding: "hiding",
+  hidden: "hidden",
+} as const;
 
+type LoadingStatus = (typeof STATUS)[keyof typeof STATUS];
+
+type Props = {
+  hideLoading: () => void;
+  status: LoadingStatus;
+};
+
+const Loading = ({ status, hideLoading }: Props) => {
+  console.log(status);
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div
-        className={
-          isOpen
-            ? "animate-slowSpin transition duration-1000 opacity-1"
-            : "animate-slowSpin transition duration-1000 opacity-0"
-        }
-      >
+    <div
+      onAnimationEnd={hideLoading}
+      className={
+        status === "visible"
+          ? "w-screen h-screen fixed top-0 right-0 bg-back flex items-center z-30 justify-center animate-focus-in"
+          : status === "hiding"
+            ? "w-screen h-screen fixed top-0 right-0 bg-back flex items-center z-30 justify-center animate-blur-out"
+            : "hidden"
+      }
+    >
+      <div className="animate-slowSpin">
         <Image src={psLogo} alt="Official LOGO" width={200}></Image>
       </div>
     </div>

@@ -7,11 +7,12 @@ import { isCorrectPassword } from "../utils/validation";
 import { buildEncodedUrl } from "../utils/url";
 
 type modalChild = {
-  path?: string;
+  onCorrect: () => void;
   close: () => void;
 };
 
-const PasswordModal = ({ path, close }: modalChild) => {
+//atSearchはulr/search上にいた時に、同じリンクにとんでもstateが更新されない問題を解決するProps
+const PasswordModal = ({ close, onCorrect }: modalChild) => {
   const [password, setPassword] = useState("");
   const [isCorrect, setIsCorrect] = useState<null | Boolean>(null);
   let timer: NodeJS.Timeout | null = null;
@@ -31,11 +32,7 @@ const PasswordModal = ({ path, close }: modalChild) => {
   const onClick = () => {
     if (isCorrectPassword(password)) {
       //cookieに保存
-
-      if (path) {
-        const encoded = buildEncodedUrl(path);
-        router.push(encoded);
-      }
+      onCorrect();
     } else {
       onIncorrect();
       console.log("失敗！！");

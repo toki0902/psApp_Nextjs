@@ -120,7 +120,7 @@ export class YoutubeDataSearchGateway {
     const arr_video = uploadPlaylistData.map((item, index) => {
       const videoId = arr_videoId[index];
       const views = arr_viewCount[index];
-      const thumbnail = item?.snippet?.thumbnails?.default?.url || "";
+      const thumbnail = item?.snippet?.thumbnails?.standard?.url || "";
       const title = item.snippet.title;
       return new Video(videoId, views, thumbnail, title);
     });
@@ -159,7 +159,7 @@ export class YoutubeDataSearchGateway {
       return new Video(
         item.id || "",
         Number(item.statistics?.viewCount) || 0,
-        item.snippet?.thumbnails.default.url || "",
+        item.snippet?.thumbnails.standard?.url || "",
         item.snippet?.title || ""
       );
     });
