@@ -1,20 +1,15 @@
 "use client";
+import React, { useState } from "react";
 
 import Loading from "@/components/Loading";
-import PasswordModal from "@/components/PasswordModal";
-import SearchField from "@/components/SearchField";
 import VideoCard from "@/components/VideoCard";
 
 import { video } from "@/src/frontend/types/video";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-
 import { Kaisei } from "@/fonts";
 import useLoading from "@/src/frontend/hooks/useLoading";
 
-const Search = () => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
+const Playlist = () => {
   const [videos, setVideos] = useState<video[]>([
     {
       videoId: "HLkbX0YhToY",
@@ -51,86 +46,17 @@ const Search = () => {
       url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
       views: 32,
     },
-    {
-      videoId: "HLkbX0YhToY",
-      thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-      title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
-      url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-      views: 32,
-    },
-    {
-      videoId: "HLkbX0YhToY",
-      thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-      title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
-      url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-      views: 32,
-    },
-    {
-      videoId: "HLkbX0YhToY",
-      thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-      title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
-      url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-      views: 32,
-    },
   ]);
-
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const query = searchParams.get("q") || undefined;
-
-  const isCookieSet = () => {
-    return false;
-  };
-
-  const { status, toVisible, toHiding, hideLoading } = useLoading({
+  const { status, hideLoading, toHiding, toVisible } = useLoading({
     initialStatus: "hidden",
   });
 
-  const fetchVideos = async () => {
-    toVisible();
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/search?q=${query}`,
-      { method: "GET", headers: { "Content-Type": "application/json" } }
-    );
-    if (!res.ok) {
-      const errorData = await res.json();
-      console.log(`${errorData.errorType!}: ${errorData.message}`);
-      toHiding();
-      return;
-    }
-
-    const videoData = await res.json();
-    setVideos(videoData.videos);
-    toHiding();
-  };
-
-  useEffect(() => {
-    if (!isCookieSet()) {
-      setIsOpenModal(true);
-    } else {
-      fetchVideos();
-    }
-  }, []);
-
-  console.log(videos);
   return (
     <div className="w-screen h-screen">
-      {isOpenModal && (
-        <PasswordModal
-          close={() => {
-            router.push("/");
-          }}
-          onCorrect={() => {
-            setIsOpenModal(false);
-            fetchVideos();
-          }}
-        ></PasswordModal>
-      )}
       <Loading status={status} hideLoading={hideLoading}></Loading>
       <div className="w-full h-full px-[3%] pt-10 flex flex-col">
         <div className="w-full flex justify-left items-end">
-          <SearchField value={query}></SearchField>
-          <p className={`${Kaisei.className} ml-10 text-2xl`}>の検索結果</p>
+          <p className={`${Kaisei.className} ml-10 text-2xl`}>再生リスト名</p>
           <p className="ml-4 text-mg">{videos.length}件の動画</p>
         </div>
         <div className="w-full h-max flex flex-wrap mt-20">
@@ -152,4 +78,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default Playlist;

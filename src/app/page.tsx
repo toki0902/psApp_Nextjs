@@ -22,7 +22,7 @@ const App = () => {
   useEffect(() => {
     setTimeout(() => {
       changeStatus();
-    }, 3000);
+    }, 2000);
   }, []);
 
   return (
@@ -58,7 +58,7 @@ const App = () => {
       <div
         className={`${Caveat_thin.className} w-1/3 h-full flex flex-col justify-center items-center border-red space-y-10`}
       >
-        <Button href="/asdf">FAVORITE</Button>
+        <Button href="/users/toki/playlists/title">FAVORITE</Button>
         <Button href="/search">SEARCH</Button>
         <Button>LOGIN</Button>
       </div>

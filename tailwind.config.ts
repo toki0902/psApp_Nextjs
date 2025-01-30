@@ -22,6 +22,9 @@ const config: Config = {
           "focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530)   both",
         "blur-out":
           "blur-out 1s cubic-bezier(0.550, 0.085, 0.680, 0.530)   both",
+        "dot-first": "dot-first 4s infinite",
+        "dot-second": "dot-second 4s infinite",
+        "dot-third": "dot-third 4s infinite",
       },
       keyframes: {
         "focus-in": {
@@ -39,8 +42,24 @@ const config: Config = {
             filter: "blur(.01)",
           },
           to: {
-            filter: "blur(12px) opacity(0%)",
+            filter: "blur(12px)",
+            opacity: "0",
           },
+        },
+        "dot-first": {
+          "0%,24.9%": { opacity: "0" },
+          "25%": { opacity: "1" },
+          to: { opacity: "1" },
+        },
+        "dot-second": {
+          "0%,49.9%": { opacity: "0" },
+          "50%": { opacity: "1" },
+          to: { opacity: "1" },
+        },
+        "dot-third": {
+          "0%,74.9%": { opacity: "0" },
+          "75%": { opacity: "1" },
+          to: { opacity: "1" },
         },
       },
       screens: {

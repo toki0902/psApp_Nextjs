@@ -1,8 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import Image, { StaticImageData } from "next/image";
+import { Caveat_thin } from "@/fonts";
 
-import Image from "next/image";
 import psLogo from "public/images/p.s.logo.png";
+import loading1 from "public/images/loading-1.png";
+import loading2 from "public/images/loading-2.png";
+import loading3 from "public/images/loading-3.png";
+import loading4 from "public/images/loading-4.png";
+import loading5 from "public/images/loading-5.png";
+import loading6 from "public/images/loading-6.png";
+import loading7 from "public/images/loading-7.png";
+import { useEffect, useState } from "react";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 const STATUS = {
   visible: "visible",
@@ -18,7 +27,38 @@ type Props = {
 };
 
 const Loading = ({ status, hideLoading }: Props) => {
-  console.log(status);
+  const [randomImage, setRandomImage] = useState<StaticImport | null>();
+
+  useEffect(() => {
+    const images = [
+      psLogo,
+      loading1,
+      loading2,
+      loading3,
+      loading4,
+      loading5,
+      loading6,
+      loading7,
+    ];
+    const num = Math.floor(Math.random() * images.length);
+    setRandomImage(images[num]);
+  }, []);
+
+  const writer =
+    randomImage === loading2 ||
+    randomImage === loading3 ||
+    randomImage === loading4
+      ? "酉川 莉子"
+      : randomImage === psLogo
+        ? "P.S.公式"
+        : randomImage === loading5 ||
+            randomImage === loading6 ||
+            randomImage === loading7
+          ? "神田 陽那"
+          : "宮脇 虎太郎";
+
+  const width = randomImage === loading6 ? 280 : 200;
+
   return (
     <div
       onAnimationEnd={hideLoading}
@@ -31,8 +71,23 @@ const Loading = ({ status, hideLoading }: Props) => {
       }
     >
       <div className="animate-slowSpin">
-        <Image src={psLogo} alt="Official LOGO" width={200}></Image>
+        {randomImage && (
+          <Image src={randomImage} alt="Official LOGO" width={width}></Image>
+        )}
       </div>
+      <p
+        className={`${Caveat_thin.className} text-5xl text-red absolute top-[66%] left-1/2 -translate-x-1/2 flex`}
+      >
+        Loading
+        <span className="ml-2">
+          <span className="animate-dot-first">.</span>
+          <span className="animate-dot-second">.</span>
+          <span className="animate-dot-third">.</span>
+        </span>
+      </p>
+      <p className="text-xl text-blue absolute bottom-7 right-7">
+        ロゴ提供：{writer}
+      </p>
     </div>
   );
 };

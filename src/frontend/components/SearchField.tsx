@@ -10,7 +10,6 @@ type Props = {
 
 const SearchField = ({ value = "" }: Props) => {
   const [keyword, setKeyword] = useState(value);
-  const router = useRouter();
 
   return (
     <div className="w-96 h-10 pl-4 text-lg text-blue flex justify-between items-center border rounded-full border-blue">

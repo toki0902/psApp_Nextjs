@@ -23,7 +23,9 @@
       "@/*": ["./*"],
       "@/components/*": ["src/frontend/components/*"],
       "@/fonts": ["src/frontend/assets/fonts/fonts.ts"],
-      "@/utils": ["src/frontend/utils/*"]
+      "@/utils": ["src/frontend/utils/*"],
+      "@/types": ["src/frontend/types/*"],
+      "@/hooks": ["src/frontend/hooks/*"]
     }
   },
   "include": [
