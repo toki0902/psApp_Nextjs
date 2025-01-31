@@ -6,9 +6,17 @@ type Props = {
   url: string;
   thumbnail: string;
   title: string;
+  videoMemberId?: number;
 };
 
-const VideoCard = ({ videoId, views, url, thumbnail, title }: Props) => {
+const VideoCard = ({
+  videoId,
+  views,
+  url,
+  thumbnail,
+  title,
+  videoMemberId,
+}: Props) => {
   return (
     <a
       href={url}

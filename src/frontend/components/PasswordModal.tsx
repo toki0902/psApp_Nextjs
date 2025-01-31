@@ -6,13 +6,12 @@ import { Kaisei } from "../assets/fonts/fonts";
 import { isCorrectPassword } from "../utils/validation";
 import { buildEncodedUrl } from "../utils/url";
 
-type modalChild = {
+type props = {
   onCorrect: () => void;
   close: () => void;
 };
 
-//atSearchはulr/search上にいた時に、同じリンクにとんでもstateが更新されない問題を解決するProps
-const PasswordModal = ({ close, onCorrect }: modalChild) => {
+const PasswordModal = ({ close, onCorrect }: props) => {
   const [password, setPassword] = useState("");
   const [isCorrect, setIsCorrect] = useState<null | Boolean>(null);
   let timer: NodeJS.Timeout | null = null;

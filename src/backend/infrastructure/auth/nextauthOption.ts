@@ -1,4 +1,3 @@
-import { NextAuthOptions } from "next-auth";
 import Google from "next-auth/providers/google";
 import LINE from "next-auth/providers/line";
 
@@ -13,7 +12,7 @@ import { UnAuthorizeError } from "@/src/app/error/errors";
 const userRepository = new MySQLUserRepository();
 const fetchUserAndRegister = new FetchUserAndRegister(userRepository);
 
-export const nextAuthOptions: NextAuthOptions = {
+export const nextAuthOptions = {
   debug: false,
   secret: process.env.NEXTAUTH_SECRET,
   providers: [

@@ -5,10 +5,21 @@ import { User } from "./src/backend/domain/entities/User";
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
-      name?: string;
-      image?: string | null;
       userId?: string;
       socialId?: string;
-    } & DefaultSession["user"];
+    } & DefaultSession["user"]; // `name` & `image` は DefaultSession にすでに含まれているのでそのままでOK
+    expires: string; // 追加（必須プロパティ）
+  }
+
+  interface User {
+    userId?: string;
+    socialId?: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    userId?: string;
+    socialId?: string;
   }
 }

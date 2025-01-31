@@ -1,6 +1,6 @@
 import "@/src/frontend/assets/styles/global.css";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
