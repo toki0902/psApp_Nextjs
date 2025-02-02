@@ -1,50 +1,47 @@
 "use client";
 import { useState } from "react";
 
-import Loading from "../components/Loading";
-
 const STATUS = {
   visible: "visible",
   hiding: "hiding",
   hidden: "hidden",
 } as const;
 
-type LoadingStatus = (typeof STATUS)[keyof typeof STATUS];
+type Status = (typeof STATUS)[keyof typeof STATUS];
 
 const useLoading = ({
   initialStatus,
 }: {
   initialStatus: "visible" | "hidden";
 }) => {
-  const [loadingStatus, setLoadingStatus] =
-    useState<LoadingStatus>(initialStatus);
+  const [Status, setStatus] = useState<Status>(initialStatus);
 
   const changeStatus = () => {
-    if (loadingStatus === STATUS.hidden) {
-      setLoadingStatus(STATUS.visible);
+    if (Status === STATUS.hidden) {
+      setStatus(STATUS.visible);
       return;
     }
-    if (loadingStatus === STATUS.visible) {
-      setLoadingStatus(STATUS.hiding);
+    if (Status === STATUS.visible) {
+      setStatus(STATUS.hiding);
     }
   };
 
   const toVisible = () => {
-    setLoadingStatus(STATUS.visible);
+    setStatus(STATUS.visible);
   };
 
   const toHiding = () => {
-    setLoadingStatus(STATUS.hiding);
+    setStatus(STATUS.hiding);
   };
 
   const hideLoading = () => {
-    if (loadingStatus === STATUS.hiding) {
-      setLoadingStatus(STATUS.hidden);
+    if (Status === STATUS.hiding) {
+      setStatus(STATUS.hidden);
     }
   };
 
   return {
-    status: loadingStatus,
+    status: Status,
     hideLoading,
     changeStatus,
     toVisible,

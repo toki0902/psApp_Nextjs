@@ -3,6 +3,6 @@ export class User {
     public userId: string,
     public name: string,
     public socialId: string,
-    public image: string | null
+    public image: string | undefined
   ) {}
 }

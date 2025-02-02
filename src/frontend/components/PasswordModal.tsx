@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 
 import { Kaisei } from "../assets/fonts/fonts";
 import { isCorrectPassword } from "../utils/validation";
-import { buildEncodedUrl } from "../utils/url";
 
 type props = {
   onCorrect: () => void;

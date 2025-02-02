@@ -1,4 +1,5 @@
 import NextAuth, { type DefaultSession } from "next-auth";
+
 declare module "next-auth" {
   /**
    * Returned by `auth`, `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
@@ -15,12 +16,18 @@ declare module "next-auth" {
        * you need to add them back into the newly declared interface.
        */
     } & DefaultSession["user"];
-  }
-
-  interface User {
-    userId?: string;
-    image?: string;
-    socialId?: string;
-    name?: string;
+    expires: string;
   }
 }
+
+declare module "next-auth/jwt" {
+  /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
+  interface JWT {
+    userId?: string;
+    socialId?: string;
+  }
+}
+
+import { nextAuthOptions } from "./src/backend/infrastructure/auth/nextauthOption";
+
+export const { handlers, auth } = NextAuth(nextAuthOptions);

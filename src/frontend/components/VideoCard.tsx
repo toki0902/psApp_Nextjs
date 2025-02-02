@@ -34,6 +34,9 @@ const VideoCard = ({
           <p className="line-clamp-3">{title}</p>
           <p className="mt-2 text-sm">{views} 回視聴</p>
         </div>
+        <div className="w-[10%] flex justify-center items-start">
+          <div className="w-2/3 aspect-square rounded-full border border-black hover:bg-gray-400 relative"></div>
+        </div>
       </div>
     </a>
   );

@@ -1,5 +1,5 @@
 "use client";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { Caveat_thin } from "@/fonts";
 
 import psLogo from "public/images/p.s.logo.png";
@@ -10,6 +10,10 @@ import loading4 from "public/images/loading-4.png";
 import loading5 from "public/images/loading-5.png";
 import loading6 from "public/images/loading-6.png";
 import loading7 from "public/images/loading-7.png";
+import loading8 from "public/images/loading-8.png";
+import loading8_rock from "public/images/loading-8-rock.png";
+import loading8_scissor from "public/images/loading-8-scissor.png";
+import loading8_paper from "public/images/loading-8-paper.png";
 import { useEffect, useState } from "react";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
@@ -39,6 +43,7 @@ const Loading = ({ status, hideLoading }: Props) => {
       loading5,
       loading6,
       loading7,
+      loading8,
     ];
     const num = Math.floor(Math.random() * images.length);
     setRandomImage(images[num]);
@@ -53,7 +58,8 @@ const Loading = ({ status, hideLoading }: Props) => {
         ? "P.S.公式"
         : randomImage === loading5 ||
             randomImage === loading6 ||
-            randomImage === loading7
+            randomImage === loading7 ||
+            randomImage === loading8
           ? "神田 陽那"
           : "宮脇 虎太郎";
 

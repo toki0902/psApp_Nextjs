@@ -8,7 +8,7 @@ export class FetchUserAndRegister {
   constructor(private _userRepository: IUserRepository) {}
 
   run = async (user: NextAuthUser): Promise<User> => {
-    if (!user?.name) {
+    if (!user.name || !user.id) {
       //fix: インターフェース層のerror.tsに依存している、、。
       throw new NotFoundError("Insufficient information provided by provider");
     }
@@ -25,7 +25,7 @@ export class FetchUserAndRegister {
         insertResult.userId,
         insertResult.name,
         insertResult.socialId,
-        user.image || null
+        user.image || undefined
       );
     }
 
@@ -33,7 +33,7 @@ export class FetchUserAndRegister {
       selectedUser.userId,
       selectedUser.name,
       selectedUser.socialId,
-      user.image || null
+      user.image || undefined
     );
   };
 }

@@ -20,7 +20,7 @@ export class MySQLUserRepository implements IUserRepository {
     if (!record) {
       return undefined;
     }
-    return new User(record.user_id, record.name, record.social_id, null);
+    return new User(record.user_id, record.name, record.social_id, undefined);
   }
 
   async findBySocialId(socialId: string): Promise<User | undefined> {
@@ -35,7 +35,7 @@ export class MySQLUserRepository implements IUserRepository {
     if (!record) {
       return undefined;
     }
-    return new User(record.user_id, record.name, record.social_id, null);
+    return new User(record.user_id, record.name, record.social_id, undefined);
   }
 
   //fix: 名前が???になります, idをランダム文字列へ
@@ -50,7 +50,7 @@ export class MySQLUserRepository implements IUserRepository {
         [userId, name, socialId]
       );
 
-      return new User(userId, name, socialId, null);
+      return new User(userId, name, socialId, undefined);
     } catch (err) {
       throw new MySQLError("failed to register new user in process 'insert'");
     }

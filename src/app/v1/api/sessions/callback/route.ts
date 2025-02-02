@@ -1,6 +1,5 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { UnAuthorizeError } from "@/src/app/error/errors";
 
@@ -22,12 +21,6 @@ export const GET = async (req: NextRequest): Promise<NextResponse> => {
     }
 
     const response = NextResponse.redirect(new URL("/", process.env.ROOT_URL));
-
-    response.cookies.set("next-auth.session-token", JWT_str, {
-      // httpOnly: true,
-      maxAge: 60 * 60 * 24,
-      sameSite: "strict",
-    });
 
     return response;
   } catch (err) {

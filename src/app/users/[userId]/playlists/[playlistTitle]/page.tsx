@@ -8,12 +8,24 @@ import { video } from "@/src/frontend/types/video";
 
 import { Kaisei } from "@/fonts";
 import useLoading from "@/src/frontend/hooks/useLoading";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import useCheckSession from "@/src/frontend/hooks/useCheckSession";
 
 const Playlist = () => {
   const [videos, setVideos] = useState<
     { video: video; videoMemberId: number }[]
   >([
+    {
+      video: {
+        videoId: "HLkbX0YhToY",
+        thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+        title:
+          "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】あああああああああああああああ",
+        url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+        views: 32,
+      },
+      videoMemberId: 1,
+    },
     {
       video: {
         videoId: "HLkbX0YhToY",
@@ -30,21 +42,16 @@ const Playlist = () => {
     initialStatus: "visible",
   });
 
-  const { userId, playlistTitle } = useParams();
+  const { userId, playlistTitle } = useParams<{
+    userId: string;
+    playlistTitle: string;
+  }>();
 
-  const router = useRouter();
+  const { check } = useCheckSession({ userId });
 
   useEffect(() => {
     const fetchVideos = async () => {
-      //ログイン情報を取得、ない場合ログインページへ
-      const loginData = { userId: userId };
-      if (!loginData) {
-        router.push("login");
-      }
-      //urlのIdとログイン情報を照合、合わない場合notFoundページへ
-      if (userId !== loginData.userId) {
-        router.push("/notFound");
-      }
+      check();
       //APIリクエスト
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${userId}/playlists/${playlistTitle}`,

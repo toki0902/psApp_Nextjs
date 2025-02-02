@@ -60,7 +60,7 @@ const App = () => {
       >
         <Button href="/users/toki/playlists/title">FAVORITE</Button>
         <Button href="/search">SEARCH</Button>
-        <Button>LOGIN</Button>
+        <Button href="/login">LOGIN</Button>
       </div>
     </>
   );
