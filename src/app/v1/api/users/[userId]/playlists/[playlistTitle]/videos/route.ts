@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { nextAuthOptions } from "@/src/backend/infrastructure/auth/nextauthOption";
-import { getServerSession } from "next-auth/next";
 
 import { RegisterNewPlaylistMember } from "@/src/backend/application/playlist/RegisterNewPlaylistMember";
 import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
@@ -8,6 +6,7 @@ import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
 import { Session } from "next-auth";
+import { auth } from "@/auth";
 
 const playlistRepository = new MySQLPlaylistRepository();
 
@@ -32,7 +31,7 @@ export const POST = async (
       throw new MissingParamsError("Required parameter is missing");
     }
 
-    const session: Session | null = await getServerSession(nextAuthOptions);
+    const session: Session | null = await auth();
 
     if (!(session?.user?.userId === userId)) {
       console.log("Unauthorized!");

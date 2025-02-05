@@ -12,6 +12,7 @@ const Login = () => {
   }, []);
 
   console.log(session);
+
   return;
 };
 

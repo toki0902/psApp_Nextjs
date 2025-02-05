@@ -1,4 +1,3 @@
-"use client";
 import "@/src/frontend/assets/styles/global.css";
 import Image from "next/image";
 
@@ -10,24 +9,10 @@ import { Caveat_thin } from "@/fonts";
 import { Baloo_thin } from "@/fonts";
 
 import coffeeLogo from "public/images/coffee.svg";
-import useLoading from "../frontend/hooks/useLoading";
-import { useEffect } from "react";
-import Loading from "../frontend/components/Loading";
 
 const App = () => {
-  const { status, changeStatus, hideLoading } = useLoading({
-    initialStatus: "visible",
-  });
-
-  useEffect(() => {
-    setTimeout(() => {
-      changeStatus();
-    }, 2000);
-  }, []);
-
   return (
     <>
-      <Loading status={status} hideLoading={hideLoading}></Loading>
       <div className="w-1/3 border-red flex flex-col justify-center items-center">
         <div className="w-full flex justify-center items-center">
           <div className="h-full flex justify-center items-center mr-10">
@@ -60,7 +45,7 @@ const App = () => {
       >
         <Button href="/users/toki/playlists/title">FAVORITE</Button>
         <Button href="/search">SEARCH</Button>
-        <Button href="/login">LOGIN</Button>
+        <Button href="/v1/api/auth/signin">LOGIN</Button>
       </div>
     </>
   );

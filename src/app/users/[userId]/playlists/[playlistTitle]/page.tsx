@@ -1,81 +1,52 @@
-"use client";
-import React, { useEffect, useState } from "react";
-
-import Loading from "@/components/Loading";
 import VideoCard from "@/components/VideoCard";
 
 import { video } from "@/src/frontend/types/video";
 
 import { Kaisei } from "@/fonts";
-import useLoading from "@/src/frontend/hooks/useLoading";
-import { useParams } from "next/navigation";
-import useCheckSession from "@/src/frontend/hooks/useCheckSession";
+import { notFound } from "next/navigation";
+import { checkSession, getAllCookies } from "@/src/frontend/utils/cookie";
 
-const Playlist = () => {
-  const [videos, setVideos] = useState<
-    { video: video; videoMemberId: number }[]
-  >([
+const Playlist = async ({
+  params,
+}: {
+  params: Promise<{ userId: string; playlistTitle: string }>;
+}) => {
+  let videos: { video: video; videoMemberId: number }[] = [];
+  const { userId, playlistTitle } = await params;
+
+  await checkSession(userId);
+
+  const cookie = await getAllCookies();
+
+  await new Promise((resolve) => setTimeout(resolve, 30000));
+
+  //APIリクエスト
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${userId}/playlists/${playlistTitle}`,
     {
-      video: {
-        videoId: "HLkbX0YhToY",
-        thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-        title:
-          "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】あああああああああああああああ",
-        url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-        views: 32,
-      },
-      videoMemberId: 1,
-    },
-    {
-      video: {
-        videoId: "HLkbX0YhToY",
-        thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-        title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
-        url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-        views: 32,
-      },
-      videoMemberId: 1,
-    },
-  ]);
+      method: "GET",
+      headers: { "Content-Type": "application/json", Cookie: cookie },
+      cache: "no-store",
+      credentials: "include",
+    }
+  );
 
-  const { status, hideLoading, toHiding, toVisible } = useLoading({
-    initialStatus: "visible",
-  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.log(`${errorData.errorType!}: ${errorData.message}`);
 
-  const { userId, playlistTitle } = useParams<{
-    userId: string;
-    playlistTitle: string;
-  }>();
+    return;
+  } else {
+    const playlistData = await response.json();
 
-  const { check } = useCheckSession({ userId });
-
-  useEffect(() => {
-    const fetchVideos = async () => {
-      check();
-      //APIリクエスト
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${userId}/playlists/${playlistTitle}`,
-        { method: "GET", headers: { "Content-Type": "application/json" } }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.log(`${errorData.errorType!}: ${errorData.message}`);
-        toHiding();
-        return;
-      } else {
-        const playlistData = await response.json();
-        const videos = playlistData.playlist.videos;
-        setVideos(videos);
-      }
-    };
-
-    fetchVideos();
-  }, []);
+    if (!playlistData.playlist) {
+      notFound();
+    }
+    videos = playlistData.playlist.videos;
+  }
 
   return (
     <div className="w-screen h-screen">
-      <Loading status={status} hideLoading={hideLoading}></Loading>
       <div className="w-full h-full px-[3%] pt-10 flex flex-col">
         <div className="w-full flex justify-left items-end">
           <p className={`${Kaisei.className} ml-10 text-2xl`}>
@@ -102,5 +73,4 @@ const Playlist = () => {
     </div>
   );
 };
-
 export default Playlist;

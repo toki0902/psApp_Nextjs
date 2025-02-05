@@ -7,10 +7,9 @@ import { isCorrectPassword } from "../utils/validation";
 
 type props = {
   onCorrect: () => void;
-  close: () => void;
 };
 
-const PasswordModal = ({ close, onCorrect }: props) => {
+const PasswordModal = ({ onCorrect }: props) => {
   const [password, setPassword] = useState("");
   const [isCorrect, setIsCorrect] = useState<null | Boolean>(null);
   let timer: NodeJS.Timeout | null = null;
@@ -35,6 +34,10 @@ const PasswordModal = ({ close, onCorrect }: props) => {
       onIncorrect();
       console.log("失敗！！");
     }
+  };
+
+  const close = () => {
+    router.push("/");
   };
 
   useEffect(() => {
@@ -76,7 +79,7 @@ const PasswordModal = ({ close, onCorrect }: props) => {
         </button>
         {isCorrect === false ? (
           <p className="absolute w-fit text-red top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2">
-            パスワードが違います
+            合言葉が違います
           </p>
         ) : null}
       </div>

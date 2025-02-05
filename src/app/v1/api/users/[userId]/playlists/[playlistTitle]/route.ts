@@ -1,6 +1,4 @@
-import { getServerSession } from "next-auth/next";
 import { NextRequest, NextResponse } from "next/server";
-import { nextAuthOptions } from "@/src/backend/infrastructure/auth/nextauthOption";
 
 import { FetchPlaylistAndVideosByUserIdAndPlaylistTitle } from "@/src/backend/application/playlist/FetchPlaylistAndVideosByUserIdAndPlaylistTItle";
 import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
@@ -10,6 +8,8 @@ import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
 import { Session } from "next-auth";
+import { auth } from "@/auth";
+import { cookies } from "next/headers";
 
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
@@ -34,9 +34,9 @@ export const GET = async (
       throw new MissingParamsError("Required parameter is missing");
     }
 
-    const session: Session | null = await getServerSession(nextAuthOptions);
+    const session: Session | null = await auth();
 
-    if (!(session?.user?.userId === userId)) {
+    if (session?.user?.userId !== userId) {
       console.log("Unauthorized!");
       throw new UnAuthorizeError(
         "You are not authenticated. Please log in and try again"
