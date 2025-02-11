@@ -16,12 +16,10 @@ export const checkSession = async (userId: string): Promise<void> => {
   "use server";
   const session = await auth();
   if (!session) {
-    console.log("please login");
     redirect("/login");
   }
 
   if (session.user.userId !== userId) {
-    console.log("diff userId");
     notFound();
   }
 };

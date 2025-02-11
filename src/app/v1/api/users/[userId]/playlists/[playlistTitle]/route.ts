@@ -9,7 +9,6 @@ import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
 import { Session } from "next-auth";
 import { auth } from "@/auth";
-import { cookies } from "next/headers";
 
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
