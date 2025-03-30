@@ -1,19 +1,19 @@
-// "use client";
+"use client";
 
-// import { Session } from "next-auth";
-// import { useSession } from "next-auth/react";
-// import { useEffect, useState } from "react";
+import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
-// const Login = () => {
-//   const [session, setSession] = useState<Session | null>(null);
-//   const { data } = useSession();
-//   useEffect(() => {
-//     setSession(data);
-//   }, []);
+const Login = () => {
+  const [session, setSession] = useState<Session | null>(null);
+  const { data } = useSession();
+  useEffect(() => {
+    setSession(data);
+  }, []);
 
-//   console.log(session);
+  console.log(session);
 
-//   return;
-// };
+  return;
+};
 
-// export default Login;
+export default Login;

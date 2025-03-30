@@ -16,11 +16,4 @@ declare module "next-auth" {
        */
     } & DefaultSession["user"];
   }
-
-  interface User {
-    userId?: string;
-    image?: string;
-    socialId?: string;
-    name?: string;
-  }
 }

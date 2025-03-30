@@ -9,8 +9,11 @@ import { Caveat_thin } from "@/fonts";
 import { Baloo_thin } from "@/fonts";
 
 import coffeeLogo from "public/images/coffee.svg";
+import { auth } from "@/auth";
+import { Session } from "next-auth";
 
-const App = () => {
+const App = async () => {
+  const session: Session = await auth();
   return (
     <>
       <div className="w-1/3 border-red flex flex-col justify-center items-center">
@@ -43,7 +46,13 @@ const App = () => {
       <div
         className={`${Caveat_thin.className} w-1/3 h-full flex flex-col justify-center items-center border-red space-y-10`}
       >
-        <Button href="/users/toki/playlists/title">FAVORITE</Button>
+        {session ? (
+          <Button href={`/users/${session.user.userId}/playlists`}>
+            FAVORITE
+          </Button>
+        ) : (
+          <Button inVisible>FAVORITE</Button>
+        )}
         <Button href="/search">SEARCH</Button>
         <Button href="/v1/api/auth/signin">LOGIN</Button>
       </div>

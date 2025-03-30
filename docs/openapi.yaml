@@ -110,7 +110,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Playlist"
 
-  /users/{userId}/playlists/{playlistTitle}:
+  /users/{userId}/playlists/title/{playlistTitle}:
     get:
       summary: Get playlist from userId and playlistTitle
       parameters:
@@ -135,7 +135,26 @@ paths:
                   playlist:
                     $ref: "#/components/schemas/Playlist"
 
-  /users/{userId}/playlists/{playlistTitle}/videos:
+  /users/{userId}/playlists/id/{playlistId}:
+    delete:
+      deprecated: false
+      summary: Delete playlist by playlistId
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: playlistId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: notify deletion
+
+  /users/{userId}/playlists/title/{playlistTitle}/videos:
     post:
       summary: Add new video to an already existing playlist
       parameters:

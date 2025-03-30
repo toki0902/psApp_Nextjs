@@ -40,7 +40,10 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
       );
       const memberIds = videoObjs.map((obj) => obj.memberId);
       arr_videoInfo = memberIds.map((id, index) => {
-        return { videoMemberId: id, video: videos[index] };
+        return {
+          videoMemberId: id,
+          video: { ...videos[index], url: videos[index].url },
+        };
       });
     } else {
       const videos =
@@ -50,7 +53,10 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
         );
       const memberIds = videoObjs.map((i) => i.memberId);
       arr_videoInfo = memberIds.map((id, index) => {
-        return { videoMemberId: id, video: videos[index] };
+        return {
+          videoMemberId: id,
+          video: { ...videos[index], url: videos[index].url },
+        };
       });
     }
 

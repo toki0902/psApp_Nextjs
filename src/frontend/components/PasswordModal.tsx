@@ -1,20 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 import { Kaisei } from "../assets/fonts/fonts";
 import { isCorrectPassword } from "../utils/validation";
 
 type props = {
   onCorrect: () => void;
+  close: () => void;
 };
 
-const PasswordModal = ({ onCorrect }: props) => {
+const PasswordModal = ({ onCorrect, close }: props) => {
   const [password, setPassword] = useState("");
   const [isCorrect, setIsCorrect] = useState<null | Boolean>(null);
   let timer: NodeJS.Timeout | null = null;
-
-  const router = useRouter();
 
   const onIncorrect = () => {
     setIsCorrect(false);
@@ -28,16 +26,11 @@ const PasswordModal = ({ onCorrect }: props) => {
 
   const onClick = () => {
     if (isCorrectPassword(password)) {
-      //cookieに保存
       onCorrect();
     } else {
       onIncorrect();
       console.log("失敗！！");
     }
-  };
-
-  const close = () => {
-    router.push("/");
   };
 
   useEffect(() => {

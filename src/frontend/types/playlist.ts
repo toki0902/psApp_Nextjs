@@ -1,6 +1,6 @@
 export type playlist = {
   videos: { video: video; videoMemberId: number }[];
-  playlistTitle: string;
+  title: string;
   playlistId: string;
   ownerId: string;
   createdAt: string;
@@ -13,6 +13,13 @@ export type CardMenuOption = {
   deleteFromPlaylist?: true;
   deletePlaylist?: true;
 };
+
+export type modalOption =
+  | {
+      type: "password";
+      initialModalOpen: boolean;
+    }
+  | { type: "deletePlaylist"; initialModalOpen: boolean; id: string };
 
 export type video = {
   videoId: string;

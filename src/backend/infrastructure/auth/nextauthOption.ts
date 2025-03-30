@@ -7,7 +7,7 @@ import { MySQLUserRepository } from "../repository/MySQLUserRepository";
 
 import { UnAuthorizeError } from "@/src/app/error/errors";
 import { JWT } from "next-auth/jwt";
-import { NextAuthConfig, User } from "next-auth";
+import { NextAuthConfig, User } from "next-auth/";
 import { Session } from "next-auth";
 
 const userRepository = new MySQLUserRepository();
@@ -16,30 +16,32 @@ const fetchUserAndRegister = new FetchUserAndRegister(userRepository);
 export const nextAuthOptions: NextAuthConfig = {
   debug: false,
   secret: process.env.AUTH_SECRET,
-  providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT!,
-      clientSecret: process.env.GOOGLE_SECRET!,
-    }),
-    LINE({
-      clientId: process.env.LINE_CLIENT!,
-      clientSecret: process.env.LINE_SECRET!,
-    }),
-  ],
+  providers: [Google, LINE],
   session: {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user: User | undefined }) {
+    async jwt({
+      token,
+      user,
+      account,
+    }: {
+      token: JWT;
+      user: User | undefined;
+      account: any;
+    }) {
       if (!user) {
         return token;
       }
 
-      const userToken = await fetchUserAndRegister.run(user);
+      const userData = { ...user, id: account.providerAccountId };
+
+      const userToken = await fetchUserAndRegister.run(userData);
 
       token = { ...userToken };
       return token;
     },
+
     async session({ token, session }: { token: JWT; session: Session }) {
       if (!token) {
         throw new UnAuthorizeError("JWT token not granted");

@@ -7,7 +7,12 @@ import {
 } from "./errors";
 
 export const errorHandler = (
-  error: MissingParamsError | NotFoundError | UnAuthorizeError | MySQLError
+  error:
+    | MissingParamsError
+    | NotFoundError
+    | UnAuthorizeError
+    | MySQLError
+    | any
 ): NextResponse => {
   console.log(error);
   console.error(`${error.name}!: ${error.message}`);

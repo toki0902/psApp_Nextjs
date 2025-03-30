@@ -153,4 +153,20 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       );
     }
   };
+
+  deletePlaylistByPlaylistId = async (playlistId: string): Promise<void> => {
+    try {
+      const query = `DELETE FROM playlists WHERE playlist_id = ?`;
+      const deleteResult = await (
+        await this.pool
+      ).execute<mysql.ResultSetHeader>(query, [playlistId]);
+      console.log(`delete playlist playlistId: ${playlistId}`);
+    } catch (err) {
+      throw new MySQLError(
+        `failed create new playlist in process 'deletePlaylistByPlaylistId' due to: ${JSON.stringify(
+          err
+        )}`
+      );
+    }
+  };
 }

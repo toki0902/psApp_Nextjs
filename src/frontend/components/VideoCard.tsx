@@ -1,13 +1,8 @@
 "use client";
-import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
-import Logo from "@/images/favorite_f1EBE5.svg";
-import shareIcon from "@/images/share_823A42.svg";
-import editIcon from "@/images/edit_823A42.svg";
-import deleteIcon from "@/images/delete_823A42.svg";
-
-import { CardMenuOption } from "../types/playlist";
+import { CardMenuOption, playlist } from "../types/playlist";
+import { useParams } from "next/navigation";
 
 type Props = {
   videoId: string;
@@ -19,6 +14,10 @@ type Props = {
   whichMenuIsOpen?: string | null;
   openMenu?: (key: string) => void;
   closeMenu?: () => void;
+  isOpenPlaylist?: boolean;
+  openPlaylist?: () => void;
+  closePlaylist?: () => void;
+  playlists?: playlist[];
   cardMenuOption?: CardMenuOption;
 };
 
@@ -32,8 +31,16 @@ const VideoCard = ({
   whichMenuIsOpen,
   openMenu,
   closeMenu,
+  isOpenPlaylist,
+  playlists,
+  openPlaylist,
+  closePlaylist,
   cardMenuOption,
 }: Props) => {
+  const { userId, playlistTitle } = useParams<{
+    userId: string;
+    playlistTitle: string;
+  }>();
   const cardMenu = cardMenuOption
     ? Object.keys(cardMenuOption)
         .sort()
@@ -41,56 +48,45 @@ const VideoCard = ({
           switch (option) {
             case "addToPlaylist":
               return (
-                <div className="w-full flex px-2 py-1 hover:text-back hover:bg-red group">
+                <div
+                  key={option}
+                  className="w-full flex px-2 py-1 hover:text-back hover:bg-red group"
+                >
                   <div
                     style={{ backgroundSize: "93%" }}
-                    className="w-[10%] object-cover bg-no-repeat aspect-square bg-[url('/images/favorite_823A42.svg')] group-hover:bg-[url('/images/favorite_f1EBE5.svg')] bg-center"
+                    className="w-[10%] object-contain bg-no-repeat aspect-square bg-[url('/images/favorite_823A42.svg')] group-hover:bg-[url('/images/favorite_f1EBE5.svg')] group-hover:animate-shake bg-center"
                   ></div>
                   <p className="w-[90%] px-2">お気に入りに追加する</p>
                 </div>
               );
             case "share":
+              const onClick = async () => {
+                await navigator.clipboard.writeText(url);
+              };
               return (
-                <div className="w-full flex px-2 py-1 group">
-                  <Image
-                    src={shareIcon}
-                    alt="logo"
-                    className="w-[9%] group-hover:animate-shake"
-                  ></Image>
+                <div
+                  key={option}
+                  className="w-full flex px-2 py-1 hover:text-back hover:bg-red group"
+                  onClick={onClick}
+                >
+                  <div
+                    style={{ backgroundSize: "93%" }}
+                    className="w-[10%] bg-no-repeat bg-center aspect-square bg-[url('/images/share_823A42.svg')] group-hover:bg-[url('/images/share_f1EBE5.svg')] group-hover:animate-shake"
+                  ></div>
                   <p className="w-[90%] px-2">共有する</p>
-                </div>
-              );
-            case "edit":
-              return (
-                <div className="w-full flex px-2 py-1 group">
-                  <Image
-                    src={editIcon}
-                    alt="logo"
-                    className="w-[9%] group-hover:animate-shake"
-                  ></Image>
-                  <p className="w-[90%] px-2">編集する</p>
                 </div>
               );
             case "deleteFromPlaylist":
               return (
-                <div className="w-full flex px-2 py-1 group">
-                  <Image
-                    src={deleteIcon}
-                    alt="logo"
-                    className="w-[10%] group-hover:animate-shake"
-                  ></Image>
-                  <p className="w-[90%] px-2">「」から削除する</p>
-                </div>
-              );
-            case "deletePlaylist":
-              return (
-                <div className="w-full flex px-2 py-1 group">
-                  <Image
-                    src={deleteIcon}
-                    alt="logo"
-                    className="w-[10%] group-hover:animate-shake"
-                  ></Image>
-                  <p className="w-[90%] px-2">「」を削除する</p>
+                <div
+                  key={option}
+                  className="w-full flex px-2 py-1 hover:text-back hover:bg-red group"
+                >
+                  <div
+                    style={{ backgroundSize: "93%" }}
+                    className="w-[10%] bg-no-repeat bg-center aspect-square bg-[url('/images/delete_823A42.svg')] group-hover:bg-[url('/images/delete_f1EBE5.svg')] group-hover:animate-shake"
+                  ></div>
+                  <p className="w-[90%] px-2">{playlistTitle}から削除する</p>
                 </div>
               );
           }
@@ -110,7 +106,7 @@ const VideoCard = ({
     <>
       <a
         href={url}
-        className="4xl:w-sixth-divided 3xl:w-fifth-divided 2xl:w-fourth-divided lg:w-third-divided sm:w-half-divided mx-[calc(0.5%)] mb-10 cursor-pointer rounded-lg transition-all hover:-translate-y-1"
+        className="4xl:w-sixth-divided 3xl:w-fifth-divided 2xl:w-fourth-divided lg:w-third-divided sm:w-half-divided mx-[calc(0.5%)] mb-10 cursor-pointer rounded-lg"
       >
         <div className="w-full aspect-[16/9]">
           <img

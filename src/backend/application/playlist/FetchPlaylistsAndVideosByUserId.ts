@@ -35,10 +35,10 @@ export class FetchPlaylistsAndVideosByUserId {
       const accessToken = await this._searchGateway.fetchAccessToken();
       arr_videos = await Promise.all(
         arr_playlistMemberData.map(async (data) => {
-          const ids = data.map((data) => data.videoId);
+          const youtubeIds = data.map((data) => data.videoId);
           const memberIds = data.map((data) => data.memberId);
           const videos = await this._searchGateway.fetchVideoByVideoIds(
-            ids,
+            youtubeIds,
             accessToken
           );
           return memberIds.map((memberId, index) => {
@@ -57,7 +57,10 @@ export class FetchPlaylistsAndVideosByUserId {
               cacheId
             );
           return memberIds.map((memberId, index) => {
-            return { video: videos[index], videoMemberId: memberId };
+            return {
+              video: { ...videos[index], url: videos[index].url },
+              videoMemberId: memberId,
+            };
           });
         })
       );
@@ -75,20 +78,6 @@ export class FetchPlaylistsAndVideosByUserId {
       })
     );
 
-    //getterからURLを追加
-    const responseData = playlists.map((playlist) => {
-      return {
-        ...playlist,
-        videos: playlist.videos.map((videoObj) => {
-          return {
-            video: { ...videoObj.video, url: videoObj.video.url },
-            videoMemberId: videoObj.videoMemberId,
-          };
-        }),
-      };
-    });
-
-    console.log(playlists);
-    return responseData;
+    return playlists;
   };
 }

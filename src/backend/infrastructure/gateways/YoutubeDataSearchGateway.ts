@@ -4,8 +4,8 @@ import { Video } from "@/src/backend/domain/entities/Video";
 export class YoutubeDataSearchGateway {
   fetchAccessToken = async (): Promise<string> => {
     const tokenFetchBody = new URLSearchParams({
-      client_id: process.env.GOOGLE_CLIENT || "",
-      client_secret: process.env.GOOGLE_SECRET || "",
+      client_id: process.env.AUTH_GOOGLE_ID || "",
+      client_secret: process.env.AUTH_GOOGLE_SECRET || "",
       refresh_token: process.env.GOOGLE_REFRESH_TOKEN || "",
       grant_type: "refresh_token",
     });

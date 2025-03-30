@@ -54,3 +54,8 @@ ALTER TABLE playlists CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_c
 ALTER TABLE playlist_members CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ALTER TABLE video_caches CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ALTER TABLE videos CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+INSERT INTO users (user_id, name, social_id) values ('sqkt5svY5mWFt2i3u1S1g', 'toki', '118103284792160545208');
+INSERT INTO playlists (playlist_id, owner_id, title) values ('sksjlgnskeisjti', 'sqkt5svY5mWFt2i3u1S1g', 'example');
+INSERT INTO playlist_members (playlist_id, video_id) values ('sksjlgnskeisjti', '1jlg7KrA7Es');
+INSERT INTO playlist_members (playlist_id, video_id) values ('sksjlgnskeisjti', 'X5FHxeOSYns');

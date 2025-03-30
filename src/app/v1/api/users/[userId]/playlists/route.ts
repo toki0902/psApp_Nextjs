@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { nextAuthOptions } from "@/src/backend/infrastructure/auth/nextauthOption";
 
 import { FetchPlaylistsAndVideosByUserId } from "@/src/backend/application/playlist/FetchPlaylistsAndVideosByUserId";
 import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
@@ -37,7 +36,9 @@ export const GET = async (
 
     const session: Session | null = await auth();
 
-    if (!(session?.user?.userId === userId)) {
+    console.log(`${session?.user}と${userId}`);
+
+    if (!(session?.user.userId === userId)) {
       console.log("Unauthorized!");
       throw new UnAuthorizeError(
         "You are not authenticated. Please log in and try again"

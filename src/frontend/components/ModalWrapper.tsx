@@ -1,23 +1,46 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PasswordModal from "./PasswordModal";
+import { useRouter } from "next/navigation";
+import { modalOption } from "../types/playlist";
+import CheckModal from "./CheckModal";
 
-const ModalWrapper = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isCookieSet = () => {
-    return false;
-  };
+const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
+  const { initialModalOpen, type } = modalOption;
+  const [isOpen, setIsOpen] = useState<boolean>(initialModalOpen);
 
-  useEffect(() => {
-    if (!isCookieSet()) {
-      setIsOpen(true);
+  const router = useRouter();
+
+  const close = () => {
+    switch (type) {
+      case "password":
+        router.push("/");
+        break;
+
+      case "deletePlaylist":
+        setIsOpen(false);
+        break;
     }
-  }, []);
-
-  const onCorrect = () => {
-    setIsOpen(false);
   };
-  return isOpen ? <PasswordModal onCorrect={onCorrect}></PasswordModal> : <></>;
+
+  const onPassCheck = () => {
+    switch (type) {
+      case "password":
+        setIsOpen(false);
+        break;
+      case "deletePlaylist":
+        console.log("delete!!");
+        break;
+    }
+  };
+
+  return isOpen && type === "password" ? (
+    <PasswordModal onCorrect={onPassCheck} close={close}></PasswordModal>
+  ) : isOpen && type === "deletePlaylist" ? (
+    <CheckModal onPassCheck={onPassCheck} close={close}></CheckModal>
+  ) : (
+    <></>
+  );
 };
 
 export default ModalWrapper;
