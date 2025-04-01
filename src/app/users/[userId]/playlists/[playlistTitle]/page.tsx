@@ -117,10 +117,10 @@ const Playlist = async ({
         </div>
         <div className="w-full h-max flex flex-wrap mt-20">
           <CardWrapper cardMenuOption={cardMenuOption} playlists={playlists}>
-            {videos.map((video) => {
+            {videos.map((video, index) => {
               return (
                 <VideoCard
-                  key={video.video.videoId}
+                  key={index}
                   title={video.video.title}
                   url={video.video.url}
                   thumbnail={video.video.thumbnail}

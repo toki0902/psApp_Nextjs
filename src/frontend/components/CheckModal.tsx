@@ -22,12 +22,20 @@ const CheckModal = ({ onPassCheck, close }: props) => {
         </div>
         <h2 className="text-2xl">本当に宜しいですか？</h2>
 
-        <button
-          onClick={onPassCheck}
-          className="mt-10 w-fit px-2 h-9 rounded-md border border-red text-red hover:bg-red hover:text-back"
-        >
-          確かめる
-        </button>
+        <div className="mt-10 w-fit flex space-x-20">
+          <button
+            onClick={onPassCheck}
+            className="w-24 px-2 h-9 rounded-md border border-red text-red hover:bg-red hover:text-back"
+          >
+            はい
+          </button>
+          <button
+            onClick={close}
+            className="w-24 px-2 h-9 rounded-md border border-red text-red hover:bg-red hover:text-back"
+          >
+            いいえ
+          </button>
+        </div>
       </div>
     </>
   );

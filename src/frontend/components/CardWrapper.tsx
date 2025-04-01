@@ -8,9 +8,9 @@ type CardProps = {
   openMenu: (key: string) => void;
   closeMenu: () => void;
   playlists: playlist[];
-  openPlaylist: () => void;
-  closePlaylist: () => void;
-  isOpenPlaylist: boolean;
+  isOpenModal: boolean;
+  openModal: () => void;
+  closeModal: () => void;
   cardMenuOption: CardMenuOption;
 };
 
@@ -23,16 +23,8 @@ const CardWrapper = ({
   cardMenuOption: CardMenuOption;
   playlists?: playlist[];
 }) => {
-  const [isOpenPlaylist, setIsOpenPlaylist] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [whichMenuIsOpen, setWhichMenuIsOpen] = useState<string | null>(null);
-
-  const openPlaylist = () => {
-    setIsOpenPlaylist(true);
-  };
-
-  const closePlaylist = () => {
-    setIsOpenPlaylist(false);
-  };
 
   const openMenu = (key: string) => {
     setWhichMenuIsOpen(key);
@@ -42,16 +34,24 @@ const CardWrapper = ({
     setWhichMenuIsOpen(null);
   };
 
+  const openModal = () => {
+    setIsOpenModal(true);
+  };
+
+  const closeModal = () => {
+    setIsOpenModal(false);
+  };
+
   const clones = React.Children.map(children, (child) => {
     if (React.isValidElement<CardProps>(child)) {
       return cloneElement(child, {
         whichMenuIsOpen,
-        isOpenPlaylist,
         openMenu,
         closeMenu,
+        isOpenModal,
+        openModal,
+        closeModal,
         playlists,
-        openPlaylist,
-        closePlaylist,
         cardMenuOption,
       });
     }

@@ -1,6 +1,12 @@
 "use client";
-import React from "react";
-import { CardMenuOption, playlist, video } from "../types/playlist";
+import React, { useEffect, useState } from "react";
+import {
+  CardMenuOption,
+  modalOption,
+  playlist,
+  video,
+} from "../types/playlist";
+import ModalWrapper from "./ModalWrapper";
 
 type Props = {
   playlistTitle: string;
@@ -12,6 +18,9 @@ type Props = {
   openMenu?: (key: string) => void;
   closeMenu?: () => void;
   cardMenuOption?: CardMenuOption;
+  isOpenModal?: boolean;
+  openModal?: () => void;
+  closeModal?: () => void;
 };
 
 const PlaylistCard = ({
@@ -24,6 +33,9 @@ const PlaylistCard = ({
   openMenu,
   closeMenu,
   cardMenuOption,
+  isOpenModal,
+  openModal,
+  closeModal,
 }: Props) => {
   const onClickMenu: (e: React.MouseEvent<HTMLInputElement>) => void = (e) => {
     e.preventDefault();
@@ -52,7 +64,10 @@ const PlaylistCard = ({
               );
             case "deletePlaylist":
               return (
-                <div className="w-full flex px-2 py-1 hover:text-back hover:bg-red group">
+                <div
+                  className="w-full flex px-2 py-1 hover:text-back hover:bg-red group"
+                  onClick={openModal}
+                >
                   <div
                     style={{ backgroundSize: "93%" }}
                     className="w-[10%] bg-no-repeat bg-center aspect-square bg-[url('/images/delete_823A42.svg')] group-hover:bg-[url('/images/delete_f1EBE5.svg')] group-hover:animate-shake"
@@ -64,8 +79,24 @@ const PlaylistCard = ({
         })
     : null;
 
-  const randomIndex = Math.floor(Math.random() * videos.length);
-  const thumbnail = videos[randomIndex].video.thumbnail;
+  const [thumbnail, setThumbnail] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * videos.length);
+    setThumbnail(videos[randomIndex].video.thumbnail);
+  }, []);
+
+  let modalOption: modalOption | null = null;
+
+  if (isOpenModal && closeModal) {
+    modalOption = {
+      type: "deletePlaylist",
+      playlistId,
+      ownerId,
+      isOpenModal,
+      closeModal,
+    };
+  }
 
   return (
     <>
@@ -101,6 +132,7 @@ const PlaylistCard = ({
           </div>
         </div>
       </a>
+      {modalOption ? <ModalWrapper modalOption={modalOption} /> : null}
     </>
   );
 };

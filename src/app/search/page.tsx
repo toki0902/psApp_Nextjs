@@ -9,7 +9,7 @@ import CardWrapper from "@/src/frontend/components/CardWrapper";
 import { CardMenuOption } from "@/src/frontend/types/playlist";
 import { Session } from "next-auth";
 import { auth } from "@/auth";
-import { checkSession, getAllCookies } from "@/src/frontend/utils/cookie";
+import { getAllCookies } from "@/src/frontend/utils/cookie";
 
 const Search = async ({
   searchParams,
@@ -82,7 +82,7 @@ const Search = async ({
 
   const modalOption: modalOption = {
     type: "password",
-    initialModalOpen: false,
+    initialOpenModal: true,
   };
 
   return (
@@ -96,10 +96,10 @@ const Search = async ({
         </div>
         <div className="w-full h-max flex flex-wrap mt-20">
           <CardWrapper cardMenuOption={cardMenuOption} playlists={playlists}>
-            {videos.map((video) => {
+            {videos.map((video, index) => {
               return (
                 <VideoCard
-                  key={video.videoId}
+                  key={index}
                   title={video.title}
                   url={video.url}
                   thumbnail={video.thumbnail}

@@ -32,9 +32,6 @@ const VideoCard = ({
   openMenu,
   closeMenu,
   isOpenPlaylist,
-  playlists,
-  openPlaylist,
-  closePlaylist,
   cardMenuOption,
 }: Props) => {
   const { userId, playlistTitle } = useParams<{
@@ -102,6 +99,7 @@ const VideoCard = ({
       // if (closeMenu) setTimeout(closeMenu, 5000);
     }
   };
+
   return (
     <>
       <a

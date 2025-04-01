@@ -5,11 +5,11 @@ import { Kaisei } from "../assets/fonts/fonts";
 import { isCorrectPassword } from "../utils/validation";
 
 type props = {
-  onCorrect: () => void;
+  onPassCheck: () => void;
   close: () => void;
 };
 
-const PasswordModal = ({ onCorrect, close }: props) => {
+const PasswordModal = ({ onPassCheck, close }: props) => {
   const [password, setPassword] = useState("");
   const [isCorrect, setIsCorrect] = useState<null | Boolean>(null);
   let timer: NodeJS.Timeout | null = null;
@@ -26,7 +26,7 @@ const PasswordModal = ({ onCorrect, close }: props) => {
 
   const onClick = () => {
     if (isCorrectPassword(password)) {
-      onCorrect();
+      onPassCheck();
     } else {
       onIncorrect();
       console.log("失敗！！");

@@ -1,3 +1,5 @@
+import { Session } from "next-auth";
+
 export type playlist = {
   videos: { video: video; videoMemberId: number }[];
   title: string;
@@ -17,9 +19,15 @@ export type CardMenuOption = {
 export type modalOption =
   | {
       type: "password";
-      initialModalOpen: boolean;
+      initialOpenModal: boolean;
     }
-  | { type: "deletePlaylist"; initialModalOpen: boolean; id: string };
+  | {
+      type: "deletePlaylist";
+      playlistId: string;
+      isOpenModal: boolean;
+      closeModal: () => void;
+      ownerId: string;
+    };
 
 export type video = {
   videoId: string;
