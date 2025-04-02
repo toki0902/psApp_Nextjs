@@ -3,46 +3,53 @@ import React, { useEffect, useState } from "react";
 import {
   CardMenuOption,
   modalOption,
+  ModalType,
   playlist,
   video,
 } from "../types/playlist";
 import ModalWrapper from "./ModalWrapper";
 
 type Props = {
-  playlistTitle: string;
-  videos: { video: video; videoMemberId: number }[];
-  playlistId: string;
-  ownerId: string;
-  createdAt: string;
+  playlistInfo: playlist;
   whichMenuIsOpen?: string | null;
   openMenu?: (key: string) => void;
   closeMenu?: () => void;
   cardMenuOption?: CardMenuOption;
-  isOpenModal?: boolean;
-  openModal?: () => void;
+  modalType?: ModalType;
+  whichModalIsOpen?: string | null;
+  openModal?: (playlistId: string, modalType: ModalType) => void;
   closeModal?: () => void;
 };
 
 const PlaylistCard = ({
-  playlistTitle,
-  playlistId,
-  videos,
-  ownerId,
-  createdAt,
+  playlistInfo,
   whichMenuIsOpen,
   openMenu,
   closeMenu,
   cardMenuOption,
-  isOpenModal,
+  modalType,
+  whichModalIsOpen,
   openModal,
   closeModal,
 }: Props) => {
+  const [thumbnail, setThumbnail] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (playlistInfo.videos.length > 0) {
+      const randomIndex = Math.floor(
+        Math.random() * playlistInfo.videos.length
+      );
+
+      setThumbnail(playlistInfo.videos[randomIndex].video.thumbnail);
+    }
+  }, []);
+
   const onClickMenu: (e: React.MouseEvent<HTMLInputElement>) => void = (e) => {
     e.preventDefault();
-    if (whichMenuIsOpen === playlistId) {
+    if (whichMenuIsOpen === playlistInfo.playlistId) {
       if (closeMenu) closeMenu();
     } else {
-      if (openMenu) openMenu(playlistId);
+      if (openMenu) openMenu(playlistInfo.playlistId);
       // if (closeMenu) setTimeout(closeMenu, 5000);
     }
   };
@@ -52,9 +59,15 @@ const PlaylistCard = ({
         .sort()
         .map((option) => {
           switch (option) {
-            case "edit":
+            case "edit": {
+              const onClick = () => {
+                if (openModal) openModal(playlistInfo.playlistId, "edit");
+              };
               return (
-                <div className="w-full flex px-2 py-1 hover:text-back hover:bg-red group">
+                <div
+                  className="w-full flex px-2 py-1 hover:text-back hover:bg-red group"
+                  onClick={onClick}
+                >
                   <div
                     style={{ backgroundSize: "93%" }}
                     className="w-[10%] bg-no-repeat bg-center aspect-square bg-[url('/images/edit_823A42.svg')] group-hover:bg-[url('/images/edit_f1EBE5.svg')] group-hover:animate-shake"
@@ -62,38 +75,39 @@ const PlaylistCard = ({
                   <p className="w-[90%] px-2">編集する</p>
                 </div>
               );
-            case "deletePlaylist":
+            }
+
+            case "deletePlaylist": {
+              const onClick = () => {
+                if (openModal)
+                  openModal(playlistInfo.playlistId, "deletePlaylist");
+              };
               return (
                 <div
                   className="w-full flex px-2 py-1 hover:text-back hover:bg-red group"
-                  onClick={openModal}
+                  onClick={onClick}
                 >
                   <div
                     style={{ backgroundSize: "93%" }}
                     className="w-[10%] bg-no-repeat bg-center aspect-square bg-[url('/images/delete_823A42.svg')] group-hover:bg-[url('/images/delete_f1EBE5.svg')] group-hover:animate-shake"
                   ></div>
-                  <p className="w-[90%] px-2">{playlistTitle}を削除する</p>
+                  <p className="w-[90%] px-2">{playlistInfo.title}を削除する</p>
                 </div>
               );
+            }
           }
         })
     : null;
 
-  const [thumbnail, setThumbnail] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * videos.length);
-    setThumbnail(videos[randomIndex].video.thumbnail);
-  }, []);
-
   let modalOption: modalOption | null = null;
 
-  if (isOpenModal && closeModal) {
+  //ここの条件式はcloneElementを使用しているからしゃあない！！
+  if (modalType && closeModal && whichModalIsOpen) {
     modalOption = {
-      type: "deletePlaylist",
-      playlistId,
-      ownerId,
-      isOpenModal,
+      type: modalType,
+      playlistId: playlistInfo.playlistId,
+      ownerId: playlistInfo.ownerId,
+      whichModalIsOpen,
       closeModal,
     };
   }
@@ -101,7 +115,7 @@ const PlaylistCard = ({
   return (
     <>
       <a
-        href={`/users/${ownerId}/playlists/${playlistTitle}`}
+        href={`/users/${playlistInfo.ownerId}/playlists/${playlistInfo.title}`}
         className="4xl:w-sixth-divided 3xl:w-fifth-divided 2xl:w-fourth-divided lg:w-third-divided sm:w-half-divided mx-[calc(0.5%)] mb-10 cursor-pointer rounded-lg"
       >
         <div className="w-full aspect-[16/9]">
@@ -113,7 +127,7 @@ const PlaylistCard = ({
         </div>
         <div className="w-full p-2 flex">
           <div className="w-[88%] h-full">
-            <p className="line-clamp-3">{playlistTitle}</p>
+            <p className="line-clamp-3">{playlistInfo.title}</p>
           </div>
           <div className="w-[12%] flex justify-center items-start">
             <div
@@ -123,7 +137,7 @@ const PlaylistCard = ({
               <span className="w-1 h-1 bg-red block rounded-full my-[1.5px]"></span>
               <span className="w-1 h-1 bg-red block rounded-full my-[1.5px]"></span>
               <span className="w-1 h-1 bg-red block rounded-full my-[1.5px]"></span>
-              {whichMenuIsOpen === playlistId && (
+              {whichMenuIsOpen === playlistInfo.playlistId && (
                 <div className="absolute top-full space-y-1 right-0 rounded-lg overflow-hidden bg-back w-48 border border-red text-xs text-red z-30">
                   {cardMenu}
                 </div>

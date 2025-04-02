@@ -153,6 +153,32 @@ paths:
       responses:
         204:
           description: notify deletion
+    patch:
+      summary: Change the playlist title
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: playlistId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newTitle:
+                  type: string
+                  example: 朝聴きたいプレイリスト
+      responses:
+        204:
+          description: notify change
 
   /users/{userId}/playlists/title/{playlistTitle}/videos:
     post:

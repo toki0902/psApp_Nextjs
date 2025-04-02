@@ -1,6 +1,6 @@
 "use client";
 import React, { cloneElement, ReactNode, useState } from "react";
-import { CardMenuOption, playlist } from "../types/playlist";
+import { CardMenuOption, ModalType, playlist } from "../types/playlist";
 
 //todo : gptに頼ったので後から見直せ！！
 type CardProps = {
@@ -8,8 +8,9 @@ type CardProps = {
   openMenu: (key: string) => void;
   closeMenu: () => void;
   playlists: playlist[];
-  isOpenModal: boolean;
-  openModal: () => void;
+  whichModalIsOpen: string | null;
+  modalType: ModalType;
+  openModal: (playlistId: string, modalType: ModalType) => void;
   closeModal: () => void;
   cardMenuOption: CardMenuOption;
 };
@@ -23,8 +24,9 @@ const CardWrapper = ({
   cardMenuOption: CardMenuOption;
   playlists?: playlist[];
 }) => {
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [whichModalIsOpen, setWhichModalIsOpen] = useState<string | null>(null);
   const [whichMenuIsOpen, setWhichMenuIsOpen] = useState<string | null>(null);
+  const [modalType, setModalType] = useState<ModalType>("deletePlaylist");
 
   const openMenu = (key: string) => {
     setWhichMenuIsOpen(key);
@@ -34,12 +36,13 @@ const CardWrapper = ({
     setWhichMenuIsOpen(null);
   };
 
-  const openModal = () => {
-    setIsOpenModal(true);
+  const openModal = (id: string, modalType: ModalType) => {
+    setModalType(modalType);
+    setWhichModalIsOpen(id);
   };
 
   const closeModal = () => {
-    setIsOpenModal(false);
+    setWhichModalIsOpen(null);
   };
 
   const clones = React.Children.map(children, (child) => {
@@ -48,7 +51,8 @@ const CardWrapper = ({
         whichMenuIsOpen,
         openMenu,
         closeMenu,
-        isOpenModal,
+        whichModalIsOpen,
+        modalType,
         openModal,
         closeModal,
         playlists,

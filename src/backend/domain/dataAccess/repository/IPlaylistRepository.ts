@@ -27,4 +27,8 @@ export interface IPlaylistRepository {
   insertPlaylist: (title: string, ownerId: string) => Promise<void>;
   insertPlaylistMember: (videoId: string, playlistId: string) => Promise<void>;
   deletePlaylistByPlaylistId: (playlistId: string) => Promise<void>;
+  changePlaylistTitleByPlaylistId: (
+    playlistId: string,
+    newTitle: string
+  ) => Promise<void>;
 }

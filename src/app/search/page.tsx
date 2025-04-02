@@ -97,16 +97,7 @@ const Search = async ({
         <div className="w-full h-max flex flex-wrap mt-20">
           <CardWrapper cardMenuOption={cardMenuOption} playlists={playlists}>
             {videos.map((video, index) => {
-              return (
-                <VideoCard
-                  key={index}
-                  title={video.title}
-                  url={video.url}
-                  thumbnail={video.thumbnail}
-                  videoId={video.videoId}
-                  views={video.views}
-                ></VideoCard>
-              );
+              return <VideoCard key={index} videoInfo={video}></VideoCard>;
             })}
           </CardWrapper>
         </div>

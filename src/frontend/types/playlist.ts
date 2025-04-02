@@ -24,7 +24,14 @@ export type modalOption =
   | {
       type: "deletePlaylist";
       playlistId: string;
-      isOpenModal: boolean;
+      whichModalIsOpen: string | null;
+      closeModal: () => void;
+      ownerId: string;
+    }
+  | {
+      type: "edit";
+      playlistId: string;
+      whichModalIsOpen: string | null;
       closeModal: () => void;
       ownerId: string;
     };
@@ -36,3 +43,10 @@ export type video = {
   thumbnail: string;
   title: string;
 };
+
+export type ModalType =
+  | "deletePlaylist"
+  | "edit"
+  | "deleteFromPlaylist"
+  | "addFavorite"
+  | "share";

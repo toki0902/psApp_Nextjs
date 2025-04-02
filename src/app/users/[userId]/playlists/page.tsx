@@ -7,36 +7,7 @@ import PlaylistCard from "@/src/frontend/components/PlaylistCard";
 import CardWrapper from "@/src/frontend/components/CardWrapper";
 
 const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
-  let playlists: playlist[] = [
-    // {
-    //   playlistTitle: "title",
-    //   playlistId: "asdfas",
-    //   ownerId: "dasdfaz",
-    //   createdAt: new Date().toString(),
-    //   videos: [
-    //     {
-    //       videoMemberId: 1,
-    //       video: {
-    //         videoId: "HLkbX0YhToY",
-    //         thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-    //         title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
-    //         url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-    //         views: 32,
-    //       },
-    //     },
-    //     {
-    //       videoMemberId: 1,
-    //       video: {
-    //         videoId: "HLkbX0YhToY",
-    //         thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-    //         title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
-    //         url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-    //         views: 32,
-    //       },
-    //     },
-    //   ],
-    // },
-  ];
+  let playlists: playlist[] = [];
 
   const { userId } = await params;
   const session: Session | null = await auth();
@@ -82,11 +53,7 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
               return (
                 <PlaylistCard
                   key={playlist.playlistId}
-                  playlistId={playlist.playlistId}
-                  playlistTitle={playlist.title}
-                  ownerId={playlist.ownerId}
-                  createdAt={playlist.createdAt}
-                  videos={playlist.videos}
+                  playlistInfo={playlist}
                 />
               );
             })}

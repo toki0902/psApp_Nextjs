@@ -121,11 +121,7 @@ const Playlist = async ({
               return (
                 <VideoCard
                   key={index}
-                  title={video.video.title}
-                  url={video.video.url}
-                  thumbnail={video.video.thumbnail}
-                  videoId={video.video.videoId}
-                  views={video.video.views}
+                  videoInfo={video.video}
                   videoMemberId={video.videoMemberId}
                 ></VideoCard>
               );

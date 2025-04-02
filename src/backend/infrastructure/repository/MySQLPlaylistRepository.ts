@@ -169,4 +169,27 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       );
     }
   };
+
+  changePlaylistTitleByPlaylistId = async (
+    playlistId: string,
+    newTitle: string
+  ): Promise<void> => {
+    try {
+      const query = `UPDATE playlists SET title = ? WHERE playlist_id = ?`;
+      const updateResult = await (
+        await this.pool
+      ).execute<mysql.ResultSetHeader>(query, [newTitle, playlistId]);
+      console.log(
+        `change the playlist title to ${newTitle} playlistId: ${playlistId}`
+      );
+
+      console.log(JSON.stringify(updateResult));
+    } catch (err) {
+      throw new MySQLError(
+        `failed create new playlist in process 'changePlaylistTitleByPlaylistId' due to: ${JSON.stringify(
+          err
+        )}`
+      );
+    }
+  };
 }
