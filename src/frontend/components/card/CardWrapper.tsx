@@ -1,6 +1,8 @@
 "use client";
 import React, { cloneElement, ReactNode, useState } from "react";
-import { CardMenuOption, ModalType, playlist } from "../types/playlist";
+import { playlist } from "../../types/playlist";
+import { ModalType } from "../../types/modal";
+import { CardMenuOption } from "../../types/cardMenu";
 
 //todo : gptに頼ったので後から見直せ！！
 type CardProps = {

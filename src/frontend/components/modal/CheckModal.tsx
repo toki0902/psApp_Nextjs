@@ -1,5 +1,5 @@
 import React from "react";
-import { Kaisei } from "../assets/fonts/fonts";
+import { Kaisei } from "../../assets/fonts/fonts";
 
 type props = { onPassCheck: () => void; close: () => void };
 

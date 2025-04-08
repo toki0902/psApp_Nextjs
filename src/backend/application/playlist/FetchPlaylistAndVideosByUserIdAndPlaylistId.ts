@@ -1,10 +1,10 @@
-import { NotFoundError } from "@/src/app/error/errors";
+import { NotFoundError, UnAuthorizeError } from "@/src/app/error/errors";
 import { ISearchGateway } from "@/src/backend/domain/dataAccess/gateways/ISearchGateway";
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";
 import { Playlist } from "@/src/backend/domain/entities/Playlist";
 
-export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
+export class FetchPlaylistAndVideosByUserIdAndPlaylistId {
   constructor(
     private _playlistRepository: IPlaylistRepository,
     private _videoRepository: IVideoRepository,
@@ -13,21 +13,22 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
 
   run = async (
     userId: string,
-    playlistTitle: string
+    playlistId: string
   ): Promise<Playlist | undefined> => {
     const playlistData =
-      await this._playlistRepository.fetchPlaylistByPlaylistTitleAndUserId(
-        playlistTitle,
-        userId
-      );
+      await this._playlistRepository.fetchPlaylistByPlaylistId(playlistId);
 
     if (!playlistData) {
       throw new NotFoundError("playlist is not found");
     }
 
+    if (playlistData.ownerId !== userId) {
+      throw new UnAuthorizeError("you don't own this playlist");
+    }
+
     const videoObjs =
       await this._playlistRepository.fetchPlaylistMemberIdsByPlaylistId(
-        playlistData.playlistId
+        playlistId
       );
 
     const cacheId = await this._videoRepository.fetchValidCacheId();

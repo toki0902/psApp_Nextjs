@@ -1,10 +1,11 @@
 import { Kaisei } from "@/fonts";
 import { auth } from "@/auth";
-import { CardMenuOption, playlist } from "@/src/frontend/types/playlist";
+import { playlist } from "@/src/frontend/types/playlist";
+import { CardMenuOption } from "@/src/frontend/types/cardMenu";
 import { checkSession, getAllCookies } from "@/src/frontend/utils/cookie";
 import { Session } from "next-auth";
-import PlaylistCard from "@/src/frontend/components/PlaylistCard";
-import CardWrapper from "@/src/frontend/components/CardWrapper";
+import PlaylistCard from "@/src/frontend/components/card/PlaylistCard";
+import CardWrapper from "@/src/frontend/components/card/CardWrapper";
 
 const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   let playlists: playlist[] = [];

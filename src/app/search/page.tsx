@@ -1,12 +1,14 @@
 import SearchField from "@/components/SearchField";
-import VideoCard from "@/components/VideoCard";
+import VideoCard from "@/src/frontend/components/card/VideoCard";
 
-import { modalOption, playlist, video } from "@/src/frontend/types/playlist";
+import { playlist, video } from "@/src/frontend/types/playlist";
+import { CardMenuOption } from "@/src/frontend/types/cardMenu";
+import { modalOption } from "@/src/frontend/types/modal";
 
 import { Kaisei } from "@/fonts";
-import ModalWrapper from "@/src/frontend/components/ModalWrapper";
-import CardWrapper from "@/src/frontend/components/CardWrapper";
-import { CardMenuOption } from "@/src/frontend/types/playlist";
+import ModalWrapper from "@/src/frontend/components/modal/ModalWrapper";
+import CardWrapper from "@/src/frontend/components/card/CardWrapper";
+
 import { Session } from "next-auth";
 import { auth } from "@/auth";
 import { getAllCookies } from "@/src/frontend/utils/cookie";

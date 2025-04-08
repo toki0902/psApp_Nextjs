@@ -1,13 +1,10 @@
 import { NotFoundError, UnAuthorizeError } from "@/src/app/error/errors";
-import { IPlaylistRepository } from "../../domain/dataAccess/repository/IPlaylistRepository";
+import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 
-export class ChangePlaylistTitleByPlaylistId {
+export class RegisterNewPlaylistMemberByPlaylistId {
   constructor(private _playlistRepository: IPlaylistRepository) {}
-  run = async (
-    playlistId: string,
-    userId: string,
-    newTitle: string
-  ): Promise<void> => {
+
+  run = async (playlistId: string, userId: string, videoId: string) => {
     const playlistData =
       await this._playlistRepository.fetchPlaylistByPlaylistId(playlistId);
 
@@ -19,11 +16,10 @@ export class ChangePlaylistTitleByPlaylistId {
       throw new UnAuthorizeError("you don't own this playlist");
     }
 
-    await this._playlistRepository.changePlaylistTitleByPlaylistId(
-      playlistId,
-      newTitle
+    await this._playlistRepository.insertPlaylistMember(
+      videoId,
+      playlistData.playlistId
     );
-
     return;
   };
 }

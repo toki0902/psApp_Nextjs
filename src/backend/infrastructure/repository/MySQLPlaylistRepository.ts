@@ -7,6 +7,38 @@ import { nanoid } from "nanoid";
 export class MySQLPlaylistRepository implements IPlaylistRepository {
   private pool = createConnectionPool();
 
+  fetchPlaylistByPlaylistId = async (
+    playlistId: string
+  ): Promise<
+    | {
+        playlistId: string;
+        createdAt: string;
+        title: string;
+        ownerId: string;
+      }
+    | undefined
+  > => {
+    try {
+      const query = "select * from playlists where playlist_id";
+
+      const selectResult = await (
+        await this.pool
+      ).execute<mysql.RowDataPacket[]>(query, [playlistId]);
+
+      const record = selectResult[0];
+      if (!record.length) {
+        return undefined;
+      }
+
+      return {
+        playlistId: record[0].playlist_id,
+        createdAt: record[0].created_at,
+        title: record[0].title,
+        ownerId: record[0].ownerId,
+      };
+    } catch (err) {}
+  };
+
   fetchPlaylistMemberIdsByPlaylistId = async (
     playlistId: string
   ): Promise<{ videoId: string; memberId: number }[]> => {
@@ -138,8 +170,9 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     playlistId: string
   ): Promise<void> => {
     try {
-      const query = `INSERT INTO playlist_members (playlist_id, video_id) VALUES (?, ?)`;
-      const value = [playlistId, videoId];
+      const query = `INSERT INTO playlist_members (member_id, playlist_id, video_id) VALUES (?, ?, ?)`;
+      const memberId = nanoid(15);
+      const value = [memberId, playlistId, videoId];
       const insertResult = await (
         await this.pool
       ).execute<mysql.ResultSetHeader>(query, value);
@@ -161,6 +194,22 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
         await this.pool
       ).execute<mysql.ResultSetHeader>(query, [playlistId]);
       console.log(`delete playlist playlistId: ${playlistId}`);
+    } catch (err) {
+      throw new MySQLError(
+        `failed create new playlist in process 'deletePlaylistByPlaylistId' due to: ${JSON.stringify(
+          err
+        )}`
+      );
+    }
+  };
+
+  deletePlaylistMemberByMemberId = async (memberId: string): Promise<void> => {
+    try {
+      const query = `DELETE FROM playlist_member WHERE member_id = ?`;
+      const deleteResult = await (
+        await this.pool
+      ).execute<mysql.ResultSetHeader>(query, [memberId]);
+      console.log(`delete playlist member memberId: ${memberId}}`);
     } catch (err) {
       throw new MySQLError(
         `failed create new playlist in process 'deletePlaylistByPlaylistId' due to: ${JSON.stringify(

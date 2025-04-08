@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { RegisterNewPlaylistMemberByPlaylistTitle } from "@/src/backend/application/playlist/RegisterNewPlaylistMember";
 import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
-
+import { RegisterNewPlaylistMemberByPlaylistId } from "@/src/backend/application/playlist/RegisterNewPlaylistMemberByPlaylistId";
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
 import { Session } from "next-auth";
@@ -10,7 +9,7 @@ import { auth } from "@/auth";
 
 const playlistRepository = new MySQLPlaylistRepository();
 
-const registerNewPlaylistMember = new RegisterNewPlaylistMemberByPlaylistTitle(
+const registerNewPlaylistMember = new RegisterNewPlaylistMemberByPlaylistId(
   playlistRepository
 );
 
@@ -19,14 +18,14 @@ export const POST = async (
   {
     params,
   }: {
-    params: Promise<{ userId: string; playlistTitle: string }>;
+    params: Promise<{ userId: string; playlistId: string }>;
   }
 ): Promise<NextResponse> => {
   try {
     const { videoId } = await req.json();
-    const { userId, playlistTitle } = await params;
+    const { userId, playlistId } = await params;
 
-    if (!userId || !playlistTitle || !videoId) {
+    if (!userId || !playlistId || !videoId) {
       console.log("Required parameter is missing");
       throw new MissingParamsError("Required parameter is missing");
     }
@@ -40,7 +39,7 @@ export const POST = async (
       );
     }
 
-    await registerNewPlaylistMember.run(playlistTitle, userId, videoId);
+    await registerNewPlaylistMember.run(playlistId, userId, videoId);
 
     return new NextResponse(
       JSON.stringify({ msg: "add new video to playlist!" }),

@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-import { Kaisei } from "../assets/fonts/fonts";
-import { isCorrectPassword } from "../utils/validation";
+import { Kaisei } from "../../assets/fonts/fonts";
+import { isCorrectPassword } from "../../utils/validation";
 
 type props = {
   onPassCheck: () => void;

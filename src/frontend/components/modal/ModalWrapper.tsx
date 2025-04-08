@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import PasswordModal from "./PasswordModal";
 import { useRouter } from "next/navigation";
-import { modalOption } from "../types/playlist";
+import { modalOption } from "../../types/modal";
 import CheckModal from "./CheckModal";
 import EditModal from "./EditModal";
 
@@ -14,16 +14,42 @@ const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
   //親サーバコンポーネントから受け取る初期状態
   let initialModalOpen: boolean | null = null;
 
-  if (type === "deletePlaylist" || type === "edit") {
-    whichModalIsOpen = modalOption.whichModalIsOpen;
-  } else if (type === "password") {
+  if (type === "password") {
     initialModalOpen = modalOption.initialOpenModal;
+  } else {
+    whichModalIsOpen = modalOption.whichModalIsOpen;
   }
 
   const [isOpen, setIsOpen] = useState<boolean | null>(initialModalOpen);
   const router = useRouter();
 
   switch (type) {
+    case "deleteFromPlaylist": {
+      const onPassCheck = async () => {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${modalOption.ownerId}/playlists/id/${modalOption.playlistId}/videos/${modalOption.memberId}`,
+          { method: "DELETE" }
+        );
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          console.log(`${errorData.errorType!}: ${errorData.message}`);
+        } else {
+          console.log("プレイリストから動画を削除しました。");
+          router.refresh();
+        }
+      };
+
+      const close = () => {
+        modalOption.closeModal();
+      };
+
+      return whichModalIsOpen === modalOption.playlistId ? (
+        <CheckModal onPassCheck={onPassCheck} close={close} />
+      ) : (
+        <></>
+      );
+    }
     case "deletePlaylist": {
       const onPassCheck = async () => {
         const res = await fetch(

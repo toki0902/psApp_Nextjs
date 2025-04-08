@@ -8,13 +8,61 @@ import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository
 import { DeletePlaylistByPlaylistId } from "@/src/backend/application/playlist/DeletePlaylistByPlaylistId";
 import { ChangePlaylistTitleByPlaylistId } from "@/src/backend/application/playlist/ChangePlaylistTitleByPlaylistId";
 
+import { FetchPlaylistAndVideosByUserIdAndPlaylistId } from "@/src/backend/application/playlist/FetchPlaylistAndVideosByUserIdAndPlaylistId";
+import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
+import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/YoutubeDataSearchGateway";
+
 const playlistRepository = new MySQLPlaylistRepository();
+const videoRepository = new MySQLVideoRepository();
+const searchGateway = new YoutubeDataSearchGateway();
+
+const FetchPlaylistsAndVideosByPlaylistId =
+  new FetchPlaylistAndVideosByUserIdAndPlaylistId(
+    playlistRepository,
+    videoRepository,
+    searchGateway
+  );
 const deletePlaylistByPlaylistId = new DeletePlaylistByPlaylistId(
   playlistRepository
 );
 const changePlaylistTitleByPlaylistId = new ChangePlaylistTitleByPlaylistId(
   playlistRepository
 );
+
+export const GET = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ userId: string; playlistTitle: string }> }
+): Promise<NextResponse> => {
+  try {
+    const { userId, playlistTitle } = await params;
+
+    if (!userId || !playlistTitle) {
+      console.log("Required parameter is missing");
+      throw new MissingParamsError("Required parameter is missing");
+    }
+
+    const session: Session | null = await auth();
+
+    if (session?.user?.userId !== userId) {
+      console.log("Unauthorized!");
+      throw new UnAuthorizeError(
+        "You are not authenticated. Please log in and try again"
+      );
+    }
+
+    const playlist = await FetchPlaylistsAndVideosByPlaylistId.run(
+      userId,
+      playlistTitle
+    );
+
+    return new NextResponse(JSON.stringify({ playlist: playlist }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (err) {
+    return errorHandler(err);
+  }
+};
 
 export const DELETE = async (
   req: NextRequest,
@@ -37,7 +85,7 @@ export const DELETE = async (
       );
     }
 
-    await deletePlaylistByPlaylistId.run(playlistId);
+    await deletePlaylistByPlaylistId.run(playlistId, userId);
 
     return new NextResponse(null, { status: 204 });
   } catch (err) {
@@ -72,7 +120,7 @@ export const PATCH = async (
       );
     }
 
-    await changePlaylistTitleByPlaylistId.run(playlistId, newTitle);
+    await changePlaylistTitleByPlaylistId.run(playlistId, userId, newTitle);
 
     return new NextResponse(null, { status: 204 });
   } catch (err) {

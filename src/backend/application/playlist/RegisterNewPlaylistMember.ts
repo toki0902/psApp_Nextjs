@@ -1,7 +1,7 @@
 import { NotFoundError } from "@/src/app/error/errors";
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 
-export class RegisterNewPlaylistMember {
+export class RegisterNewPlaylistMemberByPlaylistTitle {
   constructor(private _playlistRepository: IPlaylistRepository) {}
 
   run = async (playlistTitle: string, userId: string, videoId: string) => {

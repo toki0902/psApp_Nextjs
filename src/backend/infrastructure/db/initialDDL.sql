@@ -24,7 +24,7 @@ CREATE TABLE playlists (
 
 -- playlist_members テーブルの作成
 CREATE TABLE playlist_members (
-    member_id INT PRIMARY KEY AUTO_INCREMENT,
+    member_id CHAR(15) PRIMARY KEY,
     playlist_id CHAR(15) NOT NULL,
     video_id CHAR(11) NOT NULL,
     FOREIGN KEY (playlist_id) REFERENCES playlists(playlist_id) ON DELETE CASCADE
