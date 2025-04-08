@@ -15,7 +15,7 @@ const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
 const searchGateway = new YoutubeDataSearchGateway();
 
-const fetchPlaylistAndVideos = new FetchPlaylistsAndVideosByUserId(
+const fetchPlaylistsAndVideos = new FetchPlaylistsAndVideosByUserId(
   playlistRepository,
   videoRepository,
   searchGateway
@@ -45,7 +45,7 @@ export const GET = async (
       );
     }
 
-    const playlists = await fetchPlaylistAndVideos.run(userId);
+    const playlists = await fetchPlaylistsAndVideos.run(userId);
 
     return new NextResponse(JSON.stringify({ playlists: playlists }), {
       status: 200,

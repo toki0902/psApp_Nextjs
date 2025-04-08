@@ -15,6 +15,8 @@ export class ChangePlaylistTitleByPlaylistId {
       throw new NotFoundError("playlist is not found");
     }
 
+    console.log(`this is playlistData: ${JSON.stringify(playlistData)}`);
+
     if (playlistData.ownerId !== userId) {
       throw new UnAuthorizeError("you don't own this playlist");
     }

@@ -3,9 +3,11 @@ import React from "react";
 
 import { playlist, video } from "../../types/playlist";
 import { ModalType, modalOption } from "../../types/modal";
-import { CardMenuOption } from "../../types/cardMenu";
+import { CardMenuOption, MenuDataMap } from "../../types/cardMenu";
 import { useParams } from "next/navigation";
 import ModalWrapper from "../modal/ModalWrapper";
+import { generateMenuDataMap } from "../../utils/cardMenu";
+import { generateCardMenu } from "./menu/generateCardMenu";
 
 type Props = {
   videoInfo: video;
@@ -13,12 +15,13 @@ type Props = {
   whichMenuIsOpen?: string | null;
   openMenu?: (key: string) => void;
   closeMenu?: () => void;
-  playlists?: playlist[];
   cardMenuOption?: CardMenuOption;
   modalType?: "deleteFromPlaylist" | "share" | "addFavorite";
   whichModalIsOpen?: string | null;
   openModal?: (id: string, modalType: ModalType) => void;
   closeModal?: () => void;
+  playlists?: playlist[];
+  ownerPlaylist?: playlist;
 };
 
 const VideoCard = ({
@@ -32,66 +35,13 @@ const VideoCard = ({
   whichModalIsOpen,
   openModal,
   closeModal,
+  playlists,
+  ownerPlaylist,
 }: Props) => {
   const { userId, playlistTitle } = useParams<{
     userId: string;
     playlistTitle: string;
   }>();
-  const cardMenu = cardMenuOption
-    ? Object.keys(cardMenuOption)
-        .sort()
-        .map((option) => {
-          switch (option) {
-            case "addToPlaylist": {
-              return (
-                <div
-                  key={option}
-                  className="w-full flex px-2 py-1 hover:text-back hover:bg-red group"
-                >
-                  <div
-                    style={{ backgroundSize: "93%" }}
-                    className="w-[10%] object-contain bg-no-repeat aspect-square bg-[url('/images/favorite_823A42.svg')] group-hover:bg-[url('/images/favorite_f1EBE5.svg')] group-hover:animate-shake bg-center"
-                  ></div>
-                  <p className="w-[90%] px-2">お気に入りに追加する</p>
-                </div>
-              );
-            }
-            case "share": {
-              const onClick = async () => {
-                await navigator.clipboard.writeText(videoInfo.url);
-              };
-              return (
-                <div
-                  key={option}
-                  className="w-full flex px-2 py-1 hover:text-back hover:bg-red group"
-                  onClick={onClick}
-                >
-                  <div
-                    style={{ backgroundSize: "93%" }}
-                    className="w-[10%] bg-no-repeat bg-center aspect-square bg-[url('/images/share_823A42.svg')] group-hover:bg-[url('/images/share_f1EBE5.svg')] group-hover:animate-shake"
-                  ></div>
-                  <p className="w-[90%] px-2">共有する</p>
-                </div>
-              );
-            }
-            case "deleteFromPlaylist": {
-              return (
-                <div
-                  key={option}
-                  className="w-full flex px-2 py-1 hover:text-back hover:bg-red group"
-                >
-                  <div
-                    style={{ backgroundSize: "93%" }}
-                    className="w-[10%] bg-no-repeat bg-center aspect-square bg-[url('/images/delete_823A42.svg')] group-hover:bg-[url('/images/delete_f1EBE5.svg')] group-hover:animate-shake"
-                  ></div>
-                  <p className="w-[90%] px-2">{playlistTitle}から削除する</p>
-                </div>
-              );
-            }
-          }
-        })
-    : null;
-
   const onClick: (e: React.MouseEvent<HTMLInputElement>) => void = (e) => {
     e.preventDefault();
     if (whichMenuIsOpen === videoInfo.videoId) {
@@ -102,9 +52,53 @@ const VideoCard = ({
     }
   };
 
-  let modalOption: modalOption | null = null;
+  let cardMenu = null;
+  //ここの条件式はcloneElementを使用しているからしゃあない！！
+  if (cardMenuOption && openModal) {
+    const cardData: MenuDataMap = generateMenuDataMap(
+      cardMenuOption,
+      undefined,
+      videoInfo
+    );
 
-  //modalOptionを設定しなきゃいけん
+    cardMenu = generateCardMenu(cardMenuOption, openModal, cardData);
+  }
+
+  let modalOption: modalOption | null = null;
+  //ここの条件式はcloneElementを使用しているからしゃあない！！
+  if (
+    modalType &&
+    closeModal &&
+    whichModalIsOpen &&
+    ownerPlaylist &&
+    videoMemberId &&
+    playlists
+  ) {
+    switch (modalType) {
+      case "deleteFromPlaylist": {
+        modalOption = {
+          type: modalType,
+          playlistId: ownerPlaylist?.playlistId,
+          whichModalIsOpen,
+          closeModal,
+          memberId: videoMemberId,
+          ownerId: ownerPlaylist.ownerId,
+          videoId: videoInfo.videoId,
+        };
+        break;
+      }
+      case "addFavorite": {
+        modalOption = {
+          type: modalType,
+          playlists: playlists,
+          videoId: videoInfo.videoId,
+          ownerId: ownerPlaylist.ownerId,
+          whichModalIsOpen,
+          closeModal,
+        };
+      }
+    }
+  }
 
   return (
     <>

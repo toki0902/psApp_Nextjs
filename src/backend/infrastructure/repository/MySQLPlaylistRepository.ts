@@ -19,7 +19,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     | undefined
   > => {
     try {
-      const query = "select * from playlists where playlist_id";
+      const query = "select * from playlists where playlist_id = ?";
 
       const selectResult = await (
         await this.pool
@@ -34,9 +34,15 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
         playlistId: record[0].playlist_id,
         createdAt: record[0].created_at,
         title: record[0].title,
-        ownerId: record[0].ownerId,
+        ownerId: record[0].owner_id,
       };
-    } catch (err) {}
+    } catch (err) {
+      throw new MySQLError(
+        `failed to fetch playlistInfo in process 'fetchPlaylistByPlaylistId' due to: ${JSON.stringify(
+          err
+        )}`
+      );
+    }
   };
 
   fetchPlaylistMemberIdsByPlaylistId = async (
@@ -100,7 +106,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       return playlistData;
     } catch (err) {
       throw new MySQLError(
-        `failed create new playlistInfo in process 'fetchPlaylistByUserId' due to: ${JSON.stringify(
+        `failed to fetch playlistInfo in process 'fetchPlaylistByUserId' due to: ${JSON.stringify(
           err
         )}`
       );
@@ -139,7 +145,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       };
     } catch (err) {
       throw new MySQLError(
-        `failed create new playlistInfo in process 'fetchPlaylistByPlaylistTitleAndUserId' due to: ${JSON.stringify(
+        `failed to fetch playlistInfo in process 'fetchPlaylistByPlaylistTitleAndUserId' due to: ${JSON.stringify(
           err
         )}`
       );
@@ -158,7 +164,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       console.log(`create new playlist with userId:${ownerId}`);
     } catch (err) {
       throw new MySQLError(
-        `failed create new playlist in process 'insertPlaylist' due to: ${JSON.stringify(
+        `failed to create new playlist in process 'insertPlaylist' due to: ${JSON.stringify(
           err
         )}`
       );
@@ -180,7 +186,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       console.log(`add video to playlist videoId:${videoId}`);
     } catch (err) {
       throw new MySQLError(
-        `failed create new playlist in process 'insertPlaylistMember' due to: ${JSON.stringify(
+        `failed to create new playlist member in process 'insertPlaylistMember' due to: ${JSON.stringify(
           err
         )}`
       );
@@ -196,7 +202,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       console.log(`delete playlist playlistId: ${playlistId}`);
     } catch (err) {
       throw new MySQLError(
-        `failed create new playlist in process 'deletePlaylistByPlaylistId' due to: ${JSON.stringify(
+        `failed to delete playlist in process 'deletePlaylistByPlaylistId' due to: ${JSON.stringify(
           err
         )}`
       );
@@ -205,14 +211,14 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
 
   deletePlaylistMemberByMemberId = async (memberId: string): Promise<void> => {
     try {
-      const query = `DELETE FROM playlist_member WHERE member_id = ?`;
+      const query = `DELETE FROM playlist_members WHERE member_id = ?`;
       const deleteResult = await (
         await this.pool
       ).execute<mysql.ResultSetHeader>(query, [memberId]);
       console.log(`delete playlist member memberId: ${memberId}}`);
     } catch (err) {
       throw new MySQLError(
-        `failed create new playlist in process 'deletePlaylistByPlaylistId' due to: ${JSON.stringify(
+        `failed to delete playlist member in process 'deletePlaylistMemberByMemberId' due to: ${JSON.stringify(
           err
         )}`
       );
@@ -235,7 +241,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       console.log(JSON.stringify(updateResult));
     } catch (err) {
       throw new MySQLError(
-        `failed create new playlist in process 'changePlaylistTitleByPlaylistId' due to: ${JSON.stringify(
+        `failed to change playlist title in process 'changePlaylistTitleByPlaylistId' due to: ${JSON.stringify(
           err
         )}`
       );

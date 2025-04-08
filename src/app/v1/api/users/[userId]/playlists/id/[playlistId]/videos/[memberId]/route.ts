@@ -36,7 +36,7 @@ export const DELETE = async (
       );
     }
 
-    await deletePlaylistMemberByMemberId.run(userId, playlistId, memberId);
+    await deletePlaylistMemberByMemberId.run(playlistId, userId, memberId);
 
     return new NextResponse(null, { status: 204 });
   } catch (err) {

@@ -11,10 +11,7 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
     private _searchGateway: ISearchGateway
   ) {}
 
-  run = async (
-    userId: string,
-    playlistTitle: string
-  ): Promise<Playlist | undefined> => {
+  run = async (userId: string, playlistTitle: string): Promise<Playlist> => {
     const playlistData =
       await this._playlistRepository.fetchPlaylistByPlaylistTitleAndUserId(
         playlistTitle,

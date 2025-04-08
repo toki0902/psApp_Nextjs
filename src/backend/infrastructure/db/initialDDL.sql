@@ -57,11 +57,11 @@ ALTER TABLE videos CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 INSERT INTO users (user_id, name, social_id) values ('sqkt5svY5mWFt2i3u1S1g', 'toki', '118103284792160545208');
 INSERT INTO playlists (playlist_id, owner_id, title) values ('sksjlgnskeisjti', 'sqkt5svY5mWFt2i3u1S1g', 'example');
-INSERT INTO playlist_members (playlist_id, video_id) values ('sksjlgnskeisjti', '1jlg7KrA7Es');
-INSERT INTO playlist_members (playlist_id, video_id) values ('sksjlgnskeisjti', 'X5FHxeOSYns');
+INSERT INTO playlist_members (member_id, playlist_id, video_id) values ('skficnejlsjfidn', 'sksjlgnskeisjti', '1jlg7KrA7Es');
+INSERT INTO playlist_members (member_id, playlist_id, video_id) values ('djqognvkwjksotk', 'sksjlgnskeisjti', 'X5FHxeOSYns');
 INSERT INTO playlists (playlist_id, owner_id, title) values ('jngasdkviroisos', 'sqkt5svY5mWFt2i3u1S1g', 'example2');
-INSERT INTO playlist_members (playlist_id, video_id) values ('jngasdkviroisos', 'LKHhdsChLx0');
-INSERT INTO playlist_members (playlist_id, video_id) values ('jngasdkviroisos', 'JmEk9dM2VJU');
+INSERT INTO playlist_members (member_id, playlist_id, video_id) values ('akdiqognckslfks', 'jngasdkviroisos', 'LKHhdsChLx0');
+INSERT INTO playlist_members (member_id, playlist_id, video_id) values ('akdiqognckslfkg', 'jngasdkviroisos', 'JmEk9dM2VJU');
 INSERT INTO playlists (playlist_id, owner_id, title) values ('asdfjaksjdkfjhf', 'sqkt5svY5mWFt2i3u1S1g', 'example3');
-INSERT INTO playlist_members (playlist_id, video_id) values ('asdfjaksjdkfjhf', 'LKHhdsChLx0');
-INSERT INTO playlist_members (playlist_id, video_id) values ('asdfjaksjdkfjhf', 'JmEk9dM2VJU');
+INSERT INTO playlist_members (member_id, playlist_id, video_id) values ('kjairgonoawejfo', 'asdfjaksjdkfjhf', 'LKHhdsChLx0');
+INSERT INTO playlist_members (member_id, playlist_id, video_id) values ('kjairgonoawejfg', 'asdfjaksjdkfjhf', 'JmEk9dM2VJU');

@@ -6,7 +6,8 @@ export type ModalType =
   | "edit"
   | "deleteFromPlaylist"
   | "addFavorite"
-  | "share";
+  | "share"
+  | "addToPlaylist";
 
 export type modalOption =
   | {
@@ -34,6 +35,7 @@ export type modalOption =
       closeModal: () => void;
       ownerId: string;
       memberId: string;
+      videoId: string;
     }
   | {
       type: "addFavorite";

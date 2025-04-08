@@ -1,10 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { playlist } from "../../types/playlist";
-import { CardMenuOption } from "../../types/cardMenu";
+import { CardMenuOption, MenuDataMap } from "../../types/cardMenu";
 import { modalOption, ModalType } from "../../types/modal";
 
 import ModalWrapper from "../modal/ModalWrapper";
+import { generateCardMenu } from "./menu/generateCardMenu";
+import { generateMenuDataMap } from "../../utils/cardMenu";
 
 type Props = {
   playlistInfo: playlist;
@@ -14,7 +16,7 @@ type Props = {
   cardMenuOption?: CardMenuOption;
   modalType?: "deletePlaylist" | "edit";
   whichModalIsOpen?: string | null;
-  openModal?: (playlistId: string, modalType: ModalType) => void;
+  openModal?: (id: string, modalType: ModalType) => void;
   closeModal?: () => void;
 };
 
@@ -51,53 +53,17 @@ const PlaylistCard = ({
     }
   };
 
-  const cardMenu = cardMenuOption
-    ? Object.keys(cardMenuOption)
-        .sort()
-        .map((option) => {
-          switch (option) {
-            case "edit": {
-              const onClick = () => {
-                if (openModal) openModal(playlistInfo.playlistId, "edit");
-              };
-              return (
-                <div
-                  className="w-full flex px-2 py-1 hover:text-back hover:bg-red group"
-                  onClick={onClick}
-                >
-                  <div
-                    style={{ backgroundSize: "93%" }}
-                    className="w-[10%] bg-no-repeat bg-center aspect-square bg-[url('/images/edit_823A42.svg')] group-hover:bg-[url('/images/edit_f1EBE5.svg')] group-hover:animate-shake"
-                  ></div>
-                  <p className="w-[90%] px-2">編集する</p>
-                </div>
-              );
-            }
-
-            case "deletePlaylist": {
-              const onClick = () => {
-                if (openModal)
-                  openModal(playlistInfo.playlistId, "deletePlaylist");
-              };
-              return (
-                <div
-                  className="w-full flex px-2 py-1 hover:text-back hover:bg-red group"
-                  onClick={onClick}
-                >
-                  <div
-                    style={{ backgroundSize: "93%" }}
-                    className="w-[10%] bg-no-repeat bg-center aspect-square bg-[url('/images/delete_823A42.svg')] group-hover:bg-[url('/images/delete_f1EBE5.svg')] group-hover:animate-shake"
-                  ></div>
-                  <p className="w-[90%] px-2">{playlistInfo.title}を削除する</p>
-                </div>
-              );
-            }
-          }
-        })
-    : null;
+  let cardMenu = null;
+  //ここの条件式はcloneElementを使用しているからしゃあない！！
+  if (cardMenuOption && openModal) {
+    const cardData: MenuDataMap = generateMenuDataMap(
+      cardMenuOption,
+      playlistInfo
+    );
+    cardMenu = generateCardMenu(cardMenuOption, openModal, cardData);
+  }
 
   let modalOption: modalOption | null = null;
-
   //ここの条件式はcloneElementを使用しているからしゃあない！！
   if (modalType && closeModal && whichModalIsOpen) {
     modalOption = {

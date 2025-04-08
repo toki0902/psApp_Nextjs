@@ -44,7 +44,7 @@ const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
         modalOption.closeModal();
       };
 
-      return whichModalIsOpen === modalOption.playlistId ? (
+      return whichModalIsOpen === modalOption.videoId ? (
         <CheckModal onPassCheck={onPassCheck} close={close} />
       ) : (
         <></>
@@ -79,6 +79,7 @@ const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
 
     case "edit": {
       const onPassCheck = async (newTitle: string) => {
+        console.log(modalOption);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${modalOption.ownerId}/playlists/id/${modalOption.playlistId}`,
           {
@@ -107,6 +108,8 @@ const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
       ) : (
         <></>
       );
+    }
+    case "addFavorite": {
     }
     case "password": {
       const onPassCheck = () => {

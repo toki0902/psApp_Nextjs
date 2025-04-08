@@ -11,7 +11,7 @@ export type CardMenuOption = {
 export type MenuDataMap = {
   edit?: playlist;
   deletePlaylist?: playlist;
-  deleteFromPlaylist?: { playlist: playlist; video: video };
+  deleteFromPlaylist?: video;
   addToPlaylist?: video;
   share?: video;
 };

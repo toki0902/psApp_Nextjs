@@ -19,7 +19,7 @@ const Playlist = async ({
 
   const cookie = await getAllCookies();
 
-  let videos: { video: video; videoMemberId: string }[] = [];
+  let playlist: playlist | null = null;
 
   const videoResponse = await fetch(
     `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${userId}/playlists/title/${playlistTitle}`,
@@ -34,6 +34,7 @@ const Playlist = async ({
   if (!videoResponse.ok) {
     const errorData = await videoResponse.json();
     console.log(`${errorData.errorType!}: ${errorData.message}`);
+    notFound();
   } else {
     const playlistData = await videoResponse.json();
 
@@ -41,7 +42,7 @@ const Playlist = async ({
       notFound();
     }
 
-    videos = playlistData.playlist.videos;
+    playlist = playlistData.playlist;
   }
 
   let playlists: playlist[] = [];
@@ -83,11 +84,17 @@ const Playlist = async ({
           <p className={`${Kaisei.className} ml-10 text-2xl`}>
             {playlistTitle}
           </p>
-          <p className="ml-4 text-mg">{videos.length}件の動画</p>
+          <p className="ml-4 text-mg">
+            {(playlist?.videos || []).length}件の動画
+          </p>
         </div>
         <div className="w-full h-max flex flex-wrap mt-20">
-          <CardWrapper cardMenuOption={cardMenuOption} playlists={playlists}>
-            {videos.map((video, index) => {
+          <CardWrapper
+            cardMenuOption={cardMenuOption}
+            playlists={playlists}
+            ownerPlaylist={playlist || undefined}
+          >
+            {(playlist?.videos || []).map((video, index) => {
               return (
                 <VideoCard
                   key={index}

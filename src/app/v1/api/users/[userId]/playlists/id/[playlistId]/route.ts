@@ -31,12 +31,12 @@ const changePlaylistTitleByPlaylistId = new ChangePlaylistTitleByPlaylistId(
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: Promise<{ userId: string; playlistTitle: string }> }
+  { params }: { params: Promise<{ userId: string; playlistId: string }> }
 ): Promise<NextResponse> => {
   try {
-    const { userId, playlistTitle } = await params;
+    const { userId, playlistId } = await params;
 
-    if (!userId || !playlistTitle) {
+    if (!userId || !playlistId) {
       console.log("Required parameter is missing");
       throw new MissingParamsError("Required parameter is missing");
     }
@@ -52,7 +52,7 @@ export const GET = async (
 
     const playlist = await FetchPlaylistsAndVideosByPlaylistId.run(
       userId,
-      playlistTitle
+      playlistId
     );
 
     return new NextResponse(JSON.stringify({ playlist: playlist }), {
