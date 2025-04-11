@@ -21,24 +21,20 @@ export class FetchPlaylistsAndVideosByUserId {
 
     const playlistIds = arr_playlistData.map((item) => item.playlistId);
 
-    const arr_playlistMemberData = await Promise.all(
-      playlistIds.map(
-        async (id) =>
-          (await this._playlistRepository.fetchPlaylistMemberByPlaylistId(
-            id,
-          )) || [],
-      ),
-    );
+    const arr_playlistMemberData =
+      await this._playlistRepository.fetchPlaylistMembersByPlaylistIds(
+        playlistIds,
+      );
 
     const cacheId = await this._videoRepository.fetchValidCacheId();
-    let arr_videos: { video: Video; videoMemberId: number }[][];
+    let arr_videos: { video: Video; videoMemberId: string }[][];
 
     if (!cacheId) {
       const accessToken = await this._searchGateway.fetchAccessToken();
       arr_videos = await Promise.all(
         arr_playlistMemberData.map(async (data) => {
-          const youtubeIds = data.map((data) => data.videoId);
-          const memberIds = data.map((data) => data.memberId);
+          const youtubeIds = data.videos.map((data) => data.videoId);
+          const memberIds = data.videos.map((data) => data.memberId);
           const videos = await this._searchGateway.fetchVideoByVideoIds(
             youtubeIds,
             accessToken,
@@ -51,8 +47,8 @@ export class FetchPlaylistsAndVideosByUserId {
     } else {
       arr_videos = await Promise.all(
         arr_playlistMemberData.map(async (data) => {
-          const youtubeIds = data.map((data) => data.videoId);
-          const memberIds = data.map((data) => data.memberId);
+          const youtubeIds = data.videos.map((data) => data.videoId);
+          const memberIds = data.videos.map((data) => data.memberId);
           const videos =
             await this._videoRepository.fetchVideoByYoutubeIdsAndCacheId(
               youtubeIds,

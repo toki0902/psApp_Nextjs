@@ -73,7 +73,7 @@ const Playlist = async ({
 
   const cardMenuOption: CardMenuOption = {
     share: true,
-    addToPlaylist: true,
+    addFavorite: true,
     deleteFromPlaylist: true,
   };
 

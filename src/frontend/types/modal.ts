@@ -6,8 +6,7 @@ export type ModalType =
   | "edit"
   | "deleteFromPlaylist"
   | "addFavorite"
-  | "share"
-  | "addToPlaylist";
+  | "share";
 
 export type modalOption =
   | {

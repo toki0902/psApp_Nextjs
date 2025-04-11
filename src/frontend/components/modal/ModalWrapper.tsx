@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { modalOption } from "../../types/modal";
 import CheckModal from "./CheckModal";
 import EditModal from "./EditModal";
+import FavoriteModal from "./FavoriteModal";
 
 const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
   const { type } = modalOption;
@@ -105,13 +106,39 @@ const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
     }
     case "addFavorite": {
       const onPassCheck = async (addPlaylistIds: string[]) => {
+        const bodyObj = {
+          videoId: modalOption.videoId,
+          playlistIds: addPlaylistIds,
+        };
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_ROOT_URL}/users/${modalOption.ownerId}/playlists/`,
+          `${process.env.NEXT_PUBLIC_ROOT_URL}/users/${modalOption.ownerId}/playlists/videos`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bodyObj),
+          },
         );
-      };
-      const close = () => {};
 
-      return whichModalIsOpen === modalOption.videoId ? null : null;
+        if (!res.ok) {
+          const errorData = await res.json();
+          console.log(`${errorData.errorType!}: ${errorData.message}`);
+        } else {
+          const resData = await res.json();
+          console.log(resData.message);
+          modalOption.closeModal();
+          router.refresh();
+        }
+      };
+
+      const close = () => modalOption.closeModal();
+
+      return whichModalIsOpen === modalOption.videoId ? (
+        <FavoriteModal
+          onPassCheck={onPassCheck}
+          close={close}
+          playlists={modalOption.playlists}
+        />
+      ) : null;
     }
     case "password": {
       const onPassCheck = () => {

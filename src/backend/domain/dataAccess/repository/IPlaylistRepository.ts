@@ -17,9 +17,11 @@ export interface IPlaylistRepository {
       }[]
     | undefined
   >;
-  fetchPlaylistMemberByPlaylistId: (
-    playlistId: string,
-  ) => Promise<{ videoId: string; memberId: number }[] | undefined>;
+  fetchPlaylistMembersByPlaylistIds: (
+    playlistIds: string[],
+  ) => Promise<
+    { playlistId: string; videos: { videoId: string; memberId: string }[] }[]
+  >;
   fetchPlaylistByPlaylistTitleAndUserId: (
     playlistTitle: string,
     userId: string,

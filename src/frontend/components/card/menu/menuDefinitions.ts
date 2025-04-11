@@ -30,7 +30,7 @@ export const menuDefinitions = {
       } else return () => {};
     },
   },
-  addToPlaylist: {
+  addFavorite: {
     icon: "/images/favorite_823A42.svg",
     hoverIcon: "/images/favorite_f1EBE5.svg",
     getLabel: (data: MenuDataMap) => `お気に入りに追加する`,
@@ -38,9 +38,9 @@ export const menuDefinitions = {
       data: MenuDataMap,
       openModal: (id: string, modalType: ModalType) => void,
     ) => {
-      if (data.addToPlaylist) {
-        const videoId = data.addToPlaylist.videoId;
-        return () => openModal(videoId, "addToPlaylist");
+      if (data.addFavorite) {
+        const videoId = data.addFavorite.videoId;
+        return () => openModal(videoId, "addFavorite");
       } else return () => {};
     },
   },

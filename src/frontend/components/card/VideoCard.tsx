@@ -38,11 +38,6 @@ const VideoCard = ({
   playlists,
   ownerPlaylist,
 }: Props) => {
-  const { userId, playlistTitle } = useParams<{
-    userId: string;
-    playlistTitle: string;
-  }>();
-
   //cardMenuにhoverした時にmenu開くボタンのborderを閉じるためのState
   const [isHovered, setIsHovered] = useState(false);
 

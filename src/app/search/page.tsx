@@ -79,7 +79,7 @@ const Search = async ({
 
   const cardMenuOption: CardMenuOption = {
     share: true,
-    addToPlaylist: true,
+    addFavorite: true,
   };
 
   const modalOption: modalOption = {

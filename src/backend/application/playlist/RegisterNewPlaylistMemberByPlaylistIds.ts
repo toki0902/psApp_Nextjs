@@ -16,17 +16,28 @@ export class RegisterNewPlaylistMemberByPlaylistIds {
       throw new NotFoundError("playlist is not found");
     }
 
-    const hasPlaylist = playlistData.every(
+    const allOwnedByUser = playlistData.every(
       (playlist) => playlist.ownerId === userId,
     );
 
-    if (!hasPlaylist) {
+    if (!allOwnedByUser) {
       throw new UnAuthorizeError("you don't own this playlists");
     }
 
+    const playlistMemberData =
+      await this._playlistRepository.fetchPlaylistMembersByPlaylistIds(
+        playlistIds,
+      );
+
+    const videoNotIncludedPlaylistIds = playlistMemberData
+      .filter((member) =>
+        member.videos.every((item) => item.videoId !== videoId),
+      )
+      .map((playlist) => playlist.playlistId);
+
     await this._playlistRepository.insertPlaylistMemberByPlaylistIdsAndVideoId(
       videoId,
-      playlistIds,
+      videoNotIncludedPlaylistIds,
     );
 
     return;

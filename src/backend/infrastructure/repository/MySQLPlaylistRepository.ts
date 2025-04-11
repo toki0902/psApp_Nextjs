@@ -1,9 +1,8 @@
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 import { createConnectionPool } from "../db/MySQLConnection";
 import { MySQLError } from "@/src/app/error/errors";
-import mysql, { RowDataPacket } from "mysql2/promise";
+import mysql from "mysql2/promise";
 import { nanoid } from "nanoid";
-import { errorHandler } from "@/src/app/error/errorHandler";
 
 export class MySQLPlaylistRepository implements IPlaylistRepository {
   private pool = createConnectionPool();
@@ -20,7 +19,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     | undefined
   > => {
     try {
-      const query = `select * from playlists where playlist_id in (${playlistIds.map((_) => "?").join(", ")})`;
+      const query = `select * from playlists where playlist_id in (${playlistIds.map(() => "?").join(", ")})`;
 
       const selectResult = await (
         await this.pool
@@ -47,29 +46,40 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     }
   };
 
-  fetchPlaylistMemberByPlaylistId = async (
-    playlistId: string,
-  ): Promise<{ videoId: string; memberId: number }[] | undefined> => {
+  fetchPlaylistMembersByPlaylistIds = async (
+    playlistIds: string[],
+  ): Promise<
+    { playlistId: string; videos: { videoId: string; memberId: string }[] }[]
+  > => {
     try {
       const query = "select * from playlist_members where playlist_id = ?";
 
-      const selectResult = await (
-        await this.pool
-      ).execute<mysql.RowDataPacket[]>(query, [playlistId]);
+      const arr_resObj = await Promise.all(
+        playlistIds.map(async (playlistId) => {
+          const selectResult = await (
+            await this.pool
+          ).execute<mysql.RowDataPacket[]>(query, [playlistId]);
 
-      const record = selectResult[0];
-      if (!record.length) {
-        return undefined;
-      }
+          const record = selectResult[0];
 
-      const arr_videoInfo = record.map((item) => {
-        return { videoId: item.video_id, memberId: item.member_id };
-      });
+          if (!record.length) {
+            return { playlistId, videos: [] };
+          }
 
-      return arr_videoInfo;
+          const arr_videoInfo = record.map((item) => {
+            const videoId: string = item.video_id;
+            const memberId: string = item.member_id;
+            return { videoId, memberId };
+          });
+
+          return { playlistId, videos: arr_videoInfo };
+        }),
+      );
+
+      return arr_resObj;
     } catch (err) {
       throw new MySQLError(
-        `failed to fetch playlistInfo in process 'fetchPlaylistMemberIdsByPlaylistId' due to: ${JSON.stringify(
+        `failed to fetch playlistInfo in process 'fetchPlaylistMembersIdsByPlaylistIds' due to: ${JSON.stringify(
           err,
         )}`,
       );
@@ -105,6 +115,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
           ownerId: item.owner_id,
         };
       });
+
       return playlistData;
     } catch (err) {
       throw new MySQLError(

@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const playlistRepository = new MySQLPlaylistRepository();
 const deletePlaylistMemberByMemberId = new DeletePlaylistMemberByMemberId(
-  playlistRepository
+  playlistRepository,
 );
 
 export const DELETE = async (
@@ -17,10 +17,14 @@ export const DELETE = async (
     params,
   }: {
     params: Promise<{ userId: string; playlistId: string; memberId: string }>;
-  }
+  },
 ): Promise<NextResponse> => {
   try {
-    const { userId, playlistId, memberId } = await params;
+    const {
+      userId,
+      playlistId,
+      memberId,
+    }: { userId: string; playlistId: string; memberId: string } = await params;
 
     if (!userId || !playlistId || !memberId) {
       console.log("Required parameter is missing");
@@ -32,7 +36,7 @@ export const DELETE = async (
     if (!(session?.user?.userId === userId)) {
       console.log("Unauthorized!");
       throw new UnAuthorizeError(
-        "You are not authenticated. Please log in and try again"
+        "You are not authenticated. Please log in and try again",
       );
     }
 

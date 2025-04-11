@@ -1,7 +1,7 @@
 import { playlist, video } from "./playlist";
 
 export type CardMenuOption = {
-  addToPlaylist?: true;
+  addFavorite?: true;
   share?: true;
   edit?: true;
   deleteFromPlaylist?: true;
@@ -12,6 +12,6 @@ export type MenuDataMap = {
   edit?: playlist;
   deletePlaylist?: playlist;
   deleteFromPlaylist?: video;
-  addToPlaylist?: video;
+  addFavorite?: video;
   share?: video;
 };

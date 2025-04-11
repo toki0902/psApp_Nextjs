@@ -20,7 +20,7 @@ export const POST = async (
     const { videoId, playlistIds } = await req.json();
     const { userId } = await params;
 
-    if (!userId || !playlistIds) {
+    if (!userId || !playlistIds || !videoId) {
       console.log("Required parameter is missing");
       throw new MissingParamsError("Required parameter is missing");
     }
@@ -34,7 +34,7 @@ export const POST = async (
       );
     }
 
-    await registerNewPlaylistMember.run([playlistIds], userId, videoId);
+    await registerNewPlaylistMember.run(playlistIds, userId, videoId);
 
     return new NextResponse(
       JSON.stringify({

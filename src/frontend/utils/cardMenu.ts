@@ -4,7 +4,7 @@ import { playlist, video } from "../types/playlist";
 export const generateMenuDataMap = (
   options: CardMenuOption,
   playlistInfo?: playlist,
-  videoInfo?: video
+  videoInfo?: video,
 ): MenuDataMap => {
   const data: MenuDataMap = {};
 
@@ -14,7 +14,7 @@ export const generateMenuDataMap = (
   if (options.deleteFromPlaylist && videoInfo) {
     data.deleteFromPlaylist = videoInfo;
   }
-  if (options.addToPlaylist && videoInfo) data.addToPlaylist = videoInfo;
+  if (options.addFavorite && videoInfo) data.addFavorite = videoInfo;
   if (options.share && videoInfo) data.share = videoInfo;
 
   return data;
