@@ -6,24 +6,22 @@ export class ChangePlaylistTitleByPlaylistId {
   run = async (
     playlistId: string,
     userId: string,
-    newTitle: string
+    newTitle: string,
   ): Promise<void> => {
     const playlistData =
-      await this._playlistRepository.fetchPlaylistByPlaylistId(playlistId);
+      await this._playlistRepository.fetchPlaylistsByPlaylistIds([playlistId]);
 
-    if (!playlistData) {
+    if (!playlistData?.length) {
       throw new NotFoundError("playlist is not found");
     }
 
-    console.log(`this is playlistData: ${JSON.stringify(playlistData)}`);
-
-    if (playlistData.ownerId !== userId) {
+    if (playlistData[0].ownerId !== userId) {
       throw new UnAuthorizeError("you don't own this playlist");
     }
 
     await this._playlistRepository.changePlaylistTitleByPlaylistId(
       playlistId,
-      newTitle
+      newTitle,
     );
 
     return;

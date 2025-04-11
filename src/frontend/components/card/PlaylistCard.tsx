@@ -31,17 +31,7 @@ const PlaylistCard = ({
   openModal,
   closeModal,
 }: Props) => {
-  const [thumbnail, setThumbnail] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    if (playlistInfo.videos.length > 0) {
-      const randomIndex = Math.floor(
-        Math.random() * playlistInfo.videos.length
-      );
-
-      setThumbnail(playlistInfo.videos[randomIndex].video.thumbnail);
-    }
-  }, []);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const onClickMenu: (e: React.MouseEvent<HTMLInputElement>) => void = (e) => {
     e.preventDefault();
@@ -49,16 +39,18 @@ const PlaylistCard = ({
       if (closeMenu) closeMenu();
     } else {
       if (openMenu) openMenu(playlistInfo.playlistId);
-      // if (closeMenu) setTimeout(closeMenu, 5000);
+      // if (closeMenu) timer = setTimeout(closeMenu, 5000);
     }
   };
+
+  const thumbnail = playlistInfo.videos[0]?.video?.thumbnail || "";
 
   let cardMenu = null;
   //ここの条件式はcloneElementを使用しているからしゃあない！！
   if (cardMenuOption && openModal) {
     const cardData: MenuDataMap = generateMenuDataMap(
       cardMenuOption,
-      playlistInfo
+      playlistInfo,
     );
     cardMenu = generateCardMenu(cardMenuOption, openModal, cardData);
   }
@@ -79,29 +71,35 @@ const PlaylistCard = ({
     <>
       <a
         href={`/users/${playlistInfo.ownerId}/playlists/${playlistInfo.title}`}
-        className="4xl:w-sixth-divided 3xl:w-fifth-divided 2xl:w-fourth-divided lg:w-third-divided sm:w-half-divided mx-[calc(0.5%)] mb-10 cursor-pointer rounded-lg"
+        className="mx-[calc(0.5%)] mb-10 cursor-pointer rounded-lg sm:w-half-divided lg:w-third-divided 2xl:w-fourth-divided 3xl:w-fifth-divided 4xl:w-sixth-divided"
       >
-        <div className="w-full aspect-[16/9]">
+        <div className="aspect-[16/9] w-full">
           <img
             src={thumbnail}
             alt="image"
-            className="w-full h-full object-cover rounded-lg"
+            className="h-full w-full rounded-lg object-cover"
           />
         </div>
-        <div className="w-full p-2 flex">
-          <div className="w-[88%] h-full">
+        <div className="flex w-full p-2">
+          <div className="h-full w-[90%]">
             <p className="line-clamp-3">{playlistInfo.title}</p>
           </div>
-          <div className="w-[12%] flex justify-center items-start">
+          <div className="flex w-[10%] items-start justify-center">
             <div
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              style={{ borderColor: isHovered ? "#823a42" : "transparent" }}
               onClick={onClickMenu}
-              className="w-2/3 aspect-square relative flex flex-col items-center justify-center rounded-full border border-transparent hover:border-red"
+              className="relative flex aspect-square w-3/4 flex-col items-center justify-center rounded-full border"
             >
-              <span className="w-1 h-1 bg-red block rounded-full my-[1.5px]"></span>
-              <span className="w-1 h-1 bg-red block rounded-full my-[1.5px]"></span>
-              <span className="w-1 h-1 bg-red block rounded-full my-[1.5px]"></span>
+              <span className="my-[1.5px] block h-1 w-1 rounded-full bg-red"></span>
+              <span className="my-[1.5px] block h-1 w-1 rounded-full bg-red"></span>
+              <span className="my-[1.5px] block h-1 w-1 rounded-full bg-red"></span>
               {whichMenuIsOpen === playlistInfo.playlistId && (
-                <div className="absolute top-full space-y-1 right-0 rounded-lg overflow-hidden bg-back w-48 border border-red text-xs text-red z-30">
+                <div
+                  onMouseEnter={() => setIsHovered(false)}
+                  className="absolute right-0 top-full z-30 w-48 space-y-1 overflow-hidden rounded-lg border border-red bg-back text-xs text-red"
+                >
                   {cardMenu}
                 </div>
               )}

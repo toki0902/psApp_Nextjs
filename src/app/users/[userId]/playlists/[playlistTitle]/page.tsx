@@ -28,7 +28,7 @@ const Playlist = async ({
       headers: { "Content-Type": "application/json", Cookie: cookie },
       cache: "no-store",
       credentials: "include",
-    }
+    },
   );
 
   if (!videoResponse.ok) {
@@ -55,7 +55,7 @@ const Playlist = async ({
       headers: { "Content-Type": "application/json", Cookie: cookie },
       cache: "no-store",
       credentials: "include",
-    }
+    },
   );
 
   if (!playlistResponse.ok) {
@@ -78,17 +78,17 @@ const Playlist = async ({
   };
 
   return (
-    <div className="w-screen h-screen">
-      <div className="w-full h-full px-[3%] pt-10 flex flex-col">
-        <div className="w-full flex justify-left items-end">
+    <div className="h-screen w-screen">
+      <div className="flex h-full w-full flex-col px-[3%] pt-10">
+        <div className="justify-left flex w-full items-end">
           <p className={`${Kaisei.className} ml-10 text-2xl`}>
             {playlistTitle}
           </p>
-          <p className="ml-4 text-mg">
+          <p className="text-mg ml-4">
             {(playlist?.videos || []).length}件の動画
           </p>
         </div>
-        <div className="w-full h-max flex flex-wrap mt-20">
+        <div className="mt-20 flex h-max w-full flex-wrap">
           <CardWrapper
             cardMenuOption={cardMenuOption}
             playlists={playlists}

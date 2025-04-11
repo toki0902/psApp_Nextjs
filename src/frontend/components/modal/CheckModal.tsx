@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Kaisei } from "../../assets/fonts/fonts";
 
@@ -7,31 +8,30 @@ const CheckModal = ({ onPassCheck, close }: props) => {
   return (
     <>
       <div
-        className="w-screen h-screen bg-black opacity-50 fixed left-0 top-0 z-10"
+        className="fixed left-0 top-0 z-10 h-screen w-screen bg-black opacity-50"
         onClick={close}
       ></div>
       <div
-        className={`${Kaisei.className} border-2 border-red bg-back w-1/2 max-w-[700px] h-96 z-20 rounded-xl fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center`}
+        className={`${Kaisei.className} animate-drop-in-forModal fixed left-1/2 top-1/2 z-20 flex aspect-[16/9] w-1/2 max-w-[750px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-between rounded-xl border-2 border-red bg-back py-20 lg:py-24 xl:py-28`}
       >
         <div
-          className="w-7 h-7 absolute top-7 right-7 cursor-pointer"
+          className="absolute right-7 top-7 h-7 w-7 cursor-pointer"
           onClick={close}
         >
-          <div className="w-full h-[1px] bg-red rotate-45 absolute top-1/2"></div>
-          <div className="w-full h-[1px] bg-red -rotate-45 absolute top-1/2"></div>
+          <div className="absolute top-1/2 h-[1px] w-full rotate-45 bg-red"></div>
+          <div className="absolute top-1/2 h-[1px] w-full -rotate-45 bg-red"></div>
         </div>
-        <h2 className="text-2xl">本当に宜しいですか？</h2>
-
-        <div className="mt-10 w-fit flex space-x-20">
+        <h2 className="text-2xl">本当によろしいですか？</h2>
+        <div className="flex w-fit space-x-20">
           <button
             onClick={onPassCheck}
-            className="w-24 px-2 h-9 rounded-md border border-red text-red hover:bg-red hover:text-back"
+            className="h-9 w-24 rounded-md border border-red px-2 text-red hover:bg-red hover:text-back"
           >
             はい
           </button>
           <button
             onClick={close}
-            className="w-24 px-2 h-9 rounded-md border border-red text-red hover:bg-red hover:text-back"
+            className="h-9 w-24 rounded-md border border-red px-2 text-red hover:bg-red hover:text-back"
           >
             いいえ
           </button>

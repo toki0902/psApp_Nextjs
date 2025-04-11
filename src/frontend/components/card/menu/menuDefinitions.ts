@@ -8,7 +8,7 @@ export const menuDefinitions = {
     getLabel: (data: MenuDataMap) => "編集する",
     getOnClick: (
       data: MenuDataMap,
-      openModal: (id: string, modalType: ModalType) => void
+      openModal: (id: string, modalType: ModalType) => void,
     ) => {
       if (data.edit) {
         const playlistId = data.edit.playlistId;
@@ -22,7 +22,7 @@ export const menuDefinitions = {
     getLabel: (data: MenuDataMap) => `${data.deletePlaylist?.title}を削除する`,
     getOnClick: (
       data: MenuDataMap,
-      openModal: (id: string, modalType: ModalType) => void
+      openModal: (id: string, modalType: ModalType) => void,
     ) => {
       if (data.deletePlaylist) {
         const playlistId = data.deletePlaylist.playlistId;
@@ -36,7 +36,7 @@ export const menuDefinitions = {
     getLabel: (data: MenuDataMap) => `お気に入りに追加する`,
     getOnClick: (
       data: MenuDataMap,
-      openModal: (id: string, modalType: ModalType) => void
+      openModal: (id: string, modalType: ModalType) => void,
     ) => {
       if (data.addToPlaylist) {
         const videoId = data.addToPlaylist.videoId;
@@ -50,7 +50,7 @@ export const menuDefinitions = {
     getLabel: () => `共有する`,
     getOnClick: (
       data: MenuDataMap,
-      openModal: (id: string, modalType: ModalType) => void
+      openModal: (id: string, modalType: ModalType) => void,
     ) => {
       if (data.share) {
         const videoId = data.share.videoId;
@@ -64,7 +64,7 @@ export const menuDefinitions = {
     getLabel: (data: MenuDataMap) => `お気に入りから削除する`,
     getOnClick: (
       data: MenuDataMap,
-      openModal: (id: string, modalType: ModalType) => void
+      openModal: (id: string, modalType: ModalType) => void,
     ) => {
       if (data.deleteFromPlaylist) {
         const videoId = data.deleteFromPlaylist.videoId;

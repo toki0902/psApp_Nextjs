@@ -16,7 +16,7 @@ const MenuItem = ({
 
   return (
     <div
-      className="w-full flex px-2 py-1 hover:text-back hover:bg-red group"
+      className="group flex w-full px-2 py-1 hover:bg-red hover:text-back"
       onClick={onClick}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
@@ -26,7 +26,7 @@ const MenuItem = ({
           backgroundImage: `url(${isHover ? hoverIcon : icon})`,
           backgroundSize: "93%",
         }}
-        className="w-[10%] bg-no-repeat bg-center aspect-square group-hover:animate-shake"
+        className="aspect-square w-[10%] bg-center bg-no-repeat group-hover:animate-shake"
       />
       <p className="w-[90%] px-2">{text}</p>
     </div>

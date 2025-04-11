@@ -28,7 +28,7 @@ const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
       const onPassCheck = async () => {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${modalOption.ownerId}/playlists/id/${modalOption.playlistId}/videos/${modalOption.memberId}`,
-          { method: "DELETE" }
+          { method: "DELETE" },
         );
 
         if (!res.ok) {
@@ -46,15 +46,13 @@ const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
 
       return whichModalIsOpen === modalOption.videoId ? (
         <CheckModal onPassCheck={onPassCheck} close={close} />
-      ) : (
-        <></>
-      );
+      ) : null;
     }
     case "deletePlaylist": {
       const onPassCheck = async () => {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${modalOption.ownerId}/playlists/id/${modalOption.playlistId}`,
-          { method: "DELETE" }
+          { method: "DELETE" },
         );
 
         if (!res.ok) {
@@ -72,9 +70,7 @@ const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
 
       return whichModalIsOpen === modalOption.playlistId ? (
         <CheckModal onPassCheck={onPassCheck} close={close} />
-      ) : (
-        <></>
-      );
+      ) : null;
     }
 
     case "edit": {
@@ -86,7 +82,7 @@ const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
             method: "PATCH",
             body: JSON.stringify({ newTitle }),
             headers: { "Content-Type": "application/json" },
-          }
+          },
         );
 
         if (!res.ok) {
@@ -105,11 +101,17 @@ const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
 
       return whichModalIsOpen === modalOption.playlistId ? (
         <EditModal onPassCheck={onPassCheck} close={close} />
-      ) : (
-        <></>
-      );
+      ) : null;
     }
     case "addFavorite": {
+      const onPassCheck = async (addPlaylistIds: string[]) => {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_ROOT_URL}/users/${modalOption.ownerId}/playlists/`,
+        );
+      };
+      const close = () => {};
+
+      return whichModalIsOpen === modalOption.videoId ? null : null;
     }
     case "password": {
       const onPassCheck = () => {
@@ -122,9 +124,7 @@ const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
 
       return isOpen ? (
         <PasswordModal onPassCheck={onPassCheck} close={close} />
-      ) : (
-        <></>
-      );
+      ) : null;
     }
   }
 };

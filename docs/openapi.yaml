@@ -110,6 +110,47 @@ paths:
               schema:
                 $ref: "#/components/schemas/Playlist"
 
+  /users/{userId}/playlists/videos:
+    post:
+      summary: add new video to playlists
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                videoId:
+                  type: string
+                  example: DHGOI"%$&KMSSM
+                playlistIds:
+                  type: array
+                  items:
+                    type: string
+                  example: [playlistId1, playlistId2]
+      responses:
+        201:
+          description: notify to add new video to playlists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: プレイリストに動画を追加しました。
+                  playlistId:
+                    type: array
+                    items:
+                      type: string
+                    example: [playlistId1, playlistId2]
+
   /users/{userId}/playlists/title/{playlistTitle}:
     get:
       summary: Get playlist from userId and playlistTitle

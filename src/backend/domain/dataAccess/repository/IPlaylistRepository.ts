@@ -1,29 +1,28 @@
-import { DeletePlaylistByPlaylistId } from "@/src/backend/application/playlist/DeletePlaylistByPlaylistId";
-
 export interface IPlaylistRepository {
-  fetchPlaylistByPlaylistId: (playlistId: string) => Promise<
+  fetchPlaylistsByPlaylistIds: (playlistId: string[]) => Promise<
     | {
         playlistId: string;
         createdAt: string;
         title: string;
         ownerId: string;
-      }
+      }[]
     | undefined
   >;
-  fetchPlaylistByUserId: (userId: string) => Promise<
-    {
-      playlistId: string;
-      createdAt: string;
-      title: string;
-      ownerId: string;
-    }[]
+  fetchPlaylistsByUserId: (userId: string) => Promise<
+    | {
+        playlistId: string;
+        createdAt: string;
+        title: string;
+        ownerId: string;
+      }[]
+    | undefined
   >;
-  fetchPlaylistMemberIdsByPlaylistId: (
-    playlistId: string
-  ) => Promise<{ videoId: string; memberId: number }[]>;
+  fetchPlaylistMemberByPlaylistId: (
+    playlistId: string,
+  ) => Promise<{ videoId: string; memberId: number }[] | undefined>;
   fetchPlaylistByPlaylistTitleAndUserId: (
     playlistTitle: string,
-    userId: string
+    userId: string,
   ) => Promise<
     | {
         playlistId: string;
@@ -34,11 +33,14 @@ export interface IPlaylistRepository {
     | undefined
   >;
   insertPlaylist: (title: string, ownerId: string) => Promise<void>;
-  insertPlaylistMember: (videoId: string, playlistId: string) => Promise<void>;
+  insertPlaylistMemberByPlaylistIdsAndVideoId: (
+    videoId: string,
+    playlistIds: string[],
+  ) => Promise<void>;
   deletePlaylistByPlaylistId: (playlistId: string) => Promise<void>;
   deletePlaylistMemberByMemberId: (memberId: string) => Promise<void>;
   changePlaylistTitleByPlaylistId: (
     playlistId: string,
-    newTitle: string
+    newTitle: string,
   ) => Promise<void>;
 }

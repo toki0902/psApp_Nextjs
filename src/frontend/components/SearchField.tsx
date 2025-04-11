@@ -11,24 +11,24 @@ const SearchField = ({ value = "" }: Props) => {
   const [keyword, setKeyword] = useState(value);
 
   return (
-    <div className="w-96 h-10 pl-4 text-lg text-blue flex justify-between items-center border rounded-full border-blue">
+    <div className="flex h-10 w-96 items-center justify-between rounded-full border border-blue pl-4 text-lg text-blue">
       <input
         type="text"
         value={keyword}
         onChange={(e) => {
           setKeyword(e.target.value);
         }}
-        className="w-[85%] bg-inherit h-8 mr-4 focus:outline-none"
+        className="mr-4 h-8 w-[85%] bg-inherit focus:outline-none"
         placeholder="動画を検索"
       />
       <a
         href={buildEncodedUrl(`/search?q=${keyword}`)}
-        className="w-[15%] h-full border-l border-blue flex justify-center items-center cursor-pointer"
+        className="flex h-full w-[15%] cursor-pointer items-center justify-center border-l border-blue"
       >
         <img
           src="/images/searchIcon.svg"
           alt="search"
-          className="w-[70%] h-[70%]"
+          className="h-[70%] w-[70%]"
         />
       </a>
     </div>

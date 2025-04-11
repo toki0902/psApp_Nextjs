@@ -13,7 +13,7 @@ export default async function RootLayout({
       <body className="bg-back">
         <Provider session={session}>
           <div
-            className="w-full h-full overflow-auto flex justify-center items-center bg-[url('/images/guitar.svg')] bg-no-repeat bg-fixed"
+            className="flex h-full w-full items-center justify-center overflow-auto bg-[url('/images/guitar.svg')] bg-fixed bg-no-repeat"
             style={{ backgroundSize: "70%", backgroundPosition: "50% 70%" }}
           >
             {children}

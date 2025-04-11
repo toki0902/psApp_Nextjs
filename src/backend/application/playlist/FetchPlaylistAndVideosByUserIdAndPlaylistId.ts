@@ -8,28 +8,38 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistId {
   constructor(
     private _playlistRepository: IPlaylistRepository,
     private _videoRepository: IVideoRepository,
-    private _searchGateway: ISearchGateway
+    private _searchGateway: ISearchGateway,
   ) {}
 
   run = async (
     userId: string,
-    playlistId: string
+    playlistId: string,
   ): Promise<Playlist | undefined> => {
     const playlistData =
-      await this._playlistRepository.fetchPlaylistByPlaylistId(playlistId);
+      await this._playlistRepository.fetchPlaylistsByPlaylistIds([playlistId]);
 
-    if (!playlistData) {
+    if (!playlistData?.length) {
       throw new NotFoundError("playlist is not found");
     }
 
-    if (playlistData.ownerId !== userId) {
+    if (playlistData[0].ownerId !== userId) {
       throw new UnAuthorizeError("you don't own this playlist");
     }
 
-    const videoObjs =
-      await this._playlistRepository.fetchPlaylistMemberIdsByPlaylistId(
-        playlistId
+    const playlistMemberObj =
+      await this._playlistRepository.fetchPlaylistMemberByPlaylistId(
+        playlistId,
       );
+
+    if (!playlistMemberObj) {
+      return new Playlist(
+        playlistData[0].playlistId,
+        [],
+        playlistData[0].title,
+        playlistData[0].createdAt,
+        playlistData[0].ownerId,
+      );
+    }
 
     const cacheId = await this._videoRepository.fetchValidCacheId();
 
@@ -37,10 +47,10 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistId {
     if (!cacheId) {
       const accessToken = await this._searchGateway.fetchAccessToken();
       const videos = await this._searchGateway.fetchVideoByVideoIds(
-        videoObjs.map((i) => i.videoId),
-        accessToken
+        playlistMemberObj.map((i) => i.videoId),
+        accessToken,
       );
-      const memberIds = videoObjs.map((obj) => obj.memberId);
+      const memberIds = playlistMemberObj.map((obj) => obj.memberId);
       arr_videoInfo = memberIds.map((id, index) => {
         return {
           videoMemberId: id,
@@ -50,10 +60,10 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistId {
     } else {
       const videos =
         await this._videoRepository.fetchVideoByYoutubeIdsAndCacheId(
-          videoObjs.map((i) => i.videoId),
-          cacheId
+          playlistMemberObj.map((i) => i.videoId),
+          cacheId,
         );
-      const memberIds = videoObjs.map((i) => i.memberId);
+      const memberIds = playlistMemberObj.map((i) => i.memberId);
       arr_videoInfo = memberIds.map((id, index) => {
         return {
           videoMemberId: id,
@@ -63,11 +73,11 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistId {
     }
 
     return new Playlist(
-      playlistData.playlistId,
+      playlistData[0].playlistId,
       arr_videoInfo,
-      playlistData.title,
-      playlistData.createdAt,
-      playlistData.ownerId
+      playlistData[0].title,
+      playlistData[0].createdAt,
+      playlistData[0].ownerId,
     );
   };
 }

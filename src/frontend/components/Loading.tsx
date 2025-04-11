@@ -70,9 +70,9 @@ const Loading = ({ status, hideLoading }: Props) => {
       onAnimationEnd={hideLoading}
       className={
         status === "visible"
-          ? "w-screen h-screen fixed top-0 right-0 bg-back flex items-center z-30 justify-center animate-focus-in"
+          ? "fixed right-0 top-0 z-30 flex h-screen w-screen animate-focus-in items-center justify-center bg-back"
           : status === "hiding"
-            ? "w-screen h-screen fixed top-0 right-0 bg-back flex items-center z-30 justify-center animate-blur-out"
+            ? "fixed right-0 top-0 z-30 flex h-screen w-screen animate-blur-out items-center justify-center bg-back"
             : "hidden"
       }
     >
@@ -82,7 +82,7 @@ const Loading = ({ status, hideLoading }: Props) => {
         )}
       </div>
       <p
-        className={`${Caveat_thin.className} text-5xl text-red absolute top-[66%] left-1/2 -translate-x-1/2 flex`}
+        className={`${Caveat_thin.className} absolute left-1/2 top-[66%] flex -translate-x-1/2 text-5xl text-red`}
       >
         Loading
         <span className="ml-2">
@@ -91,7 +91,7 @@ const Loading = ({ status, hideLoading }: Props) => {
           <span className="animate-dot-third">.</span>
         </span>
       </p>
-      <p className="text-xl text-blue absolute bottom-7 right-7">
+      <p className="absolute bottom-7 right-7 text-xl text-blue">
         ロゴ提供：{writer}
       </p>
     </div>

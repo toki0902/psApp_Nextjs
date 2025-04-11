@@ -16,9 +16,9 @@ const App = async () => {
   const session: Session = await auth();
   return (
     <>
-      <div className="w-1/3 border-red flex flex-col justify-center items-center">
-        <div className="w-full flex justify-center items-center">
-          <div className="h-full flex justify-center items-center mr-10">
+      <div className="flex w-1/3 flex-col items-center justify-center border-red">
+        <div className="flex w-full items-center justify-center">
+          <div className="mr-10 flex h-full items-center justify-center">
             <Image
               src={coffeeLogo}
               alt="coffee~"
@@ -26,25 +26,25 @@ const App = async () => {
             ></Image>
           </div>
           <div
-            className={`${Noto_Serif_bold.className} text-3xl lg:text-4xl 2xl:text-5xl h-full flex justify-center items-center text-center`}
+            className={`${Noto_Serif_bold.className} flex h-full items-center justify-center text-center text-3xl lg:text-4xl 2xl:text-5xl`}
           >
             P.S. <br />
             MEMORIES
           </div>
         </div>
         <div
-          className={`${Baloo_thin.className} mt-10 text-1xl lg:text-2xl text-center flex flex-col justify-center items-center tracking-[.3em] text-blue`}
+          className={`${Baloo_thin.className} text-1xl mt-10 flex flex-col items-center justify-center text-center tracking-[.3em] text-blue lg:text-2xl`}
         >
           DOSHISHA ACOUSTIC <br />
           MUSIC CIRCLE
         </div>
       </div>
-      <div className="w-fit sm:absolute xl:static top-0 mt-5">
+      <div className="top-0 mt-5 w-fit sm:absolute xl:static">
         <SearchField></SearchField>
       </div>
 
       <div
-        className={`${Caveat_thin.className} w-1/3 h-full flex flex-col justify-center items-center border-red space-y-10`}
+        className={`${Caveat_thin.className} flex h-full w-1/3 flex-col items-center justify-center space-y-10 border-red`}
       >
         {session ? (
           <Button href={`/users/${session.user.userId}/playlists`}>

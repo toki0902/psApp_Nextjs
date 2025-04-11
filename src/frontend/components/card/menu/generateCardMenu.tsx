@@ -7,10 +7,10 @@ import { ModalType } from "@/src/frontend/types/modal";
 export const generateCardMenu = (
   options: CardMenuOption,
   openModal: (id: string, modalType: ModalType) => void,
-  cardData: MenuDataMap
+  cardData: MenuDataMap,
 ) => {
   const defKeys = Object.keys(options).filter(
-    (key): key is keyof typeof menuDefinitions => key in menuDefinitions
+    (key): key is keyof typeof menuDefinitions => key in menuDefinitions,
   );
 
   return defKeys.sort().map((option) => {

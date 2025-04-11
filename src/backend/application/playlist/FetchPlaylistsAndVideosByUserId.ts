@@ -8,14 +8,14 @@ export class FetchPlaylistsAndVideosByUserId {
   constructor(
     private _playlistRepository: IPlaylistRepository,
     private _videoRepository: IVideoRepository,
-    private _searchGateway: ISearchGateway
+    private _searchGateway: ISearchGateway,
   ) {}
 
   run = async (userId: string): Promise<Playlist[]> => {
     const arr_playlistData =
-      await this._playlistRepository.fetchPlaylistByUserId(userId);
+      await this._playlistRepository.fetchPlaylistsByUserId(userId);
 
-    if (!arr_playlistData.length) {
+    if (!arr_playlistData) {
       return [];
     }
 
@@ -24,8 +24,10 @@ export class FetchPlaylistsAndVideosByUserId {
     const arr_playlistMemberData = await Promise.all(
       playlistIds.map(
         async (id) =>
-          await this._playlistRepository.fetchPlaylistMemberIdsByPlaylistId(id)
-      )
+          (await this._playlistRepository.fetchPlaylistMemberByPlaylistId(
+            id,
+          )) || [],
+      ),
     );
 
     const cacheId = await this._videoRepository.fetchValidCacheId();
@@ -39,12 +41,12 @@ export class FetchPlaylistsAndVideosByUserId {
           const memberIds = data.map((data) => data.memberId);
           const videos = await this._searchGateway.fetchVideoByVideoIds(
             youtubeIds,
-            accessToken
+            accessToken,
           );
           return memberIds.map((memberId, index) => {
             return { video: videos[index], videoMemberId: memberId };
           });
-        })
+        }),
       );
     } else {
       arr_videos = await Promise.all(
@@ -54,7 +56,7 @@ export class FetchPlaylistsAndVideosByUserId {
           const videos =
             await this._videoRepository.fetchVideoByYoutubeIdsAndCacheId(
               youtubeIds,
-              cacheId
+              cacheId,
             );
           return memberIds.map((memberId, index) => {
             return {
@@ -62,7 +64,7 @@ export class FetchPlaylistsAndVideosByUserId {
               videoMemberId: memberId,
             };
           });
-        })
+        }),
       );
     }
 
@@ -73,9 +75,9 @@ export class FetchPlaylistsAndVideosByUserId {
           videos,
           arr_playlistData[index].title,
           arr_playlistData[index].createdAt,
-          arr_playlistData[index].ownerId
+          arr_playlistData[index].ownerId,
         );
-      })
+      }),
     );
 
     return playlists;

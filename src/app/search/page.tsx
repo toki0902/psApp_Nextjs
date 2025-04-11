@@ -39,7 +39,7 @@ const Search = async ({
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/search?q=${query}`,
-    { method: "GET", headers: { "Content-Type": "application/json" } }
+    { method: "GET", headers: { "Content-Type": "application/json" } },
   );
 
   if (!res.ok) {
@@ -64,7 +64,7 @@ const Search = async ({
       headers: { "Content-Type": "application/json", Cookie: cookie },
       cache: "no-store",
       credentials: "include",
-    }
+    },
   );
 
   if (!playlistResponse.ok) {
@@ -88,15 +88,15 @@ const Search = async ({
   };
 
   return (
-    <div className="w-screen h-screen">
+    <div className="h-screen w-screen">
       <ModalWrapper modalOption={modalOption} />
-      <div className="w-full h-full px-[3%] pt-10 flex flex-col">
-        <div className="w-full flex justify-left items-end">
+      <div className="flex h-full w-full flex-col px-[3%] pt-10">
+        <div className="justify-left flex w-full items-end">
           <SearchField value={query}></SearchField>
           <p className={`${Kaisei.className} ml-10 text-2xl`}>の検索結果</p>
-          <p className="ml-4 text-mg">{videos.length}件の動画</p>
+          <p className="text-mg ml-4">{videos.length}件の動画</p>
         </div>
-        <div className="w-full h-max flex flex-wrap mt-20">
+        <div className="mt-20 flex h-max w-full flex-wrap">
           <CardWrapper cardMenuOption={cardMenuOption} playlists={playlists}>
             {videos.map((video, index) => {
               return <VideoCard key={index} videoInfo={video}></VideoCard>;

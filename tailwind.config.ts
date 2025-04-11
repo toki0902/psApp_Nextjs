@@ -19,6 +19,7 @@ const config: Config = {
       },
       animation: {
         slowSpin: "spin 8s linear infinite",
+        "drop-in-forModal": "drop-in-forModal .3s",
         "focus-in":
           "focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530)   both",
         "blur-out":
@@ -29,6 +30,10 @@ const config: Config = {
         shake: "shake 1s linear 1",
       },
       keyframes: {
+        "drop-in-forModal": {
+          from: { transform: "translate(-50%, -60%)", opacity: "0" },
+          to: { transform: "translate(-50%, -50%)", opacity: "1" },
+        },
         "focus-in": {
           "0%": {
             filter: "blur(12px)",

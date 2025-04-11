@@ -5,13 +5,13 @@ export class DeletePlaylistByPlaylistId {
   constructor(private _playlistRepository: IPlaylistRepository) {}
   run = async (playlistId: string, userId: string): Promise<void> => {
     const playlistData =
-      await this._playlistRepository.fetchPlaylistByPlaylistId(playlistId);
+      await this._playlistRepository.fetchPlaylistsByPlaylistIds([playlistId]);
 
-    if (!playlistData) {
+    if (!playlistData?.length) {
       throw new NotFoundError("playlist is not found");
     }
 
-    if (playlistData.ownerId !== userId) {
+    if (playlistData[0].ownerId !== userId) {
       throw new UnAuthorizeError("you don't own this playlist");
     }
 

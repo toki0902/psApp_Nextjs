@@ -19,7 +19,7 @@ export class YoutubeDataSearchGateway {
     if (!tokenResponse.ok) {
       const errorData = tokenResponse.json();
       throw new UnAuthorizeError(
-        `failed to fetch token ${JSON.stringify(errorData)}`
+        `failed to fetch token ${JSON.stringify(errorData)}`,
       );
     }
 
@@ -30,10 +30,10 @@ export class YoutubeDataSearchGateway {
 
   //fix: errorレスポンスがHTML形式っぽい
   fetchAllVideoByAccessToken = async (
-    accessToken: string
+    accessToken: string,
   ): Promise<Video[]> => {
     const fetchViewCountsByVideoIds = async (
-      videoIds: (string | undefined)[]
+      videoIds: (string | undefined)[],
     ) => {
       if (!videoIds.length) {
         return [];
@@ -41,20 +41,20 @@ export class YoutubeDataSearchGateway {
 
       const statisticsResponse = await fetch(
         `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds.join(
-          ","
+          ",",
         )}`,
         {
           method: "GET",
           headers: { Authorization: `Bearer ${accessToken}` },
-        }
+        },
       );
 
       if (!statisticsResponse.ok) {
         const errorData = await statisticsResponse.text();
         throw new UnAuthorizeError(
           `failed to fetch video statistics in process 'fetchAllVideoByAccessToken': ${JSON.stringify(
-            errorData
-          )}`
+            errorData,
+          )}`,
         );
       }
 
@@ -79,22 +79,22 @@ export class YoutubeDataSearchGateway {
           {
             method: "GET",
             headers: { Authorization: `Bearer ${accessToken}` },
-          }
+          },
         );
 
         if (!response.ok) {
           const errorData = await response.json();
           throw new UnAuthorizeError(
             `failed to fetch upload playlist in process 'fetchAllVideoByAccessToken': ${JSON.stringify(
-              errorData
-            )}`
+              errorData,
+            )}`,
           );
         }
 
         const data: PlaylistItemsResponse = await response.json();
 
         const videoIds = data.items.map(
-          (item) => item.snippet.resourceId.videoId
+          (item) => item.snippet.resourceId.videoId,
         );
 
         const arr_view = await fetchViewCountsByVideoIds(videoIds);
@@ -104,24 +104,36 @@ export class YoutubeDataSearchGateway {
         nextPageToken = data.nextPageToken;
       } while (nextPageToken);
 
-      return { videos, views };
+      const returnObj = videos.map((video, index) => {
+        return {
+          video: video,
+          view: views[index],
+        };
+      });
+
+      return returnObj;
     };
 
     const allVideoData = await fetchAllVideos();
 
-    const uploadPlaylistData: PlaylistItem[] = allVideoData.videos;
+    const seen = new Set();
 
-    const arr_videoId = uploadPlaylistData.map(
-      (item) => item.snippet.resourceId.videoId
+    const videoDataWithoutDuplicates = allVideoData.filter((video) => {
+      const videoId = video.video.snippet.resourceId.videoId;
+      return seen.has(videoId) ? false : seen.add(videoId);
+    });
+
+    const arr_videoId = videoDataWithoutDuplicates.map(
+      (item) => item.video.snippet.resourceId.videoId,
     );
 
-    const arr_viewCount = allVideoData.views;
+    const arr_viewCount = videoDataWithoutDuplicates.map((item) => item.view);
 
-    const arr_video = uploadPlaylistData.map((item, index) => {
+    const arr_video = videoDataWithoutDuplicates.map((item, index) => {
       const videoId = arr_videoId[index];
       const views = arr_viewCount[index];
-      const thumbnail = item?.snippet?.thumbnails?.standard?.url || "";
-      const title = item.snippet.title;
+      const thumbnail = item?.video?.snippet?.thumbnails?.standard?.url || "";
+      const title = item.video.snippet.title;
       return new Video(videoId, views, thumbnail, title);
     });
 
@@ -132,24 +144,24 @@ export class YoutubeDataSearchGateway {
 
   fetchVideoByVideoIds = async (
     videoIds: string[],
-    accessToken: string
+    accessToken: string,
   ): Promise<Video[]> => {
     const videoResponse = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=${videoIds.join(
-        ","
+        ",",
       )}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${accessToken}` },
-      }
+      },
     );
 
     if (!videoResponse.ok) {
       const errorData = await videoResponse.text();
       throw new UnAuthorizeError(
         `failed to fetch video in process 'fetchVideoByVideoIds': ${JSON.stringify(
-          errorData
-        )}`
+          errorData,
+        )}`,
       );
     }
 
@@ -160,7 +172,7 @@ export class YoutubeDataSearchGateway {
         item.id || "",
         Number(item.statistics?.viewCount) || 0,
         item.snippet?.thumbnails.standard?.url || "",
-        item.snippet?.title || ""
+        item.snippet?.title || "",
       );
     });
   };
