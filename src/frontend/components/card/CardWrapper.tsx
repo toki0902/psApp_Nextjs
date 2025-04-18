@@ -16,6 +16,7 @@ type CardProps = {
   ownerPlaylist: playlist;
   playlists: playlist[];
   cardMenuOption: CardMenuOption;
+  userId: string;
 };
 
 const CardWrapper = ({
@@ -23,11 +24,13 @@ const CardWrapper = ({
   cardMenuOption,
   playlists,
   ownerPlaylist,
+  userId,
 }: {
   children: ReactNode;
   cardMenuOption: CardMenuOption;
   playlists?: playlist[];
   ownerPlaylist?: playlist;
+  userId?: string;
 }) => {
   const [whichModalIsOpen, setWhichModalIsOpen] = useState<string | null>(null);
   const [whichMenuIsOpen, setWhichMenuIsOpen] = useState<string | null>(null);
@@ -50,6 +53,12 @@ const CardWrapper = ({
     setWhichModalIsOpen(null);
   };
 
+  if (playlists) {
+    cardMenuOption = playlists.length
+      ? cardMenuOption
+      : { ...cardMenuOption, addFavorite: undefined };
+  }
+
   const clones = React.Children.map(children, (child) => {
     if (React.isValidElement<CardProps>(child)) {
       return cloneElement(child, {
@@ -63,6 +72,7 @@ const CardWrapper = ({
         ownerPlaylist,
         playlists,
         cardMenuOption,
+        userId,
       });
     }
 

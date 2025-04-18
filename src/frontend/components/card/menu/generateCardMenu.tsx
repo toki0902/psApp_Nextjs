@@ -10,7 +10,8 @@ export const generateCardMenu = (
   cardData: MenuDataMap,
 ) => {
   const defKeys = Object.keys(options).filter(
-    (key): key is keyof typeof menuDefinitions => key in menuDefinitions,
+    (key): key is keyof typeof menuDefinitions =>
+      key in menuDefinitions && options[key as keyof CardMenuOption] === true,
   );
 
   return defKeys.sort().map((option) => {

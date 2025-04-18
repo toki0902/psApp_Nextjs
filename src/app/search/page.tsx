@@ -55,7 +55,170 @@ const Search = async ({
 
   const cookie = await getAllCookies();
 
-  let playlists: playlist[] = [];
+  let playlists: playlist[] = [
+    {
+      videos: [
+        {
+          video: {
+            videoId: "HLkbX0YhToY",
+            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+            views: 32,
+          },
+          videoMemberId: "sagadgaasd",
+        },
+      ],
+      title: "example",
+      playlistId: "easdkfnncksl1",
+      createdAt: "fasdfadsf",
+      ownerId: "sqkt5svY5mWFt2i3u1S1g",
+    },
+    {
+      videos: [
+        {
+          video: {
+            videoId: "HLkbX0YhToY",
+            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+            views: 32,
+          },
+          videoMemberId: "sagadgaasd",
+        },
+      ],
+      title: "example",
+      playlistId: "easdkfnncksl2",
+      createdAt: "fasdfadsf",
+      ownerId: "sqkt5svY5mWFt2i3u1S1g",
+    },
+    {
+      videos: [
+        {
+          video: {
+            videoId: "HLkbX0YhToY",
+            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+            views: 32,
+          },
+          videoMemberId: "sagadgaasd",
+        },
+      ],
+      title: "example",
+      playlistId: "easdkfnncksl3",
+      createdAt: "fasdfadsf",
+      ownerId: "sqkt5svY5mWFt2i3u1S1g",
+    },
+    {
+      videos: [
+        {
+          video: {
+            videoId: "HLkbX0YhToY",
+            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+            views: 32,
+          },
+          videoMemberId: "sagadgaasd",
+        },
+      ],
+      title: "example",
+      playlistId: "easdkfnncksl4",
+      createdAt: "fasdfadsf",
+      ownerId: "sqkt5svY5mWFt2i3u1S1g",
+    },
+    {
+      videos: [
+        {
+          video: {
+            videoId: "HLkbX0YhToY",
+            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+            views: 32,
+          },
+          videoMemberId: "sagadgaasd",
+        },
+      ],
+      title: "exampleskh",
+      playlistId: "easdkfnncksl5",
+      createdAt: "fasdfadsf",
+      ownerId: "sqkt5svY5mWFt2i3u1S1g",
+    },
+    {
+      videos: [
+        {
+          video: {
+            videoId: "HLkbX0YhToY",
+            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+            views: 32,
+          },
+          videoMemberId: "sagadgaasd",
+        },
+      ],
+      title: "exampleasdfajsdfa",
+      playlistId: "easdkfnncksl6",
+      createdAt: "fasdfadsf",
+      ownerId: "sqkt5svY5mWFt2i3u1S1g",
+    },
+    {
+      videos: [
+        {
+          video: {
+            videoId: "HLkbX0YhToY",
+            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+            views: 32,
+          },
+          videoMemberId: "sagadgaasd",
+        },
+      ],
+      title: "example",
+      playlistId: "easdkfnncksl7",
+      createdAt: "fasdfadsf",
+      ownerId: "sqkt5svY5mWFt2i3u1S1g",
+    },
+    {
+      videos: [
+        {
+          video: {
+            videoId: "HLkbX0YhToY",
+            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+            views: 32,
+          },
+          videoMemberId: "sagadgaasd",
+        },
+      ],
+      title: "examdfasdnale",
+      playlistId: "easdkfnncksl8",
+      createdAt: "fasdfadsf",
+      ownerId: "sqkt5svY5mWFt2i3u1S1g",
+    },
+    {
+      videos: [
+        {
+          video: {
+            videoId: "HLkbX0YhToY",
+            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+            views: 32,
+          },
+          videoMemberId: "sagadgaasd",
+        },
+      ],
+      title: "example",
+      playlistId: "easdkfnncksl9",
+      createdAt: "fasdfadsf",
+      ownerId: "sqkt5svY5mWFt2i3u1S1g",
+    },
+  ];
 
   const playlistResponse = await fetch(
     `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${session?.user.userId}/playlists`,
@@ -74,8 +237,6 @@ const Search = async ({
     const playlistData = await playlistResponse.json();
     playlists = playlistData.playlists;
   }
-
-  console.log(playlists);
 
   const cardMenuOption: CardMenuOption = {
     share: true,
@@ -97,7 +258,11 @@ const Search = async ({
           <p className="text-mg ml-4">{videos.length}件の動画</p>
         </div>
         <div className="mt-20 flex h-max w-full flex-wrap">
-          <CardWrapper cardMenuOption={cardMenuOption} playlists={playlists}>
+          <CardWrapper
+            cardMenuOption={cardMenuOption}
+            playlists={playlists}
+            userId={session?.user.userId}
+          >
             {videos.map((video, index) => {
               return <VideoCard key={index} videoInfo={video}></VideoCard>;
             })}

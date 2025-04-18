@@ -1,10 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { playlist, video } from "../../types/playlist";
 import { ModalType, modalOption } from "../../types/modal";
 import { CardMenuOption, MenuDataMap } from "../../types/cardMenu";
-import { useParams } from "next/navigation";
 import ModalWrapper from "../modal/ModalWrapper";
 import { generateMenuDataMap } from "../../utils/cardMenu";
 import { generateCardMenu } from "./menu/generateCardMenu";
@@ -22,6 +21,7 @@ type Props = {
   closeModal?: () => void;
   playlists?: playlist[];
   ownerPlaylist?: playlist;
+  userId?: string;
 };
 
 const VideoCard = ({
@@ -37,6 +37,7 @@ const VideoCard = ({
   closeModal,
   playlists,
   ownerPlaylist,
+  userId,
 }: Props) => {
   //cardMenuにhoverした時にmenu開くボタンのborderを閉じるためのState
   const [isHovered, setIsHovered] = useState(false);
@@ -65,16 +66,17 @@ const VideoCard = ({
 
   let modalOption: modalOption | null = null;
   //ここの条件式はcloneElementを使用しているからしゃあない！！
-  if (
-    modalType &&
-    closeModal &&
-    whichModalIsOpen &&
-    ownerPlaylist &&
-    videoMemberId &&
-    playlists
-  ) {
-    switch (modalType) {
-      case "deleteFromPlaylist": {
+
+  switch (modalType) {
+    case "deleteFromPlaylist": {
+      if (
+        modalType &&
+        closeModal &&
+        whichModalIsOpen &&
+        ownerPlaylist &&
+        videoMemberId &&
+        playlists
+      ) {
         modalOption = {
           type: modalType,
           playlistId: ownerPlaylist?.playlistId,
@@ -84,18 +86,19 @@ const VideoCard = ({
           ownerId: ownerPlaylist.ownerId,
           videoId: videoInfo.videoId,
         };
-        break;
       }
-      case "addFavorite": {
+      break;
+    }
+    case "addFavorite": {
+      if (playlists && whichModalIsOpen && closeModal && userId)
         modalOption = {
           type: modalType,
           playlists: playlists,
           videoId: videoInfo.videoId,
-          ownerId: ownerPlaylist.ownerId,
+          ownerId: userId,
           whichModalIsOpen,
           closeModal,
         };
-      }
     }
   }
 

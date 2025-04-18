@@ -71,9 +71,10 @@ const PasswordModal = ({ onPassCheck, close }: props) => {
           確かめる
         </button>
         {isCorrect === false ? (
-          <p className="absolute left-1/2 top-[40%] w-fit -translate-x-1/2 -translate-y-1/2 text-red">
-            合言葉が違います
-          </p>
+          <div className="absolute left-1/2 top-[40%] flex w-fit -translate-x-1/2 -translate-y-1/2 items-center text-red">
+            <img className="mr-2 w-5" src="/images/warning.svg" alt="" />
+            <p>合言葉が違います。</p>
+          </div>
         ) : null}
       </div>
     </>

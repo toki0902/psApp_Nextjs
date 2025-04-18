@@ -8,10 +8,18 @@ import PlaylistCard from "@/src/frontend/components/card/PlaylistCard";
 import CardWrapper from "@/src/frontend/components/card/CardWrapper";
 
 const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
-  let playlists: playlist[] = [];
-
   const { userId } = await params;
   const session: Session | null = await auth();
+
+  let playlists: playlist[] = [
+    {
+      videos: [],
+      title: "title",
+      playlistId: "safasdfasdhnom",
+      ownerId: userId,
+      createdAt: "lajdljfas",
+    },
+  ];
 
   await checkSession(userId);
 

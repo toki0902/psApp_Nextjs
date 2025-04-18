@@ -44,7 +44,7 @@ const EditModal = ({ onPassCheck, close }: props) => {
         onClick={close}
       ></div>
       <div
-        className={`${Kaisei.className} animate-drop-in-forModal fixed left-1/2 top-1/2 z-20 flex aspect-[16/9] w-1/2 max-w-[750px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-between rounded-xl border-2 border-red bg-back py-16 xl:py-24`}
+        className={`${Kaisei.className} fixed left-1/2 top-1/2 z-20 flex aspect-[16/9] w-1/2 max-w-[750px] -translate-x-1/2 -translate-y-1/2 transform animate-drop-in-forModal flex-col items-center justify-between rounded-xl border-2 border-red bg-back py-16 xl:py-24`}
       >
         <div
           className="absolute right-7 top-7 h-7 w-7 cursor-pointer"
@@ -69,9 +69,10 @@ const EditModal = ({ onPassCheck, close }: props) => {
           変更する
         </button>
         {isValid === false ? (
-          <p className="absolute left-1/2 top-[40%] w-fit -translate-x-1/2 -translate-y-1/2 text-nowrap text-red">
-            プレイリストタイトルは1文字以上が有効です。
-          </p>
+          <div className="absolute left-1/2 top-[40%] flex w-fit -translate-x-1/2 -translate-y-1/2 items-center text-nowrap text-red">
+            <img className="mr-2 w-5" src="/images/warning.svg" alt="" />
+            <p>お気に入りのタイトルは1文字以上が有効です。</p>
+          </div>
         ) : null}
       </div>
     </>
