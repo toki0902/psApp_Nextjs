@@ -13,7 +13,18 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
 
   let playlists: playlist[] = [
     {
-      videos: [],
+      videos: [
+        {
+          video: {
+            videoId: "HLkbX0YhToY",
+            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+            views: 32,
+          },
+          videoMemberId: "sagadgaasd",
+        },
+      ],
       title: "title",
       playlistId: "safasdfasdhnom",
       ownerId: userId,
@@ -48,15 +59,15 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const cardMenu: CardMenuOption = { edit: true, deletePlaylist: true };
 
   return (
-    <div className="h-screen w-screen">
-      <div className="flex h-full w-full flex-col px-[3%] pt-10">
-        <div className="justify-left flex w-full items-end">
-          <p className={`${Kaisei.className} ml-10 text-2xl`}>
+    <div className="h-full w-full">
+      <div className="flex h-full w-full flex-col pt-10">
+        <div className="justify-left flex w-fit items-end border-b-4 border-red">
+          <p className={`${Kaisei.className} text-2xl`}>
             {session?.user.name}さんのお気に入り
           </p>
           <p className="text-mg ml-4">{playlists.length}件のお気に入り</p>
         </div>
-        <div className="mt-20 flex h-max w-full flex-wrap">
+        <div className="mt-10 flex h-max w-full flex-wrap">
           <CardWrapper cardMenuOption={cardMenu} playlists={playlists}>
             {playlists.map((playlist) => {
               return (

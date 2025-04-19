@@ -4,14 +4,13 @@ import { buildEncodedUrl } from "../utils/url";
 
 type Props = {
   value?: string;
-  atSearch?: boolean;
 };
 
 const SearchField = ({ value = "" }: Props) => {
   const [keyword, setKeyword] = useState(value);
 
   return (
-    <div className="flex h-10 w-96 items-center justify-between rounded-full border border-blue pl-4 text-lg text-blue">
+    <div className="flex h-9 w-full items-center justify-between rounded-full border border-blue pl-4 text-base text-blue">
       <input
         type="text"
         value={keyword}
@@ -23,7 +22,7 @@ const SearchField = ({ value = "" }: Props) => {
       />
       <a
         href={buildEncodedUrl(`/search?q=${keyword}`)}
-        className="flex h-full w-[15%] cursor-pointer items-center justify-center border-l border-blue"
+        className="flex h-full w-14 cursor-pointer items-center justify-center border-l border-blue"
       >
         <img
           src="/images/searchIcon.svg"

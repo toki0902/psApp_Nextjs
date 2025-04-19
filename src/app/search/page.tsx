@@ -1,11 +1,9 @@
-import SearchField from "@/components/SearchField";
 import VideoCard from "@/src/frontend/components/card/VideoCard";
 
 import { playlist, video } from "@/src/frontend/types/playlist";
 import { CardMenuOption } from "@/src/frontend/types/cardMenu";
 import { modalOption } from "@/src/frontend/types/modal";
 
-import { Kaisei } from "@/fonts";
 import ModalWrapper from "@/src/frontend/components/modal/ModalWrapper";
 import CardWrapper from "@/src/frontend/components/card/CardWrapper";
 
@@ -249,15 +247,13 @@ const Search = async ({
   };
 
   return (
-    <div className="h-screen w-screen">
+    <div className="h-full w-full">
       <ModalWrapper modalOption={modalOption} />
-      <div className="flex h-full w-full flex-col px-[3%] pt-10">
+      <div className="flex h-full w-full flex-col pt-5">
         <div className="justify-left flex w-full items-end">
-          <SearchField value={query}></SearchField>
-          <p className={`${Kaisei.className} ml-10 text-2xl`}>の検索結果</p>
-          <p className="text-mg ml-4">{videos.length}件の動画</p>
+          <p className="text-mg">{videos.length}件の動画</p>
         </div>
-        <div className="mt-20 flex h-max w-full flex-wrap">
+        <div className="mt-10 flex h-max w-full flex-wrap">
           <CardWrapper
             cardMenuOption={cardMenuOption}
             playlists={playlists}

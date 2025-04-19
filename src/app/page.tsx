@@ -39,9 +39,6 @@ const App = async () => {
           MUSIC CIRCLE
         </div>
       </div>
-      <div className="top-0 mt-5 w-fit sm:absolute xl:static">
-        <SearchField></SearchField>
-      </div>
 
       <div
         className={`${Caveat_thin.className} flex h-full w-1/3 flex-col items-center justify-center space-y-10 border-red`}
