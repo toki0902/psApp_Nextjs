@@ -9,7 +9,7 @@ export const generateNavItems = (
   session: Session,
   navMenuOption: NavMenuOption,
 ) => {
-  const { userId } = session.user;
+  const { userId } = session?.user || "";
 
   const router = useRouter();
 
@@ -26,7 +26,7 @@ export const generateNavItems = (
       return a.localeCompare(b);
     })
     .map((key) => {
-      const { text, defaultIcon, hoverIcon } = navItemDefinitions[key];
+      const { text, defaultIcon, hoverIcon, getHref } = navItemDefinitions[key];
       return (
         <NavItem
           text={text}
@@ -34,13 +34,7 @@ export const generateNavItems = (
           hoverIcon={hoverIcon}
           icon={defaultIcon}
           onClick={() => {
-            if (key === "home") {
-              router.push("/");
-            } else if (key === "favorite") {
-              router.push(`/users/${userId}/playlists`);
-            } else if (key === "login") {
-              router.push("/v1/api/auth/signin");
-            }
+            router.push(getHref(userId));
           }}
         />
       );
