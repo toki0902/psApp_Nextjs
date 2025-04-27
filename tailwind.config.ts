@@ -1,4 +1,3 @@
-import { transform } from "next/dist/build/swc/generated-native";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -19,6 +18,9 @@ const config: Config = {
       },
       animation: {
         slowSpin: "spin 8s linear infinite",
+        toLeftForFavorite: "toLeftForFavorite 0.3s",
+        toUpInForFavorite: "toUp-in 0.8s",
+        "toUp-in": "toUp-in 0.3s",
         "drop-in-forModal": "drop-in-forModal .3s",
         "focus-in":
           "focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530)   both",
@@ -30,6 +32,14 @@ const config: Config = {
         shake: "shake 1s linear 1",
       },
       keyframes: {
+        toLeftForFavorite: {
+          "0%": { transform: "translate(100px, 0%)" },
+          "100%": { transform: "translate(0, 0%)" },
+        },
+        "toUp-in": {
+          from: { transform: "translate(0, 100%)" },
+          to: { transform: "translate(0, 0)" },
+        },
         "drop-in-forModal": {
           from: { transform: "translate(-50%, -60%)", opacity: "0" },
           to: { transform: "translate(-50%, -50%)", opacity: "1" },

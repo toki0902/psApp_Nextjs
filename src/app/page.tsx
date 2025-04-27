@@ -18,7 +18,7 @@ const App = async () => {
     <>
       <div className="flex w-1/3 flex-col items-center justify-center border-red">
         <div className="flex w-full items-center justify-center">
-          <div className="mr-10 flex h-full items-center justify-center">
+          <div className="mr-10 hidden h-full items-center justify-center lg:flex">
             <Image
               src={coffeeLogo}
               alt="coffee~"
@@ -41,7 +41,7 @@ const App = async () => {
       </div>
 
       <div
-        className={`${Caveat_thin.className} flex h-full w-1/3 flex-col items-center justify-center space-y-10 border-red`}
+        className={`${Caveat_thin.className} hidden h-full w-1/3 flex-col items-center justify-center space-y-10 border-red lg:flex`}
       >
         {session ? (
           <Button href={`/users/${session.user.userId}/playlists`}>

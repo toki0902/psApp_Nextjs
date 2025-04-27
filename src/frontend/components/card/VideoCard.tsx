@@ -7,6 +7,7 @@ import { CardMenuOption, MenuDataMap } from "../../types/cardMenu";
 import ModalWrapper from "../modal/ModalWrapper";
 import { generateMenuDataMap } from "../../utils/cardMenu";
 import { generateCardMenu } from "./menu/generateCardMenu";
+import CardMenu from "./menu/CardMenu";
 
 type Props = {
   videoInfo: video;
@@ -66,7 +67,6 @@ const VideoCard = ({
 
   let modalOption: modalOption | null = null;
   //ここの条件式はcloneElementを使用しているからしゃあない！！
-
   switch (modalType) {
     case "deleteFromPlaylist": {
       if (
@@ -116,7 +116,7 @@ const VideoCard = ({
           />
         </div>
         <div className="flex w-full p-2">
-          <div className="h-full w-[90%]">
+          <div className="flex h-full w-[90%] flex-col items-start justify-center">
             <p className="line-clamp-3">{videoInfo.title}</p>
             <p className="mt-2 text-sm">{videoInfo.views} 回視聴</p>
           </div>
@@ -132,12 +132,11 @@ const VideoCard = ({
               <span className="my-[1.5px] block h-1 w-1 rounded-full bg-red"></span>
               <span className="my-[1.5px] block h-1 w-1 rounded-full bg-red"></span>
               {whichMenuIsOpen === videoInfo.videoId && (
-                <div
-                  className="absolute right-0 top-full z-30 w-48 space-y-1 overflow-hidden rounded-lg border border-red bg-back text-xs text-red"
+                <CardMenu
+                  cardMenu={cardMenu}
                   onMouseEnter={() => setIsHovered(false)}
-                >
-                  {cardMenu}
-                </div>
+                  close={closeMenu}
+                />
               )}
             </div>
           </div>

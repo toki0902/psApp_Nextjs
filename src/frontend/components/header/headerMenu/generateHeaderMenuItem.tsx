@@ -3,13 +3,20 @@ import React from "react";
 import { headerMenuDefinitions } from "./headerMenuDefinitions";
 import HeaderMenuItem from "./HeaderMenuItem";
 import { useRouter } from "next/navigation";
+import { Session } from "next-auth";
 
 const generateHeaderMenuItem = ({
+  session,
   headerMenuOption,
+  closeUserMenu,
 }: {
+  session: Session;
   headerMenuOption: HeaderMenuOption;
+  closeUserMenu: () => void;
 }) => {
   const router = useRouter();
+
+  const { userId } = session?.user || { userId: "" };
 
   const defKeys = Object.keys(headerMenuOption).filter(
     (key): key is keyof typeof headerMenuDefinitions =>
@@ -25,7 +32,8 @@ const generateHeaderMenuItem = ({
         text={text}
         icon={icon}
         onClick={() => {
-          router.push(getHref());
+          closeUserMenu();
+          router.push(getHref(userId));
         }}
       />
     );

@@ -7,4 +7,8 @@ export type NavMenuOption = {
 export type HeaderMenuOption = {
   logout?: true;
   login?: true;
+  mobileLogout?: true;
+  mobileFavorite?: true;
+  mobileLogin?: true;
+  mobileHome?: true;
 };

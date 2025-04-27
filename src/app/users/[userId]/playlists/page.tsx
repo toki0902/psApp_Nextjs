@@ -25,7 +25,7 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
           videoMemberId: "sagadgaasd",
         },
       ],
-      title: "title",
+      title: "何",
       playlistId: "safasdfasdhnom",
       ownerId: userId,
       createdAt: "lajdljfas",
@@ -61,12 +61,28 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   return (
     <div className="h-full w-full">
       <div className="flex h-full w-full flex-col pt-10">
-        <div className="justify-left flex w-fit items-end border-b-4 border-red">
-          <p className={`${Kaisei.className} text-2xl`}>
-            {session?.user.name}さんのお気に入り
-          </p>
-          <p className="text-mg ml-4">{playlists.length}件のお気に入り</p>
+        <div className="flex w-full justify-between border-b-4 border-red">
+          <div className="flex items-end">
+            <p className={`${Kaisei.className} text-lg font-bold lg:text-2xl`}>
+              {session?.user.name}さんのお気に入り
+            </p>
+            <p className="text-mg ml-4 hidden lg:block">
+              {playlists.length}件のお気に入り
+            </p>
+          </div>
+          <div className="flex space-x-2 py-1 text-red">
+            <div className="group flex cursor-pointer items-center overflow-hidden">
+              <div className="lg:group-hover:animate-toLeftForFavorite relative h-6 w-6">
+                <span className="absolute left-1/2 top-1/2 block h-[2px] w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-red"></span>
+                <span className="absolute left-1/2 top-1/2 block h-full w-[2px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red"></span>
+              </div>
+              <p className="lg:group-hover:animate-toUpInForFavorite ml-2 hidden lg:group-hover:block">
+                お気に入りを追加
+              </p>
+            </div>
+          </div>
         </div>
+        <p className="text-mg lg:hidden">{playlists.length}件のお気に入り</p>
         <div className="mt-10 flex h-max w-full flex-wrap">
           <CardWrapper cardMenuOption={cardMenu} playlists={playlists}>
             {playlists.map((playlist) => {

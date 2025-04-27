@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { playlist } from "../../types/playlist";
 import { CardMenuOption, MenuDataMap } from "../../types/cardMenu";
 import { modalOption, ModalType } from "../../types/modal";
@@ -7,6 +7,7 @@ import { modalOption, ModalType } from "../../types/modal";
 import ModalWrapper from "../modal/ModalWrapper";
 import { generateCardMenu } from "./menu/generateCardMenu";
 import { generateMenuDataMap } from "../../utils/cardMenu";
+import CardMenu from "./menu/CardMenu";
 
 type Props = {
   playlistInfo: playlist;
@@ -20,7 +21,7 @@ type Props = {
   closeModal?: () => void;
 };
 
-const PlaylistCard = ({
+const PlaylistCard = async ({
   playlistInfo,
   whichMenuIsOpen,
   openMenu,
@@ -55,6 +56,8 @@ const PlaylistCard = ({
     cardMenu = generateCardMenu(cardMenuOption, openModal, cardData);
   }
 
+  //definitionで必要な情報 = onPass作成に必要な情報
+
   let modalOption: modalOption | null = null;
   //ここの条件式はcloneElementを使用しているからしゃあない！！
   if (modalType && closeModal && whichModalIsOpen) {
@@ -71,20 +74,23 @@ const PlaylistCard = ({
     <>
       <a
         href={`/users/${playlistInfo.ownerId}/playlists/${playlistInfo.title}`}
-        className="mx-[calc(0.5%)] mb-10 cursor-pointer rounded-lg sm:w-half-divided lg:w-third-divided 2xl:w-fourth-divided 3xl:w-fifth-divided 4xl:w-sixth-divided"
+        className="mx-[calc(0.5%)] mb-10 flex cursor-pointer rounded-lg sm:block sm:w-half-divided lg:w-third-divided 2xl:w-fourth-divided 3xl:w-fifth-divided 4xl:w-sixth-divided"
       >
-        <div className="aspect-[16/9] w-full">
+        <div className="aspect-[16/9] w-1/2 sm:w-full">
           <img
             src={thumbnail}
             alt="image"
             className="h-full w-full rounded-lg object-cover"
           />
         </div>
-        <div className="flex w-full p-2">
-          <div className="h-full w-[90%]">
-            <p className="line-clamp-3">{playlistInfo.title}</p>
+        <div className="flex w-1/2 p-2 align-middle sm:w-full">
+          <div className="flex h-full w-[80%] flex-col justify-center sm:w-[90%]">
+            <p className="line-clamp-2 sm:line-clamp-3">{playlistInfo.title}</p>
+            <p className="text-sm text-blue">
+              {playlistInfo.videos.length} 件の動画
+            </p>
           </div>
-          <div className="flex w-[10%] items-start justify-center">
+          <div className="flex w-[20%] items-center justify-center sm:w-[10%] sm:items-start">
             <div
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
@@ -96,12 +102,11 @@ const PlaylistCard = ({
               <span className="my-[1.5px] block h-1 w-1 rounded-full bg-red"></span>
               <span className="my-[1.5px] block h-1 w-1 rounded-full bg-red"></span>
               {whichMenuIsOpen === playlistInfo.playlistId && (
-                <div
+                <CardMenu
                   onMouseEnter={() => setIsHovered(false)}
-                  className="absolute right-0 top-full z-30 w-48 space-y-1 overflow-hidden rounded-lg border border-red bg-back text-xs text-red"
-                >
-                  {cardMenu}
-                </div>
+                  cardMenu={cardMenu}
+                  close={closeMenu}
+                />
               )}
             </div>
           </div>

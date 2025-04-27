@@ -1,6 +1,8 @@
 import { MenuDataMap } from "@/src/frontend/types/cardMenu";
 import { ModalType } from "@/src/frontend/types/modal";
 
+//getOnClickはそれぞれの通過後の処理を記述する
+
 export const menuDefinitions = {
   edit: {
     icon: "/images/edit_823A42.svg",

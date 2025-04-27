@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const MenuItem = ({
   icon,
@@ -13,6 +13,20 @@ const MenuItem = ({
   onClick: () => void;
 }) => {
   const [isHover, setIsHover] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div
@@ -23,10 +37,10 @@ const MenuItem = ({
     >
       <div
         style={{
-          backgroundImage: `url(${isHover ? hoverIcon : icon})`,
+          backgroundImage: `url(${isMobile ? hoverIcon : isHover ? hoverIcon : icon})`,
           backgroundSize: "93%",
         }}
-        className="aspect-square w-[10%] bg-center bg-no-repeat group-hover:animate-shake"
+        className="aspect-square w-6 bg-center bg-no-repeat group-hover:animate-shake lg:w-[10%]"
       />
       <p className="w-[90%] px-2">{text}</p>
     </div>

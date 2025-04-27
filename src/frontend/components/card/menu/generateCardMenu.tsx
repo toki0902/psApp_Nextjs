@@ -4,6 +4,9 @@ import { menuDefinitions } from "./menuDefinitions";
 import MenuItem from "./MenuItem";
 import { ModalType } from "@/src/frontend/types/modal";
 
+//generateの責任は
+//onPass後の処理の定義
+
 export const generateCardMenu = (
   options: CardMenuOption,
   openModal: (id: string, modalType: ModalType) => void,
