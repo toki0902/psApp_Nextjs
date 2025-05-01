@@ -1,0 +1,109 @@
+import { ModalContextType } from "../../types/modal";
+import { PageMenuData } from "../../types/pageMenu";
+
+export const PageMenuDefinition = {
+  edit: {
+    getText: (pageMenuData: PageMenuData) =>
+      `「${pageMenuData.edit?.title}」を削除`,
+    icon: "/images/edit_823A42.svg",
+    getOnClick: (
+      pageMenuData: PageMenuData,
+      openModal: ModalContextType["openModal"],
+    ) => {
+      return async () => {
+        const onPassCheck = async (newTitle: string) => {
+          if (pageMenuData.edit) {
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${pageMenuData.edit.ownerId}/playlists/id/${pageMenuData.edit.playlistId}`,
+              {
+                method: "PATCH",
+                body: JSON.stringify({ newTitle }),
+                headers: { "Content-Type": "application/json" },
+              },
+            );
+
+            if (!res.ok) {
+              const errorData = await res.json();
+              console.log(`${errorData.errorType!}: ${errorData.message}`);
+            } else {
+              console.log("プレイリストタイトルを更新しました。");
+            }
+          }
+        };
+
+        const newTitle = await openModal("edit");
+        if (newTitle) {
+          await onPassCheck(newTitle);
+        }
+      };
+    },
+  },
+  create: {
+    getText: () => "お気に入りを作成",
+    icon: "/images/add_823A42.svg",
+    getOnClick: (
+      pageMenuData: PageMenuData,
+      openModal: ModalContextType["openModal"],
+    ) => {
+      return async () => {
+        const onPassCheck = async (playlistTitle: string) => {
+          if (pageMenuData.create) {
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_URL}/v1/api/users/${pageMenuData.create}/playlists`,
+              {
+                method: "POST",
+                body: JSON.stringify({ playlistTitle: playlistTitle }),
+                headers: { "Content-Type": "application/json" },
+              },
+            );
+
+            if (!res.ok) {
+              const errorData = await res.json();
+              console.log(`${errorData.errorType!}: ${errorData.message}`);
+            } else {
+              console.log("お気に入りを作成しました。");
+            }
+          }
+        };
+
+        // const playlistTitle = await openModal("");
+        // if (playlistTitle) {
+        //   await onPassCheck(playlistTitle);
+        // }
+      };
+    },
+  },
+  delete: {
+    getText: (pageMenuData: PageMenuData) =>
+      `「${pageMenuData.delete?.title}」を削除`,
+    icon: "/images/delete_823A42.svg",
+    getOnClick: (
+      pageMenuData: PageMenuData,
+      openModal: ModalContextType["openModal"],
+    ) => {
+      return async () => {
+        const onPassCheck = async () => {
+          if (pageMenuData.delete) {
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${pageMenuData.delete.ownerId}/playlists/id/${pageMenuData.delete.playlistId}`,
+              { method: "DELETE" },
+            );
+
+            if (!res.ok) {
+              const errorData = await res.json();
+              console.log(`${errorData.errorType!}: ${errorData.message}`);
+            } else {
+              console.log("プレイリストを削除しました。");
+            }
+          }
+        };
+
+        const result = await openModal("deletePlaylist");
+
+        if (result) {
+          await onPassCheck();
+        }
+      };
+    },
+  },
+} as const;

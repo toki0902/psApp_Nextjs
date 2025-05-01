@@ -46,7 +46,7 @@ const PasswordModal = ({ onPassCheck, close }: props) => {
         onClick={close}
       ></div>
       <div
-        className={`${Kaisei.className} fixed left-1/2 top-1/2 z-20 flex aspect-[16/9] w-full max-w-[400px] -translate-x-1/2 -translate-y-1/2 transform animate-drop-in-forModal flex-col items-center justify-center rounded-md border-2 border-red bg-back lg:w-1/2 lg:max-w-[750px] lg:rounded-xl`}
+        className={`${Kaisei.className} fixed left-1/2 top-1/2 z-20 flex aspect-[16/9] w-full max-w-[400px] -translate-x-1/2 -translate-y-1/2 transform animate-drop-in-forModal flex-col items-center justify-center rounded-md border-2 border-red bg-back lg:w-1/2 lg:max-w-[700px] lg:rounded-xl`}
       >
         <div
           className="absolute right-7 top-7 h-7 w-7 cursor-pointer"

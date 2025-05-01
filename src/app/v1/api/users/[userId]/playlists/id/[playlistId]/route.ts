@@ -20,18 +20,18 @@ const FetchPlaylistsAndVideosByPlaylistId =
   new FetchPlaylistAndVideosByUserIdAndPlaylistId(
     playlistRepository,
     videoRepository,
-    searchGateway
+    searchGateway,
   );
 const deletePlaylistByPlaylistId = new DeletePlaylistByPlaylistId(
-  playlistRepository
+  playlistRepository,
 );
 const changePlaylistTitleByPlaylistId = new ChangePlaylistTitleByPlaylistId(
-  playlistRepository
+  playlistRepository,
 );
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: Promise<{ userId: string; playlistId: string }> }
+  { params }: { params: Promise<{ userId: string; playlistId: string }> },
 ): Promise<NextResponse> => {
   try {
     const { userId, playlistId } = await params;
@@ -46,13 +46,13 @@ export const GET = async (
     if (session?.user?.userId !== userId) {
       console.log("Unauthorized!");
       throw new UnAuthorizeError(
-        "You are not authenticated. Please log in and try again"
+        "You are not authenticated. Please log in and try again",
       );
     }
 
     const playlist = await FetchPlaylistsAndVideosByPlaylistId.run(
       userId,
-      playlistId
+      playlistId,
     );
 
     return new NextResponse(JSON.stringify({ playlist: playlist }), {
@@ -66,7 +66,7 @@ export const GET = async (
 
 export const DELETE = async (
   req: NextRequest,
-  { params }: { params: Promise<{ userId: string; playlistId: string }> }
+  { params }: { params: Promise<{ userId: string; playlistId: string }> },
 ): Promise<NextResponse> => {
   try {
     const { userId, playlistId } = await params;
@@ -81,7 +81,7 @@ export const DELETE = async (
     if (session?.user?.userId !== userId) {
       console.log("Unauthorized!");
       throw new UnAuthorizeError(
-        "You are not authenticated. Please log in and try again"
+        "You are not authenticated. Please log in and try again",
       );
     }
 
@@ -95,11 +95,13 @@ export const DELETE = async (
 
 export const PATCH = async (
   req: NextRequest,
-  { params }: { params: Promise<{ userId: string; playlistId: string }> }
+  { params }: { params: Promise<{ userId: string; playlistId: string }> },
 ): Promise<NextResponse> => {
   try {
     const { userId, playlistId } = await params;
     const { newTitle } = await req.json();
+
+    console.log(userId, playlistId, newTitle);
 
     if (
       !userId ||
@@ -116,7 +118,7 @@ export const PATCH = async (
     if (session?.user?.userId !== userId) {
       console.log("Unauthorized!");
       throw new UnAuthorizeError(
-        "You are not authenticated. Please log in and try again"
+        "You are not authenticated. Please log in and try again",
       );
     }
 

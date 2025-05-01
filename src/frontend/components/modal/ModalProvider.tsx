@@ -3,55 +3,15 @@ import React, { useState, createContext } from "react";
 import PasswordModal from "./PasswordModal";
 import CheckModal from "./CheckModal";
 import EditModal from "./EditModal";
-import FavoriteModal from "./FavoriteModal";
+import FavoriteModal from "./favoriteModal/FavoriteModal";
 import { playlist } from "../../types/playlist";
-
-type ModalDefinitionMap = {
-  password: {
-    component: typeof PasswordModal;
-    payload: undefined;
-  };
-  deletePlaylist: {
-    component: typeof CheckModal;
-    payload: undefined;
-  };
-  deleteFromPlaylist: {
-    component: typeof CheckModal;
-    payload: undefined;
-  };
-  edit: {
-    component: typeof EditModal;
-    payload: undefined;
-  };
-  share: {
-    component: typeof CheckModal;
-    payload: undefined;
-  };
-  addFavorite: {
-    component: typeof FavoriteModal;
-    payload: { playlists: playlist[] };
-  };
-};
-
-type ModalPayload<T extends ModalType> = ModalDefinitionMap[T]["payload"];
-
-type ModalType = keyof ModalDefinitionMap;
-
-type ModalInfoType = {
-  [K in ModalType]: ModalPayload<K> extends undefined
-    ? { type: K }
-    : { type: K; payload: ModalPayload<K> };
-}[ModalType];
-
-type ModalContextType = {
-  openModal: {
-    <T extends ModalType>(
-      modalType: T,
-      payload: ModalPayload<T>,
-    ): Promise<boolean>;
-    <T extends ModalType>(modalType: T): Promise<boolean>;
-  };
-};
+import {
+  ModalContextType,
+  ModalInfoType,
+  ModalPayload,
+  ModalType,
+  ModalDefinitionMap,
+} from "../../types/modal";
 
 export const ModalContext = createContext<ModalContextType | null>(null);
 
@@ -59,7 +19,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalInfo, setModalInfo] = useState<ModalInfoType | null>(null);
   const [resolver, setResolver] = useState<{
-    resolve: (result: boolean) => void;
+    resolve: (result: boolean | string | string[] | null) => void;
   } | null>(null);
 
   const openModal = <T extends ModalType>(
@@ -74,18 +34,18 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
       setModalInfo({ type: modalType, payload } as ModalInfoType);
     }
 
-    return new Promise<boolean>((resolve) => {
+    return new Promise<ModalDefinitionMap[T]["value"] | null>((resolve) => {
       setResolver({ resolve });
     });
   };
 
-  const onPass = () => {
-    resolver?.resolve(true);
+  const onPass = (returnValue?: string | string[]) => {
+    resolver?.resolve(returnValue || true);
     cleanup();
   };
 
   const onCancel = () => {
-    resolver?.resolve(false);
+    resolver?.resolve(null);
     cleanup();
   };
 

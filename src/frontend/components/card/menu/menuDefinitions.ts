@@ -1,5 +1,5 @@
-import { MenuDataMap } from "@/src/frontend/types/cardMenu";
-import { ModalType } from "@/src/frontend/types/modal";
+import { CardMenuData } from "@/src/frontend/types/cardMenu";
+import { ModalContextType, ModalType } from "@/src/frontend/types/modal";
 
 //getOnClickはそれぞれの通過後の処理を記述する
 
@@ -7,71 +7,162 @@ export const menuDefinitions = {
   edit: {
     icon: "/images/edit_823A42.svg",
     hoverIcon: "/images/edit_f1EBE5.svg",
-    getLabel: (data: MenuDataMap) => "編集する",
+    getLabel: (data: CardMenuData) => "編集する",
     getOnClick: (
-      data: MenuDataMap,
-      openModal: (id: string, modalType: ModalType) => void,
+      data: CardMenuData,
+      openModal: ModalContextType["openModal"],
     ) => {
-      if (data.edit) {
-        const playlistId = data.edit.playlistId;
-        return () => openModal(playlistId, "edit");
-      } else return () => {};
+      return async () => {
+        const onPassCheck = async (newTitle: string) => {
+          if (data.edit) {
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${data.edit.ownerId}/playlists/id/${data.edit.playlistId}`,
+              {
+                method: "PATCH",
+                body: JSON.stringify({ newTitle }),
+                headers: { "Content-Type": "application/json" },
+              },
+            );
+
+            if (!res.ok) {
+              const errorData = await res.json();
+              console.log(`${errorData.errorType!}: ${errorData.message}`);
+            } else {
+              console.log("プレイリストタイトルを更新しました。");
+            }
+          }
+        };
+
+        const newTitle = await openModal("edit");
+        if (newTitle) {
+          await onPassCheck(newTitle);
+        }
+      };
     },
   },
   deletePlaylist: {
     icon: "/images/delete_823A42.svg",
     hoverIcon: "/images/delete_f1EBE5.svg",
-    getLabel: (data: MenuDataMap) => `${data.deletePlaylist?.title}を削除する`,
+    getLabel: (data: CardMenuData) => `${data.deletePlaylist?.title}を削除する`,
     getOnClick: (
-      data: MenuDataMap,
-      openModal: (id: string, modalType: ModalType) => void,
+      data: CardMenuData,
+      openModal: ModalContextType["openModal"],
     ) => {
-      if (data.deletePlaylist) {
-        const playlistId = data.deletePlaylist.playlistId;
-        return () => openModal(playlistId, "deletePlaylist");
-      } else return () => {};
+      return async () => {
+        const onPassCheck = async () => {
+          if (data.deletePlaylist) {
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${data.deletePlaylist.ownerId}/playlists/id/${data.deletePlaylist.playlistId}`,
+              { method: "DELETE" },
+            );
+
+            if (!res.ok) {
+              const errorData = await res.json();
+              console.log(`${errorData.errorType!}: ${errorData.message}`);
+            } else {
+              console.log("プレイリストを削除しました。");
+            }
+          }
+        };
+
+        const result = await openModal("deletePlaylist");
+
+        if (result) {
+          await onPassCheck();
+        }
+      };
     },
   },
   addFavorite: {
     icon: "/images/favorite_823A42.svg",
     hoverIcon: "/images/favorite_f1EBE5.svg",
-    getLabel: (data: MenuDataMap) => `お気に入りに追加する`,
+    getLabel: (data: CardMenuData) => `お気に入りに追加する`,
     getOnClick: (
-      data: MenuDataMap,
-      openModal: (id: string, modalType: ModalType) => void,
+      data: CardMenuData,
+      openModal: ModalContextType["openModal"],
     ) => {
-      if (data.addFavorite) {
-        const videoId = data.addFavorite.videoId;
-        return () => openModal(videoId, "addFavorite");
-      } else return () => {};
+      return async () => {
+        const onPassCheck = async (addPlaylistIds: string[]) => {
+          if (data.addFavorite) {
+            const bodyObj = {
+              videoId: data.addFavorite.thisVideoInfo.videoId,
+              playlistIds: addPlaylistIds,
+            };
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${data.addFavorite.userPlaylistsInfo[0].ownerId}/playlists/videos`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bodyObj),
+              },
+            );
+
+            if (!res.ok) {
+              const errorData = await res.json();
+              console.log(`${errorData.errorType!}: ${errorData.message}`);
+            } else {
+              const resData = await res.json();
+              console.log(resData.message);
+            }
+          }
+        };
+
+        if (data.addFavorite) {
+          const addPlaylistIds = await openModal("addFavorite", {
+            playlists: data.addFavorite.userPlaylistsInfo,
+          });
+
+          if (addPlaylistIds) {
+            await onPassCheck(addPlaylistIds);
+          }
+        }
+      };
     },
   },
+
   share: {
     icon: "/images/share_823A42.svg",
     hoverIcon: "/images/share_f1EBE5.svg",
     getLabel: () => `共有する`,
     getOnClick: (
-      data: MenuDataMap,
-      openModal: (id: string, modalType: ModalType) => void,
+      data: CardMenuData,
+      openModal: ModalContextType["openModal"],
     ) => {
-      if (data.share) {
-        const videoId = data.share.videoId;
-        return () => openModal(videoId, "share");
-      } else return () => {};
+      return async () => {};
     },
   },
+
   deleteFromPlaylist: {
     icon: "/images/delete_823A42.svg",
     hoverIcon: "/images/delete_f1EBE5.svg",
-    getLabel: (data: MenuDataMap) => `お気に入りから削除する`,
+    getLabel: (data: CardMenuData) => `お気に入りから削除する`,
     getOnClick: (
-      data: MenuDataMap,
-      openModal: (id: string, modalType: ModalType) => void,
+      data: CardMenuData,
+      openModal: ModalContextType["openModal"],
     ) => {
-      if (data.deleteFromPlaylist) {
-        const videoId = data.deleteFromPlaylist.videoId;
-        return () => openModal(videoId, "deleteFromPlaylist");
-      } else return () => {};
+      return async () => {
+        const onPassCheck = async () => {
+          if (data.deleteFromPlaylist) {
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${data.deleteFromPlaylist.ownerPlaylistInfo.ownerId}/playlists/id/${data.deleteFromPlaylist.ownerPlaylistInfo.playlistId}/videos/${data.deleteFromPlaylist.memberId}`,
+              { method: "DELETE" },
+            );
+
+            if (!res.ok) {
+              const errorData = await res.json();
+              console.log(`${errorData.errorType!}: ${errorData.message}`);
+            } else {
+              console.log("プレイリストから動画を削除しました。");
+            }
+          }
+        };
+
+        const result = await openModal("deleteFromPlaylist");
+
+        if (result) {
+          await onPassCheck();
+        }
+      };
     },
   },
-} as const;
+};

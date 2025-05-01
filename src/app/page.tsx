@@ -14,6 +14,7 @@ import { Session } from "next-auth";
 
 const App = async () => {
   const session: Session = await auth();
+
   return (
     <>
       <div className="flex w-1/3 flex-col items-center justify-center border-red">

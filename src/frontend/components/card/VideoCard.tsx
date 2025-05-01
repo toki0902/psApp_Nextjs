@@ -2,10 +2,8 @@
 import React, { useState } from "react";
 
 import { playlist, video } from "../../types/playlist";
-import { ModalType, modalOption } from "../../types/modal";
-import { CardMenuOption, MenuDataMap } from "../../types/cardMenu";
-import ModalWrapper from "../modal/ModalWrapper";
-import { generateMenuDataMap } from "../../utils/cardMenu";
+import { CardMenuData, CardMenuOption } from "../../types/cardMenu";
+import { generateCardMenuData } from "../../utils/cardMenu";
 import { generateCardMenu } from "./menu/generateCardMenu";
 import CardMenu from "./menu/CardMenu";
 
@@ -16,10 +14,6 @@ type Props = {
   openMenu?: (key: string) => void;
   closeMenu?: () => void;
   cardMenuOption?: CardMenuOption;
-  modalType?: "deleteFromPlaylist" | "share" | "addFavorite";
-  whichModalIsOpen?: string | null;
-  openModal?: (id: string, modalType: ModalType) => void;
-  closeModal?: () => void;
   playlists?: playlist[];
   ownerPlaylist?: playlist;
   userId?: string;
@@ -32,13 +26,8 @@ const VideoCard = ({
   openMenu,
   closeMenu,
   cardMenuOption,
-  modalType,
-  whichModalIsOpen,
-  openModal,
-  closeModal,
   playlists,
   ownerPlaylist,
-  userId,
 }: Props) => {
   //cardMenuにhoverした時にmenu開くボタンのborderを閉じるためのState
   const [isHovered, setIsHovered] = useState(false);
@@ -55,51 +44,15 @@ const VideoCard = ({
 
   let cardMenu = null;
   //ここの条件式はcloneElementを使用しているからしゃあない！！
-  if (cardMenuOption && openModal) {
-    const cardData: MenuDataMap = generateMenuDataMap(
-      cardMenuOption,
-      undefined,
-      videoInfo,
-    );
+  if (cardMenuOption) {
+    const cardData: CardMenuData = generateCardMenuData(cardMenuOption, {
+      thisVideoInfo: videoInfo,
+      userPlaylistsInfo: playlists,
+      memberId: videoMemberId,
+      ownerPlaylistInfo: ownerPlaylist,
+    });
 
-    cardMenu = generateCardMenu(cardMenuOption, openModal, cardData);
-  }
-
-  let modalOption: modalOption | null = null;
-  //ここの条件式はcloneElementを使用しているからしゃあない！！
-  switch (modalType) {
-    case "deleteFromPlaylist": {
-      if (
-        modalType &&
-        closeModal &&
-        whichModalIsOpen &&
-        ownerPlaylist &&
-        videoMemberId &&
-        playlists
-      ) {
-        modalOption = {
-          type: modalType,
-          playlistId: ownerPlaylist?.playlistId,
-          whichModalIsOpen,
-          closeModal,
-          memberId: videoMemberId,
-          ownerId: ownerPlaylist.ownerId,
-          videoId: videoInfo.videoId,
-        };
-      }
-      break;
-    }
-    case "addFavorite": {
-      if (playlists && whichModalIsOpen && closeModal && userId)
-        modalOption = {
-          type: modalType,
-          playlists: playlists,
-          videoId: videoInfo.videoId,
-          ownerId: userId,
-          whichModalIsOpen,
-          closeModal,
-        };
-    }
+    cardMenu = generateCardMenu(cardData);
   }
 
   return (
@@ -142,7 +95,6 @@ const VideoCard = ({
           </div>
         </div>
       </a>
-      {modalOption ? <ModalWrapper modalOption={modalOption} /> : null}
     </>
   );
 };

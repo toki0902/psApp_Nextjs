@@ -1,20 +1,17 @@
 "use client";
-import { CardMenuOption, MenuDataMap } from "@/src/frontend/types/cardMenu";
+import { CardMenuData } from "@/src/frontend/types/cardMenu";
 import { menuDefinitions } from "./menuDefinitions";
 import MenuItem from "./MenuItem";
-import { ModalType } from "@/src/frontend/types/modal";
+import { useModal } from "@/src/frontend/hooks/useModal";
 
 //generateの責任は
 //onPass後の処理の定義
 
-export const generateCardMenu = (
-  options: CardMenuOption,
-  openModal: (id: string, modalType: ModalType) => void,
-  cardData: MenuDataMap,
-) => {
-  const defKeys = Object.keys(options).filter(
-    (key): key is keyof typeof menuDefinitions =>
-      key in menuDefinitions && options[key as keyof CardMenuOption] === true,
+export const generateCardMenu = (cardData: CardMenuData) => {
+  const openModal = useModal().openModal;
+
+  const defKeys = Object.keys(cardData).filter(
+    (key): key is keyof typeof menuDefinitions => key in menuDefinitions,
   );
 
   return defKeys.sort().map((option) => {

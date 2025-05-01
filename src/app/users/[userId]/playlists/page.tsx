@@ -6,6 +6,10 @@ import { checkSession, getAllCookies } from "@/src/frontend/utils/cookie";
 import { Session } from "next-auth";
 import PlaylistCard from "@/src/frontend/components/card/PlaylistCard";
 import CardWrapper from "@/src/frontend/components/card/CardWrapper";
+import { PageMenuData, PageMenuOption } from "@/src/frontend/types/pageMenu";
+import { generatePageMenuData } from "@/src/frontend/utils/pageMenu";
+import generatePageMenu from "@/src/frontend/components/pageMenu/generatePageMenu";
+import PageMenu from "@/src/frontend/components/pageMenu/PageMenu";
 
 const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const { userId } = await params;
@@ -54,9 +58,9 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
     playlists = playlistData.playlists;
   }
 
-  console.log(`this is playlists : ${JSON.stringify(playlists)}`);
+  const cardMenuOption: CardMenuOption = { edit: true, deletePlaylist: true };
 
-  const cardMenu: CardMenuOption = { edit: true, deletePlaylist: true };
+  const pageMenuOption: PageMenuOption = { create: true };
 
   return (
     <div className="h-full w-full">
@@ -70,21 +74,11 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
               {playlists.length}件のお気に入り
             </p>
           </div>
-          <div className="flex space-x-2 py-1 text-red">
-            <div className="group flex cursor-pointer items-center overflow-hidden">
-              <div className="lg:group-hover:animate-toLeftForFavorite relative h-6 w-6">
-                <span className="absolute left-1/2 top-1/2 block h-[2px] w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-red"></span>
-                <span className="absolute left-1/2 top-1/2 block h-full w-[2px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red"></span>
-              </div>
-              <p className="lg:group-hover:animate-toUpInForFavorite ml-2 hidden lg:group-hover:block">
-                お気に入りを追加
-              </p>
-            </div>
-          </div>
+          <PageMenu pageMenuOption={pageMenuOption} session={session} />
         </div>
         <p className="text-mg lg:hidden">{playlists.length}件のお気に入り</p>
         <div className="mt-10 flex h-max w-full flex-wrap">
-          <CardWrapper cardMenuOption={cardMenu} playlists={playlists}>
+          <CardWrapper cardMenuOption={cardMenuOption} playlists={playlists}>
             {playlists.map((playlist) => {
               return (
                 <PlaylistCard

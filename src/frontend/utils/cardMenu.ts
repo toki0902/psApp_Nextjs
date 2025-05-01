@@ -1,21 +1,48 @@
-import { CardMenuOption, MenuDataMap } from "../types/cardMenu";
-import { playlist, video } from "../types/playlist";
+import {
+  CardMenuData,
+  CardMenuOption,
+  CardMenuNeedData,
+} from "../types/cardMenu";
 
-export const generateMenuDataMap = (
+export const generateCardMenuData = (
   options: CardMenuOption,
-  playlistInfo?: playlist,
-  videoInfo?: video,
-): MenuDataMap => {
-  const data: MenuDataMap = {};
-
-  if (options.edit && playlistInfo) data.edit = playlistInfo;
-  if (options.deletePlaylist && playlistInfo)
-    data.deletePlaylist = playlistInfo;
-  if (options.deleteFromPlaylist && videoInfo) {
-    data.deleteFromPlaylist = videoInfo;
+  needData: CardMenuNeedData,
+): CardMenuData => {
+  // 実装
+  const data: CardMenuData = {};
+  if (
+    options.addFavorite &&
+    needData.userPlaylistsInfo &&
+    needData.thisVideoInfo
+  ) {
+    data.addFavorite = {
+      userPlaylistsInfo: needData.userPlaylistsInfo,
+      thisVideoInfo: needData.thisVideoInfo,
+    };
   }
-  if (options.addFavorite && videoInfo) data.addFavorite = videoInfo;
-  if (options.share && videoInfo) data.share = videoInfo;
+
+  if (options.share && needData.thisVideoInfo) {
+    data.share = needData.thisVideoInfo;
+  }
+
+  if (options.edit && needData.thisPlaylistInfo) {
+    data.edit = needData.thisPlaylistInfo;
+  }
+
+  if (
+    options.deleteFromPlaylist &&
+    needData.ownerPlaylistInfo &&
+    needData.memberId
+  ) {
+    data.deleteFromPlaylist = {
+      ownerPlaylistInfo: needData.ownerPlaylistInfo,
+      memberId: needData.memberId,
+    };
+  }
+
+  if (options.deletePlaylist && needData.thisPlaylistInfo) {
+    data.deletePlaylist = needData.thisPlaylistInfo;
+  }
 
   return data;
 };

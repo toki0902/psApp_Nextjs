@@ -1,0 +1,30 @@
+"use client";
+import React from "react";
+import { PageMenuData } from "../../types/pageMenu";
+import { PageMenuDefinition } from "./pageMenuDefinitions";
+import PageMenuItem from "./PageMenuItem";
+import { useModal } from "../../hooks/useModal";
+
+const generatePageMenu = (pageMenuData: PageMenuData) => {
+  const openModal = useModal().openModal;
+
+  const defKeys = Object.keys(pageMenuData).filter(
+    (key): key is keyof typeof PageMenuDefinition => {
+      return key in PageMenuDefinition;
+    },
+  );
+
+  return defKeys.map((key) => {
+    const { getText, icon, getOnClick } = PageMenuDefinition[key];
+
+    return (
+      <PageMenuItem
+        text={getText(pageMenuData)}
+        icon={icon}
+        onClick={getOnClick(pageMenuData, openModal)}
+      />
+    );
+  });
+};
+
+export default generatePageMenu;

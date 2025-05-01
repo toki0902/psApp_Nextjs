@@ -3,13 +3,12 @@ import VideoCard from "@/src/frontend/components/card/VideoCard";
 import { playlist, video } from "@/src/frontend/types/playlist";
 import { CardMenuOption } from "@/src/frontend/types/cardMenu";
 import { modalOption } from "@/src/frontend/types/modal";
-
-import ModalWrapper from "@/src/frontend/components/modal/ModalWrapper";
 import CardWrapper from "@/src/frontend/components/card/CardWrapper";
 
 import { Session } from "next-auth";
 import { auth } from "@/auth";
 import { getAllCookies } from "@/src/frontend/utils/cookie";
+import { Kaisei } from "@/src/frontend/assets/fonts/fonts";
 
 const Search = async ({
   searchParams,
@@ -32,7 +31,6 @@ const Search = async ({
   //     url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
   //     views: 32,
   //   },
-
   const { q: query } = await searchParams;
 
   const res = await fetch(
@@ -45,7 +43,6 @@ const Search = async ({
     console.log(`${errorData.errorType!}: ${errorData.message}`);
   } else {
     const videoData = await res.json();
-
     videos = videoData.videos;
   }
 
@@ -248,11 +245,18 @@ const Search = async ({
 
   return (
     <div className="h-full w-full">
-      <ModalWrapper modalOption={modalOption} />
-      <div className="flex h-full w-full flex-col pt-5">
-        <div className="justify-left flex w-full items-end">
-          <p className="text-mg">{videos.length}件の動画</p>
+      <div className="flex h-full w-full flex-col pt-10">
+        <div className="flex w-full justify-between border-b-4 border-red">
+          <div className="flex items-end">
+            <p className={`${Kaisei.className} text-lg font-bold lg:text-2xl`}>
+              検索結果
+            </p>
+            <p className="text-mg ml-4 hidden lg:block">
+              {videos.length}件の動画
+            </p>
+          </div>
         </div>
+        <p className="text-mg lg:hidden">{videos.length}件の動画</p>
         <div className="mt-10 flex h-max w-full flex-wrap">
           <CardWrapper
             cardMenuOption={cardMenuOption}
@@ -260,7 +264,7 @@ const Search = async ({
             userId={session?.user.userId}
           >
             {videos.map((video, index) => {
-              return <VideoCard key={index} videoInfo={video}></VideoCard>;
+              return <VideoCard key={index} videoInfo={video} />;
             })}
           </CardWrapper>
         </div>

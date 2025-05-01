@@ -1,12 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import { playlist } from "../../types/playlist";
-import { CardMenuOption, MenuDataMap } from "../../types/cardMenu";
-import { modalOption, ModalType } from "../../types/modal";
+import { CardMenuData, CardMenuOption } from "../../types/cardMenu";
 
-import ModalWrapper from "../modal/ModalWrapper";
 import { generateCardMenu } from "./menu/generateCardMenu";
-import { generateMenuDataMap } from "../../utils/cardMenu";
+import { generateCardMenuData } from "../../utils/cardMenu";
 import CardMenu from "./menu/CardMenu";
 
 type Props = {
@@ -15,22 +13,14 @@ type Props = {
   openMenu?: (key: string) => void;
   closeMenu?: () => void;
   cardMenuOption?: CardMenuOption;
-  modalType?: "deletePlaylist" | "edit";
-  whichModalIsOpen?: string | null;
-  openModal?: (id: string, modalType: ModalType) => void;
-  closeModal?: () => void;
 };
 
-const PlaylistCard = async ({
+const PlaylistCard = ({
   playlistInfo,
   whichMenuIsOpen,
   openMenu,
   closeMenu,
   cardMenuOption,
-  modalType,
-  whichModalIsOpen,
-  openModal,
-  closeModal,
 }: Props) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -48,26 +38,12 @@ const PlaylistCard = async ({
 
   let cardMenu = null;
   //ここの条件式はcloneElementを使用しているからしゃあない！！
-  if (cardMenuOption && openModal) {
-    const cardData: MenuDataMap = generateMenuDataMap(
-      cardMenuOption,
-      playlistInfo,
-    );
-    cardMenu = generateCardMenu(cardMenuOption, openModal, cardData);
-  }
+  if (cardMenuOption) {
+    const cardData: CardMenuData = generateCardMenuData(cardMenuOption, {
+      thisPlaylistInfo: playlistInfo,
+    });
 
-  //definitionで必要な情報 = onPass作成に必要な情報
-
-  let modalOption: modalOption | null = null;
-  //ここの条件式はcloneElementを使用しているからしゃあない！！
-  if (modalType && closeModal && whichModalIsOpen) {
-    modalOption = {
-      type: modalType,
-      playlistId: playlistInfo.playlistId,
-      ownerId: playlistInfo.ownerId,
-      whichModalIsOpen,
-      closeModal,
-    };
+    cardMenu = generateCardMenu(cardData);
   }
 
   return (
@@ -112,7 +88,6 @@ const PlaylistCard = async ({
           </div>
         </div>
       </a>
-      {modalOption ? <ModalWrapper modalOption={modalOption} /> : null}
     </>
   );
 };

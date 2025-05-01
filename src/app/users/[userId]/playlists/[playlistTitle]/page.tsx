@@ -7,9 +7,17 @@ import { Kaisei } from "@/fonts";
 import { notFound } from "next/navigation";
 import { checkSession, getAllCookies } from "@/src/frontend/utils/cookie";
 import CardWrapper from "@/src/frontend/components/card/CardWrapper";
-import ModalWrapper from "@/src/frontend/components/modal/ModalWrapper";
-import { modalOption } from "@/src/frontend/types/modal";
+import {
+  PageMenuData,
+  PageMenuNeedData,
+  PageMenuOption,
+} from "@/src/frontend/types/pageMenu";
+import { generatePageMenuData } from "@/src/frontend/utils/pageMenu";
+import generatePageMenu from "@/src/frontend/components/pageMenu/generatePageMenu";
+import PageMenu from "@/src/frontend/components/pageMenu/PageMenu";
+import { auth } from "@/auth";
 
+//直し
 const Playlist = async ({
   params,
 }: {
@@ -17,11 +25,30 @@ const Playlist = async ({
 }) => {
   const { userId, playlistTitle } = await params;
 
+  const session = await auth();
+
   await checkSession(userId);
 
   const cookie = await getAllCookies();
 
-  let playlist: playlist | null = null;
+  let playlist: playlist = {
+    videos: [
+      {
+        video: {
+          videoId: "HLkbX0YhToY",
+          thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+          title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+          url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+          views: 32,
+        },
+        videoMemberId: "sagadgaasd",
+      },
+    ],
+    title: "何",
+    playlistId: "safasdfasdhnom",
+    ownerId: userId,
+    createdAt: "lajdljfas",
+  };
 
   const videoResponse = await fetch(
     `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${userId}/playlists/title/${playlistTitle}`,
@@ -39,11 +66,9 @@ const Playlist = async ({
     // notFound();
   } else {
     const playlistData = await videoResponse.json();
-
     if (!playlistData.playlist) {
       notFound();
     }
-
     playlist = playlistData.playlist;
   }
 
@@ -98,6 +123,14 @@ const Playlist = async ({
     deleteFromPlaylist: true,
   };
 
+  const pageMenuOption: PageMenuOption = { edit: true, delete: true };
+  const pageMenuData: PageMenuNeedData = { thisPlaylistData: playlist };
+  const pageMenuData: PageMenuData = generatePageMenuData(pageMenuOption, {
+    thisPlaylistData: playlist,
+  });
+
+  const pageMenu = generatePageMenu(pageMenuData);
+
   return (
     <div className="h-full w-full">
       <div className="flex h-full w-full flex-col pt-10">
@@ -110,33 +143,13 @@ const Playlist = async ({
               {(playlist?.videos || []).length}件の動画
             </p>
           </div>
-          <div className="flex space-x-2 py-1 text-red">
-            <div className="group flex cursor-pointer items-center overflow-hidden">
-              <img
-                src="/images/edit_823A42.svg"
-                alt=""
-                className="lg:group-hover:animate-toLeftForFavorite relative h-6 w-6"
-              />
-              <p className="lg:group-hover:animate-toUpInForFavorite ml-2 hidden lg:group-hover:block">
-                編集する
-              </p>
-            </div>
-            <div className="group flex cursor-pointer items-center overflow-hidden">
-              <img
-                src="/images/delete_823A42.svg"
-                alt=""
-                className="lg:group-hover:animate-toLeftForFavorite relative h-6 w-6"
-              />
-              <p className="lg:group-hover:animate-toUpInForFavorite ml-2 hidden lg:group-hover:block">
-                {playlist?.title}を削除する
-              </p>
-            </div>
-          </div>
+          <ul className="flex space-x-2 py-1 text-red">{pageMenu}</ul>
+          <PageMenu pageMenuOption={pageMenuOption} session={session} />
         </div>
         <p className="text-mg lg:hidden">
           {(playlist?.videos || []).length}件の動画
         </p>
-        <div className="mt-20 flex h-max w-full flex-wrap">
+        <div className="mt-10 flex h-max w-full flex-wrap">
           <CardWrapper
             cardMenuOption={cardMenuOption}
             playlists={playlists}

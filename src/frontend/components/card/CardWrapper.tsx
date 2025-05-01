@@ -10,9 +10,6 @@ type CardProps = {
   openMenu: (key: string) => void;
   closeMenu: () => void;
   whichModalIsOpen: string | null;
-  modalType: ModalType;
-  openModal: (playlistId: string, modalType: ModalType) => void;
-  closeModal: () => void;
   ownerPlaylist: playlist;
   playlists: playlist[];
   cardMenuOption: CardMenuOption;
@@ -28,13 +25,11 @@ const CardWrapper = ({
 }: {
   children: ReactNode;
   cardMenuOption: CardMenuOption;
-  playlists?: playlist[];
+  playlists: playlist[];
   ownerPlaylist?: playlist;
   userId?: string;
 }) => {
-  const [whichModalIsOpen, setWhichModalIsOpen] = useState<string | null>(null);
   const [whichMenuIsOpen, setWhichMenuIsOpen] = useState<string | null>(null);
-  const [modalType, setModalType] = useState<ModalType>("deletePlaylist");
 
   const openMenu = (key: string) => {
     setWhichMenuIsOpen(key);
@@ -42,15 +37,6 @@ const CardWrapper = ({
 
   const closeMenu = () => {
     setWhichMenuIsOpen(null);
-  };
-
-  const openModal = (id: string, modalType: ModalType) => {
-    setModalType(modalType);
-    setWhichModalIsOpen(id);
-  };
-
-  const closeModal = () => {
-    setWhichModalIsOpen(null);
   };
 
   if (playlists) {
@@ -65,10 +51,6 @@ const CardWrapper = ({
         whichMenuIsOpen,
         openMenu,
         closeMenu,
-        whichModalIsOpen,
-        modalType,
-        openModal,
-        closeModal,
         ownerPlaylist,
         playlists,
         cardMenuOption,

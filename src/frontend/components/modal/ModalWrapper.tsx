@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { modalOption } from "../../types/modal";
 import CheckModal from "./CheckModal";
 import EditModal from "./EditModal";
-import FavoriteModal from "./FavoriteModal";
+import FavoriteModal from "./favoriteModal/FavoriteModal";
 
 const ModalWrapper = ({ modalOption }: { modalOption: modalOption }) => {
   const { type } = modalOption;
