@@ -5,7 +5,9 @@ import { PageMenuDefinition } from "./pageMenuDefinitions";
 import PageMenuItem from "./PageMenuItem";
 import { useModal } from "../../hooks/useModal";
 
-const generatePageMenu = (pageMenuData: PageMenuData) => {
+type Props = { pageMenuData: PageMenuData };
+
+const PageMenuList = ({ pageMenuData }: Props) => {
   const openModal = useModal().openModal;
 
   const defKeys = Object.keys(pageMenuData).filter(
@@ -27,4 +29,4 @@ const generatePageMenu = (pageMenuData: PageMenuData) => {
   });
 };
 
-export default generatePageMenu;
+export default PageMenuList;

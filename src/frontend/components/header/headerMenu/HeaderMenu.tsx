@@ -1,6 +1,6 @@
 import { Session } from "next-auth";
 import React from "react";
-import generateHeaderMenuItem from "./headerMenu/generateHeaderMenuItem";
+import HeaderMenuList from "./HeaderMenuList";
 
 const HeaderMenu = ({
   session,
@@ -13,33 +13,6 @@ const HeaderMenu = ({
 }) => {
   //パソコンの場合、そもそもログインしていないとこのメニューは開かない。
   //スマホの場合ハンバーガーメニューの中身になるためsessionがある場合とない場合がある。
-  const headerMenuItems = generateHeaderMenuItem({
-    session,
-    closeUserMenu,
-    headerMenuOption: { logout: true },
-  });
-
-  const mobileAccountMenuItems = generateHeaderMenuItem({
-    session,
-    closeUserMenu,
-    headerMenuOption: session
-      ? {
-          mobileLogout: true,
-          mobileLogin: true,
-        }
-      : { mobileLogin: true },
-  });
-
-  const mobileAppMenuItems = generateHeaderMenuItem({
-    session,
-    closeUserMenu,
-    headerMenuOption: session
-      ? {
-          mobileHome: true,
-          mobileFavorite: true,
-        }
-      : { mobileHome: true },
-  });
 
   return (
     <div
@@ -61,7 +34,11 @@ const HeaderMenu = ({
             />
           </li>
         ) : null}
-        {headerMenuItems}
+        <HeaderMenuList
+          session={session}
+          closeUserMenu={closeUserMenu}
+          headerMenuOption={{ logout: true }}
+        />
       </ul>
       <div className="flex w-full flex-col items-start justify-center space-y-7 lg:hidden">
         <h2 className="text-base font-bold">アカウント</h2>
@@ -75,10 +52,29 @@ const HeaderMenu = ({
             />
           </div>
         ) : null}
-        <ul className="w-full space-y-4">{mobileAccountMenuItems}</ul>
+        <ul className="w-full space-y-4">
+          <HeaderMenuList
+            session={session}
+            headerMenuOption={{ logout: true }}
+            closeUserMenu={closeUserMenu}
+          />
+        </ul>
         <hr className="border-t-1 mx-auto w-full border-back" />
         <h2 className="text-base font-bold">アプリ</h2>
-        <ul className="w-full space-y-4">{mobileAppMenuItems}</ul>
+        <ul className="w-full space-y-4">
+          <HeaderMenuList
+            session={session}
+            headerMenuOption={
+              session
+                ? {
+                    mobileHome: true,
+                    mobileFavorite: true,
+                  }
+                : { mobileHome: true }
+            }
+            closeUserMenu={closeUserMenu}
+          />
+        </ul>
       </div>
     </div>
   );

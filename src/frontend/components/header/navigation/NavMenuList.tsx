@@ -5,10 +5,9 @@ import { navItemDefinitions } from "./navItemDefinitions";
 import { useRouter } from "next/navigation";
 import NavItem from "./NavItem";
 
-export const generateNavItems = (
-  session: Session,
-  navMenuOption: NavMenuOption,
-) => {
+type Props = { session: Session; navMenuOption: NavMenuOption };
+
+export const NavMenuList = ({ session, navMenuOption }: Props) => {
   const { userId } = session?.user || "";
 
   const router = useRouter();
@@ -19,6 +18,7 @@ export const generateNavItems = (
       navMenuOption[key as keyof NavMenuOption] === true,
   );
 
+  //ログインを一番右に
   const navItems = defKeys
     .sort((a, b) => {
       if (a === "login") return 1;

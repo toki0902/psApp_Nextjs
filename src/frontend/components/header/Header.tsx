@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import SearchField from "../SearchField";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Session } from "next-auth";
-import HeaderMenu from "./HeaderMenu";
-import { generateNavItems } from "./navigation/generateNavItems";
+import HeaderMenu from "./headerMenu/HeaderMenu";
+import { NavMenuList } from "./navigation/NavMenuList";
 
 const Header = ({ session }: { session: Session }) => {
   const [isOpenUserMenu, setIsOpenUserMenu] = useState(false);
@@ -14,16 +14,6 @@ const Header = ({ session }: { session: Session }) => {
   const closeUserMenu = () => {
     setIsOpenUserMenu(false);
   };
-
-  const unLoginNavItems = generateNavItems(session, {
-    home: true,
-    login: true,
-  });
-
-  const loginNavItems = generateNavItems(session, {
-    home: true,
-    favorite: true,
-  });
 
   return (
     <header className="relative flex h-12 w-full items-center justify-between bg-back px-[3%] text-sm lg:h-20">
@@ -37,7 +27,10 @@ const Header = ({ session }: { session: Session }) => {
       {session ? (
         <nav>
           <ul className="hidden h-fit w-fit items-center text-blue lg:flex">
-            {loginNavItems}
+            <NavMenuList
+              session={session}
+              navMenuOption={{ home: true, favorite: true }}
+            />
             <li className="cursor-pointer">
               <button
                 className="group flex w-fit items-center"
@@ -58,7 +51,13 @@ const Header = ({ session }: { session: Session }) => {
       ) : (
         <nav>
           <ul className="hidden h-fit w-fit items-center text-blue lg:flex">
-            {unLoginNavItems}
+            <NavMenuList
+              session={session}
+              navMenuOption={{
+                home: true,
+                login: true,
+              }}
+            />
           </ul>
         </nav>
       )}

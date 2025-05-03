@@ -5,7 +5,7 @@ import HeaderMenuItem from "./HeaderMenuItem";
 import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
 
-const generateHeaderMenuItem = ({
+const HeaderMenuList = ({
   session,
   headerMenuOption,
   closeUserMenu,
@@ -42,4 +42,4 @@ const generateHeaderMenuItem = ({
   return headerMenuItems;
 };
 
-export default generateHeaderMenuItem;
+export default HeaderMenuList;

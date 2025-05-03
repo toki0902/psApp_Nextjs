@@ -1,20 +1,21 @@
 import {
-  PageMenuOption,
-  PageMenuNeedData,
   PageMenuData,
-  ExtractNeedData,
+  PageMenuNeedData,
+  PageMenuOption,
 } from "../types/pageMenu";
 
-export const generatePageMenuData = <O extends PageMenuOption>(
-  option: O,
-  needData: PageMenuNeedData<ExtractNeedData<O>>,
-): ExtractNeedData<O> => {
-  let pageMenuData = {} as any;
-  if (option.edit) pageMenuData.edit = needData.thisPlaylistData;
+export const generatePageMenuData = (
+  option: PageMenuOption,
+  needData: PageMenuNeedData,
+): PageMenuData => {
+  const pageMenuData: PageMenuData = {};
+  if (option.edit && needData.thisPlaylistData)
+    pageMenuData.edit = needData.thisPlaylistData;
 
-  if (option.create) pageMenuData.create = needData.userId;
+  if (option.create && needData.userId) pageMenuData.create = needData.userId;
 
-  if (option.delete) pageMenuData.delete = needData.thisPlaylistData;
+  if (option.delete && needData.thisPlaylistData)
+    pageMenuData.delete = needData.thisPlaylistData;
 
   return pageMenuData;
 };

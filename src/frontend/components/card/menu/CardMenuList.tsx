@@ -3,12 +3,18 @@ import { CardMenuData } from "@/src/frontend/types/cardMenu";
 import { menuDefinitions } from "./menuDefinitions";
 import MenuItem from "./MenuItem";
 import { useModal } from "@/src/frontend/hooks/useModal";
+import { useRouter } from "next/router";
+
+type Props = {
+  cardData: CardMenuData;
+};
 
 //generateの責任は
 //onPass後の処理の定義
 
-export const generateCardMenu = (cardData: CardMenuData) => {
+export const CardMenuList = ({ cardData }: Props) => {
   const openModal = useModal().openModal;
+  const router = useRouter();
 
   const defKeys = Object.keys(cardData).filter(
     (key): key is keyof typeof menuDefinitions => key in menuDefinitions,
@@ -24,7 +30,7 @@ export const generateCardMenu = (cardData: CardMenuData) => {
         icon={def.icon}
         hoverIcon={def.hoverIcon}
         text={def.getLabel(cardData)}
-        onClick={def.getOnClick(cardData, openModal)}
+        onClick={def.getOnClick(cardData, openModal, router)}
       />
     );
   });

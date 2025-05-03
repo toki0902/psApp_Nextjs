@@ -2,9 +2,7 @@
 import React, { useState } from "react";
 
 import { playlist, video } from "../../types/playlist";
-import { CardMenuData, CardMenuOption } from "../../types/cardMenu";
-import { generateCardMenuData } from "../../utils/cardMenu";
-import { generateCardMenu } from "./menu/generateCardMenu";
+import { CardMenuNeedData, CardMenuOption } from "../../types/cardMenu";
 import CardMenu from "./menu/CardMenu";
 
 type Props = {
@@ -42,18 +40,15 @@ const VideoCard = ({
     }
   };
 
-  let cardMenu = null;
+  let cardMenuNeedData: CardMenuNeedData = {};
   //ここの条件式はcloneElementを使用しているからしゃあない！！
-  if (cardMenuOption) {
-    const cardData: CardMenuData = generateCardMenuData(cardMenuOption, {
-      thisVideoInfo: videoInfo,
-      userPlaylistsInfo: playlists,
-      memberId: videoMemberId,
+  if (cardMenuOption)
+    cardMenuNeedData = {
       ownerPlaylistInfo: ownerPlaylist,
-    });
-
-    cardMenu = generateCardMenu(cardData);
-  }
+      thisVideoInfo: videoInfo,
+      memberId: videoMemberId,
+      userPlaylistsInfo: playlists,
+    };
 
   return (
     <>
@@ -84,9 +79,10 @@ const VideoCard = ({
               <span className="my-[1.5px] block h-1 w-1 rounded-full bg-red"></span>
               <span className="my-[1.5px] block h-1 w-1 rounded-full bg-red"></span>
               <span className="my-[1.5px] block h-1 w-1 rounded-full bg-red"></span>
-              {whichMenuIsOpen === videoInfo.videoId && (
+              {whichMenuIsOpen === videoInfo.videoId && cardMenuOption && (
                 <CardMenu
-                  cardMenu={cardMenu}
+                  cardMenuOption={cardMenuOption}
+                  cardMenuNeedData={cardMenuNeedData}
                   onMouseEnter={() => setIsHovered(false)}
                   close={closeMenu}
                 />

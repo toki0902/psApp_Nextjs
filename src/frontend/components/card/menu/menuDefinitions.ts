@@ -1,5 +1,6 @@
 import { CardMenuData } from "@/src/frontend/types/cardMenu";
-import { ModalContextType, ModalType } from "@/src/frontend/types/modal";
+import { ModalContextType } from "@/src/frontend/types/modal";
+import { NextRouter, useRouter } from "next/router";
 
 //getOnClickはそれぞれの通過後の処理を記述する
 
@@ -11,6 +12,7 @@ export const menuDefinitions = {
     getOnClick: (
       data: CardMenuData,
       openModal: ModalContextType["openModal"],
+      router: NextRouter,
     ) => {
       return async () => {
         const onPassCheck = async (newTitle: string) => {
@@ -29,6 +31,7 @@ export const menuDefinitions = {
               console.log(`${errorData.errorType!}: ${errorData.message}`);
             } else {
               console.log("プレイリストタイトルを更新しました。");
+              router.push(`/users/${data.edit.ownerId}/playlists/${newTitle}`);
             }
           }
         };
@@ -47,6 +50,7 @@ export const menuDefinitions = {
     getOnClick: (
       data: CardMenuData,
       openModal: ModalContextType["openModal"],
+      router: NextRouter,
     ) => {
       return async () => {
         const onPassCheck = async () => {
@@ -61,6 +65,7 @@ export const menuDefinitions = {
               console.log(`${errorData.errorType!}: ${errorData.message}`);
             } else {
               console.log("プレイリストを削除しました。");
+              router.reload();
             }
           }
         };
@@ -80,6 +85,7 @@ export const menuDefinitions = {
     getOnClick: (
       data: CardMenuData,
       openModal: ModalContextType["openModal"],
+      router: NextRouter,
     ) => {
       return async () => {
         const onPassCheck = async (addPlaylistIds: string[]) => {
@@ -103,6 +109,7 @@ export const menuDefinitions = {
             } else {
               const resData = await res.json();
               console.log(resData.message);
+              router.reload();
             }
           }
         };
@@ -139,6 +146,7 @@ export const menuDefinitions = {
     getOnClick: (
       data: CardMenuData,
       openModal: ModalContextType["openModal"],
+      router: NextRouter,
     ) => {
       return async () => {
         const onPassCheck = async () => {
@@ -153,6 +161,7 @@ export const menuDefinitions = {
               console.log(`${errorData.errorType!}: ${errorData.message}`);
             } else {
               console.log("プレイリストから動画を削除しました。");
+              router.reload();
             }
           }
         };

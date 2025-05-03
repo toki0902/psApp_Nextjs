@@ -1,6 +1,6 @@
 import VideoCard from "@/src/frontend/components/card/VideoCard";
 
-import { playlist, video } from "@/src/frontend/types/playlist";
+import { playlist } from "@/src/frontend/types/playlist";
 import { CardMenuOption } from "@/src/frontend/types/cardMenu";
 
 import { Kaisei } from "@/fonts";
@@ -8,12 +8,9 @@ import { notFound } from "next/navigation";
 import { checkSession, getAllCookies } from "@/src/frontend/utils/cookie";
 import CardWrapper from "@/src/frontend/components/card/CardWrapper";
 import {
-  PageMenuData,
   PageMenuNeedData,
   PageMenuOption,
 } from "@/src/frontend/types/pageMenu";
-import { generatePageMenuData } from "@/src/frontend/utils/pageMenu";
-import generatePageMenu from "@/src/frontend/components/pageMenu/generatePageMenu";
 import PageMenu from "@/src/frontend/components/pageMenu/PageMenu";
 import { auth } from "@/auth";
 
@@ -124,12 +121,10 @@ const Playlist = async ({
   };
 
   const pageMenuOption: PageMenuOption = { edit: true, delete: true };
-  const pageMenuData: PageMenuNeedData = { thisPlaylistData: playlist };
-  const pageMenuData: PageMenuData = generatePageMenuData(pageMenuOption, {
+  const pageMenuNeedData: PageMenuNeedData = {
+    userId: session.user.userId,
     thisPlaylistData: playlist,
-  });
-
-  const pageMenu = generatePageMenu(pageMenuData);
+  };
 
   return (
     <div className="h-full w-full">
@@ -143,8 +138,10 @@ const Playlist = async ({
               {(playlist?.videos || []).length}件の動画
             </p>
           </div>
-          <ul className="flex space-x-2 py-1 text-red">{pageMenu}</ul>
-          <PageMenu pageMenuOption={pageMenuOption} session={session} />
+          <PageMenu
+            pageMenuOption={pageMenuOption}
+            pageMenuNeedData={pageMenuNeedData}
+          />
         </div>
         <p className="text-mg lg:hidden">
           {(playlist?.videos || []).length}件の動画

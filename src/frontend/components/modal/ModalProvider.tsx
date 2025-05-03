@@ -4,7 +4,6 @@ import PasswordModal from "./PasswordModal";
 import CheckModal from "./CheckModal";
 import EditModal from "./EditModal";
 import FavoriteModal from "./favoriteModal/FavoriteModal";
-import { playlist } from "../../types/playlist";
 import {
   ModalContextType,
   ModalInfoType,

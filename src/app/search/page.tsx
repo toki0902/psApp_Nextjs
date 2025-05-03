@@ -2,7 +2,6 @@ import VideoCard from "@/src/frontend/components/card/VideoCard";
 
 import { playlist, video } from "@/src/frontend/types/playlist";
 import { CardMenuOption } from "@/src/frontend/types/cardMenu";
-import { modalOption } from "@/src/frontend/types/modal";
 import CardWrapper from "@/src/frontend/components/card/CardWrapper";
 
 import { Session } from "next-auth";
@@ -236,11 +235,6 @@ const Search = async ({
   const cardMenuOption: CardMenuOption = {
     share: true,
     addFavorite: true,
-  };
-
-  const modalOption: modalOption = {
-    type: "password",
-    initialOpenModal: true,
   };
 
   return (

@@ -6,9 +6,11 @@ import { checkSession, getAllCookies } from "@/src/frontend/utils/cookie";
 import { Session } from "next-auth";
 import PlaylistCard from "@/src/frontend/components/card/PlaylistCard";
 import CardWrapper from "@/src/frontend/components/card/CardWrapper";
-import { PageMenuData, PageMenuOption } from "@/src/frontend/types/pageMenu";
-import { generatePageMenuData } from "@/src/frontend/utils/pageMenu";
-import generatePageMenu from "@/src/frontend/components/pageMenu/generatePageMenu";
+import {
+  PageMenuNeedData,
+  PageMenuOption,
+} from "@/src/frontend/types/pageMenu";
+
 import PageMenu from "@/src/frontend/components/pageMenu/PageMenu";
 
 const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
@@ -61,6 +63,7 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const cardMenuOption: CardMenuOption = { edit: true, deletePlaylist: true };
 
   const pageMenuOption: PageMenuOption = { create: true };
+  const pageMenuNeedData: PageMenuNeedData = { userId: session?.user.userId };
 
   return (
     <div className="h-full w-full">
@@ -74,7 +77,10 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
               {playlists.length}件のお気に入り
             </p>
           </div>
-          <PageMenu pageMenuOption={pageMenuOption} session={session} />
+          <PageMenu
+            pageMenuOption={pageMenuOption}
+            pageMenuNeedData={pageMenuNeedData}
+          />
         </div>
         <p className="text-mg lg:hidden">{playlists.length}件のお気に入り</p>
         <div className="mt-10 flex h-max w-full flex-wrap">
