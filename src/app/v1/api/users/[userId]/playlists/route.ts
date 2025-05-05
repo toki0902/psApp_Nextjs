@@ -87,10 +87,13 @@ export const POST = async (
 
     await registerNewPlaylist.run(playlistTitle, userId);
 
-    return new NextResponse(JSON.stringify({ msg: "create new playlist!" }), {
-      status: 201,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new NextResponse(
+      JSON.stringify({ message: "お気に入りを追加しました。" }),
+      {
+        status: 201,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   } catch (err) {
     return errorHandler(err);
   }

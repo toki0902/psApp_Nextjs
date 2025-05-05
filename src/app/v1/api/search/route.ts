@@ -6,8 +6,6 @@ import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/
 import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
 
 import { errorHandler } from "@/src/app/error/errorHandler";
-import { MissingParamsError, MySQLError } from "@/src/app/error/errors";
-import { NotFoundError } from "next/dist/client/components/not-found";
 
 const searchGateway = new YoutubeDataSearchGateway();
 const videoRepository = new MySQLVideoRepository();

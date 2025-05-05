@@ -44,7 +44,7 @@ export const POST = async (
     await registerNewPlaylistMember.run([playlistId], userId, videoId);
 
     return new NextResponse(
-      JSON.stringify({ msg: "add new video to playlist!" }),
+      JSON.stringify({ message: "お気に入りに動画を追加しました。" }),
       {
         status: 201,
         headers: { "Content-Type": "application/json" },

@@ -29,15 +29,16 @@ export const menuDefinitions = {
             if (!res.ok) {
               const errorData = await res.json();
               console.log(`${errorData.errorType!}: ${errorData.message}`);
-              router.refresh();
-              await openModal("notice", {
-                message: "お気に入りのタイトルを変更しました。",
-                type: "normal",
+              openModal("notice", {
+                message: errorData.message,
+                type: "error",
               });
             } else {
+              const resData = await res.json();
+
               //noticeModalなのでawaitしないでも良い
               openModal("notice", {
-                message: "お気に入りのタイトルを変更しました。",
+                message: resData.message,
                 type: "normal",
               });
               router.refresh();
@@ -72,8 +73,18 @@ export const menuDefinitions = {
             if (!res.ok) {
               const errorData = await res.json();
               console.log(`${errorData.errorType!}: ${errorData.message}`);
+              openModal("notice", {
+                message: errorData.message,
+                type: "error",
+              });
             } else {
-              console.log("プレイリストを削除しました。");
+              const resData = await res.json();
+              //noticeModalなのでawaitしないでも良い
+              openModal("notice", {
+                message: resData.message,
+                type: "normal",
+              });
+
               router.refresh();
             }
           }
@@ -115,9 +126,18 @@ export const menuDefinitions = {
             if (!res.ok) {
               const errorData = await res.json();
               console.log(`${errorData.errorType!}: ${errorData.message}`);
+              openModal("notice", {
+                message: errorData.message,
+                type: "error",
+              });
             } else {
               const resData = await res.json();
-              console.log(resData.message);
+              //noticeModalなのでawaitしないでも良い
+              openModal("notice", {
+                message: resData.message,
+                type: "normal",
+              });
+
               router.refresh();
             }
           }
@@ -168,8 +188,18 @@ export const menuDefinitions = {
             if (!res.ok) {
               const errorData = await res.json();
               console.log(`${errorData.errorType!}: ${errorData.message}`);
+              openModal("notice", {
+                message: errorData.message,
+                type: "error",
+              });
             } else {
-              console.log("プレイリストから動画を削除しました。");
+              const resData = await res.json();
+              //noticeModalなのでawaitしないでも良い
+              openModal("notice", {
+                message: resData.message,
+                type: "normal",
+              });
+
               router.refresh();
             }
           }

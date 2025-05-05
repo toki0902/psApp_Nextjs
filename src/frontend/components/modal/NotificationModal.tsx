@@ -7,7 +7,7 @@ type Props = {
   close: () => void;
 };
 
-const NotificationModal = ({ onPassCheck, close, payload }: Props) => {
+const NotificationModal = ({ onPassCheck, payload }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const onClose = () => {

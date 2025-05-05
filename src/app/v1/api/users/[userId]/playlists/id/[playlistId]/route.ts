@@ -92,7 +92,10 @@ export const DELETE = async (
 
     await deletePlaylistByPlaylistId.run(playlistId, userId);
 
-    return new NextResponse(null, { status: 204 });
+    return new NextResponse(
+      JSON.stringify({ message: "お気に入りを削除しました。" }),
+      { status: 200 },
+    );
   } catch (err) {
     return errorHandler(err);
   }
@@ -131,7 +134,10 @@ export const PATCH = async (
 
     await changePlaylistTitleByPlaylistId.run(playlistId, userId, newTitle);
 
-    return new NextResponse(null, { status: 204 });
+    return new NextResponse(
+      JSON.stringify({ message: "お気に入りのタイトルを変更しました。" }),
+      { status: 200 },
+    );
   } catch (err) {
     return errorHandler(err);
   }

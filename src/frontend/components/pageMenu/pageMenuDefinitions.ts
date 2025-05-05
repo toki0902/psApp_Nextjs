@@ -26,9 +26,18 @@ export const PageMenuDefinition = {
             if (!res.ok) {
               const errorData = await res.json();
               console.log(`${errorData.errorType!}: ${errorData.message}`);
+              openModal("notice", {
+                message: errorData.message,
+                type: "error",
+              });
             } else {
-              console.log("プレイリストタイトルを更新しました。");
-              router.refresh();
+              const resData = await res.json();
+              //noticeModalなのでawaitしないでも良い
+              openModal("notice", {
+                message: resData.message,
+                type: "normal",
+              });
+
               router.push(
                 `/users/${pageMenuData.edit.ownerId}/playlists/${newTitle}`,
               );
@@ -66,8 +75,18 @@ export const PageMenuDefinition = {
             if (!res.ok) {
               const errorData = await res.json();
               console.log(`${errorData.errorType!}: ${errorData.message}`);
+              openModal("notice", {
+                message: errorData.message,
+                type: "error",
+              });
             } else {
-              console.log("お気に入りを作成しました。");
+              const resData = await res.json();
+              //noticeModalなのでawaitしないでも良い
+              openModal("notice", {
+                message: resData.message,
+                type: "normal",
+              });
+
               router.refresh();
             }
           }
@@ -100,8 +119,18 @@ export const PageMenuDefinition = {
             if (!res.ok) {
               const errorData = await res.json();
               console.log(`${errorData.errorType!}: ${errorData.message}`);
+              openModal("notice", {
+                message: errorData.message,
+                type: "error",
+              });
             } else {
-              console.log("プレイリストを削除しました。");
+              const resData = await res.json();
+              //noticeModalなのでawaitしないでも良い
+              openModal("notice", {
+                message: resData.message,
+                type: "normal",
+              });
+
               router.push(`/users/${pageMenuData.delete.ownerId}/playlists`);
             }
           }

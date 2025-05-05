@@ -44,7 +44,7 @@ export const POST = async (
       JSON.stringify({
         videoId,
         playlistIds,
-        msg: "プレイリストに動画を追加しました。",
+        message: "お気に入りに動画を追加しました。",
       }),
       {
         status: 201,

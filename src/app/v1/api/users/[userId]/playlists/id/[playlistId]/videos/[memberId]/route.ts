@@ -45,7 +45,10 @@ export const DELETE = async (
 
     await deletePlaylistMemberByMemberId.run(playlistId, userId, memberId);
 
-    return new NextResponse(null, { status: 204 });
+    return new NextResponse(
+      JSON.stringify({ message: "お気に入りから動画を削除しました。" }),
+      { status: 200 },
+    );
   } catch (err) {
     return errorHandler(err);
   }

@@ -193,6 +193,11 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     videoId: string,
     playlistIds: string[],
   ): Promise<void> => {
+    if (!playlistIds.length) {
+      console.warn("playlistIds is empty. Skipping insert.");
+      return;
+    }
+
     const connection = await (await this.pool).getConnection();
     try {
       // トランザクション開始
