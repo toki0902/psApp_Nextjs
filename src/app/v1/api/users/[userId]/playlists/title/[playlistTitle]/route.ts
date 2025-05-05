@@ -18,19 +18,22 @@ const fetchPlaylistAndVideosByUserIdAndPlaylistTitle =
   new FetchPlaylistAndVideosByUserIdAndPlaylistTitle(
     playlistRepository,
     videoRepository,
-    searchGateway
+    searchGateway,
   );
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: Promise<{ userId: string; playlistTitle: string }> }
+  { params }: { params: Promise<{ userId: string; playlistTitle: string }> },
 ): Promise<NextResponse> => {
   try {
     const { userId, playlistTitle } = await params;
 
     if (!userId || !playlistTitle) {
       console.log("Required parameter is missing");
-      throw new MissingParamsError("Required parameter is missing");
+      throw new MissingParamsError(
+        "パラメータが不足しています。",
+        "Required parameter is missing",
+      );
     }
 
     const session: Session | null = await auth();
@@ -38,13 +41,14 @@ export const GET = async (
     if (session?.user?.userId !== userId) {
       console.log("Unauthorized!");
       throw new UnAuthorizeError(
-        "You are not authenticated. Please log in and try again"
+        "認証に失敗しました。もう一度ログインし直してください。",
+        "You are not authenticated. Please log in and try again",
       );
     }
 
     const playlist = await fetchPlaylistAndVideosByUserIdAndPlaylistTitle.run(
       userId,
-      playlistTitle
+      playlistTitle,
     );
 
     return new NextResponse(JSON.stringify({ playlist: playlist }), {

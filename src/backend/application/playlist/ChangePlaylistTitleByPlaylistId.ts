@@ -12,11 +12,17 @@ export class ChangePlaylistTitleByPlaylistId {
       await this._playlistRepository.fetchPlaylistsByPlaylistIds([playlistId]);
 
     if (!playlistData?.length) {
-      throw new NotFoundError("playlist is not found");
+      throw new NotFoundError(
+        "お気に入りが存在しません。",
+        "playlist is not found",
+      );
     }
 
     if (playlistData[0].ownerId !== userId) {
-      throw new UnAuthorizeError("you don't own this playlist");
+      throw new UnAuthorizeError(
+        "このお気に入りを所持していません。",
+        "you don't own this playlist",
+      );
     }
 
     await this._playlistRepository.changePlaylistTitleByPlaylistId(

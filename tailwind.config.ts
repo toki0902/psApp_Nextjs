@@ -22,8 +22,12 @@ const config: Config = {
         toUpInForFavorite: "toUp-in 0.8s",
         "toUp-in": "toUp-in 0.3s",
         "drop-in-forModal": "drop-in-forModal .3s",
+        "focus-in-for-notice":
+          "focus-in .3s cubic-bezier(0.550, 0.085, 0.680, 0.530)   both",
         "focus-in":
           "focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530)   both",
+        "blur-out-for-notice":
+          "blur-out .3s cubic-bezier(0.550, 0.085, 0.680, 0.530)   both",
         "blur-out":
           "blur-out 1s cubic-bezier(0.550, 0.085, 0.680, 0.530)   both",
         "dot-first": "dot-first 4s infinite",

@@ -6,23 +6,19 @@ import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/
 import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
 
 import { errorHandler } from "@/src/app/error/errorHandler";
-import { MissingParamsError } from "@/src/app/error/errors";
+import { MissingParamsError, MySQLError } from "@/src/app/error/errors";
+import { NotFoundError } from "next/dist/client/components/not-found";
 
 const searchGateway = new YoutubeDataSearchGateway();
 const videoRepository = new MySQLVideoRepository();
 const findVideosByKeyword = new FindVideosByKeyword(
   searchGateway,
-  videoRepository
+  videoRepository,
 );
 
 export const GET = async (req: NextRequest): Promise<NextResponse> => {
   try {
-    const keyword = req.nextUrl.searchParams.get("q");
-    if (keyword === null) {
-      throw new MissingParamsError(
-        "This request does not contain the required parameters"
-      );
-    }
+    const keyword = req.nextUrl.searchParams.get("q") || "";
 
     const videos = await findVideosByKeyword.run(keyword);
 

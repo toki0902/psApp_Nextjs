@@ -19,7 +19,10 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
       );
 
     if (!playlistData) {
-      throw new NotFoundError("playlist is not found");
+      throw new NotFoundError(
+        "お気に入りが存在しません。",
+        "playlist is not found",
+      );
     }
 
     const playlistMembersObj =

@@ -27,8 +27,10 @@ export const DELETE = async (
     }: { userId: string; playlistId: string; memberId: string } = await params;
 
     if (!userId || !playlistId || !memberId) {
-      console.log("Required parameter is missing");
-      throw new MissingParamsError("Required parameter is missing");
+      throw new MissingParamsError(
+        "パラメータが不足しています。",
+        "Required parameter is missing or invalid",
+      );
     }
 
     const session: Session | null = await auth();
@@ -36,6 +38,7 @@ export const DELETE = async (
     if (!(session?.user?.userId === userId)) {
       console.log("Unauthorized!");
       throw new UnAuthorizeError(
+        "認証に失敗しました。もう一度ログインし直してください。",
         "You are not authenticated. Please log in and try again",
       );
     }

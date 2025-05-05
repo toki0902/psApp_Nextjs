@@ -41,6 +41,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       return returnObj;
     } catch (err) {
       throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
         `failed to fetch playlistsInfo in process 'fetchPlaylistsByPlaylistIds' due to: ${JSON.stringify(err)}`,
       );
     }
@@ -79,6 +80,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       return arr_resObj;
     } catch (err) {
       throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
         `failed to fetch playlistInfo in process 'fetchPlaylistMembersIdsByPlaylistIds' due to: ${JSON.stringify(
           err,
         )}`,
@@ -119,6 +121,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       return playlistData;
     } catch (err) {
       throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
         `failed to fetch playlistInfo in process 'fetchPlaylistByUserId' due to: ${JSON.stringify(
           err,
         )}`,
@@ -158,6 +161,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       };
     } catch (err) {
       throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
         `failed to fetch playlistInfo in process 'fetchPlaylistByPlaylistTitleAndUserId' due to: ${JSON.stringify(
           err,
         )}`,
@@ -177,6 +181,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       console.log(`create new playlist with userId:${ownerId}`);
     } catch (err) {
       throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
         `failed to create new playlist in process 'insertPlaylist' due to: ${JSON.stringify(
           err,
         )}`,
@@ -212,6 +217,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       await connection.rollback();
       console.error("Transaction rolled back due to error:", err);
       throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
         `An unexpected error occurred. Please try again later`,
       );
     } finally {
@@ -229,6 +235,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       console.log(`delete playlist playlistId: ${playlistId}`);
     } catch (err) {
       throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
         `failed to delete playlist in process 'deletePlaylistByPlaylistId' due to: ${JSON.stringify(
           err,
         )}`,
@@ -245,6 +252,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       console.log(`delete playlist member memberId: ${memberId}}`);
     } catch (err) {
       throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
         `failed to delete playlist member in process 'deletePlaylistMemberByMemberId' due to: ${JSON.stringify(
           err,
         )}`,
@@ -268,6 +276,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       console.log(JSON.stringify(updateResult));
     } catch (err) {
       throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
         `failed to change playlist title in process 'changePlaylistTitleByPlaylistId' due to: ${JSON.stringify(
           err,
         )}`,

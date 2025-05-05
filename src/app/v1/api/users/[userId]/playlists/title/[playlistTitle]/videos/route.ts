@@ -11,7 +11,7 @@ import { auth } from "@/auth";
 const playlistRepository = new MySQLPlaylistRepository();
 
 const registerNewPlaylistMember = new RegisterNewPlaylistMemberByPlaylistTitle(
-  playlistRepository
+  playlistRepository,
 );
 
 export const POST = async (
@@ -20,23 +20,25 @@ export const POST = async (
     params,
   }: {
     params: Promise<{ userId: string; playlistTitle: string }>;
-  }
+  },
 ): Promise<NextResponse> => {
   try {
     const { videoId } = await req.json();
     const { userId, playlistTitle } = await params;
 
     if (!userId || !playlistTitle || !videoId) {
-      console.log("Required parameter is missing");
-      throw new MissingParamsError("Required parameter is missing");
+      throw new MissingParamsError(
+        "パラメータが不足しています。",
+        "Required parameter is missing",
+      );
     }
 
     const session: Session | null = await auth();
 
     if (!(session?.user?.userId === userId)) {
-      console.log("Unauthorized!");
       throw new UnAuthorizeError(
-        "You are not authenticated. Please log in and try again"
+        "認証に失敗しました。もう一度ログインし直してください。",
+        "You are not authenticated. Please log in and try again",
       );
     }
 
@@ -47,7 +49,7 @@ export const POST = async (
       {
         status: 201,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   } catch (err) {
     return errorHandler(err);

@@ -10,7 +10,10 @@ export class FetchUserAndRegister {
   run = async (user: NextAuthUser): Promise<User> => {
     if (!user.name || !user.id) {
       //fix: インターフェース層のerror.tsに依存している、、。
-      throw new NotFoundError("Insufficient information provided by provider");
+      throw new NotFoundError(
+        "ユーザ名またはIDが設定されていません。",
+        "Insufficient information provided by provider",
+      );
     }
 
     const selectedUser = await this._userRepository.findBySocialId(user.id);
@@ -18,14 +21,14 @@ export class FetchUserAndRegister {
     if (!selectedUser) {
       const insertResult = await this._userRepository.insert(
         user.id,
-        user.name
+        user.name,
       );
 
       return new User(
         insertResult.userId,
         insertResult.name,
         insertResult.socialId,
-        user.image || undefined
+        user.image || undefined,
       );
     }
 
@@ -33,7 +36,7 @@ export class FetchUserAndRegister {
       selectedUser.userId,
       selectedUser.name,
       selectedUser.socialId,
-      user.image || undefined
+      user.image || undefined,
     );
   };
 }

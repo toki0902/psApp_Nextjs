@@ -28,7 +28,7 @@ export class MySQLUserRepository implements IUserRepository {
       await this.pool
     ).execute<mysql.RowDataPacket[]>(
       "select * from users where social_id = ?",
-      [socialId]
+      [socialId],
     );
     const record = userResult[0][0];
 
@@ -47,12 +47,15 @@ export class MySQLUserRepository implements IUserRepository {
         await this.pool
       ).execute<mysql.ResultSetHeader>(
         "insert into users (user_id, name, social_id) values (?, ?, ?)",
-        [userId, name, socialId]
+        [userId, name, socialId],
       );
 
       return new User(userId, name, socialId, undefined);
     } catch (err) {
-      throw new MySQLError("failed to register new user in process 'insert'");
+      throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
+        "failed to register new user in process 'insert'",
+      );
     }
   }
 }

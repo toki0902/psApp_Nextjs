@@ -14,7 +14,7 @@ const FavoriteItemToAdd = ({
   return (
     <li
       key={id}
-      className="group ml-2 flex w-full items-center py-1 hover:bg-red hover:text-back lg:hidden"
+      className="group ml-2 flex w-full items-center py-3 hover:bg-red hover:text-back lg:hidden"
     >
       <img
         src={

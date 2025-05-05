@@ -9,6 +9,7 @@ export const PageMenuDefinition = {
     getOnClick: (
       pageMenuData: PageMenuData,
       openModal: ModalContextType["openModal"],
+      router: any,
     ) => {
       return async () => {
         const onPassCheck = async (newTitle: string) => {
@@ -27,6 +28,10 @@ export const PageMenuDefinition = {
               console.log(`${errorData.errorType!}: ${errorData.message}`);
             } else {
               console.log("プレイリストタイトルを更新しました。");
+              router.refresh();
+              router.push(
+                `/users/${pageMenuData.edit.ownerId}/playlists/${newTitle}`,
+              );
             }
           }
         };
@@ -44,6 +49,7 @@ export const PageMenuDefinition = {
     getOnClick: (
       pageMenuData: PageMenuData,
       openModal: ModalContextType["openModal"],
+      router: any,
     ) => {
       return async () => {
         const onPassCheck = async (playlistTitle: string) => {
@@ -62,6 +68,7 @@ export const PageMenuDefinition = {
               console.log(`${errorData.errorType!}: ${errorData.message}`);
             } else {
               console.log("お気に入りを作成しました。");
+              router.refresh();
             }
           }
         };
@@ -80,6 +87,7 @@ export const PageMenuDefinition = {
     getOnClick: (
       pageMenuData: PageMenuData,
       openModal: ModalContextType["openModal"],
+      router: any,
     ) => {
       return async () => {
         const onPassCheck = async () => {
@@ -94,6 +102,7 @@ export const PageMenuDefinition = {
               console.log(`${errorData.errorType!}: ${errorData.message}`);
             } else {
               console.log("プレイリストを削除しました。");
+              router.push(`/users/${pageMenuData.delete.ownerId}/playlists`);
             }
           }
         };

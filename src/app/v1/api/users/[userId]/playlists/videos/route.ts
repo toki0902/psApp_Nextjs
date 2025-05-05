@@ -22,7 +22,10 @@ export const POST = async (
 
     if (!userId || !playlistIds || !videoId) {
       console.log("Required parameter is missing");
-      throw new MissingParamsError("Required parameter is missing");
+      throw new MissingParamsError(
+        "パラメータが不足しています。",
+        "Required parameter is missing",
+      );
     }
 
     const session: Session | null = await auth();
@@ -30,6 +33,7 @@ export const POST = async (
     if (!(session?.user.userId === userId)) {
       console.log("Unauthorized!");
       throw new UnAuthorizeError(
+        "認証に失敗しました。もう一度ログインし直してください。",
         "You are not authenticated. Please log in and try again",
       );
     }

@@ -1,6 +1,7 @@
 import CheckModal from "../components/modal/CheckModal";
 import EditModal from "../components/modal/EditModal";
 import FavoriteModal from "../components/modal/favoriteModal/FavoriteModal";
+import NotificationModal from "../components/modal/NotificationModal";
 import PasswordModal from "../components/modal/PasswordModal";
 import { playlist } from "./playlist";
 
@@ -34,6 +35,11 @@ export type ModalDefinitionMap = {
     component: typeof FavoriteModal;
     payload: { playlists: playlist[] };
     value: string[];
+  };
+  notice: {
+    component: typeof NotificationModal;
+    payload: { message: string; type: "error" | "normal" };
+    value: boolean;
   };
 };
 

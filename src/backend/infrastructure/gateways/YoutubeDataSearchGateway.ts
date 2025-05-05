@@ -19,6 +19,7 @@ export class YoutubeDataSearchGateway {
     if (!tokenResponse.ok) {
       const errorData = tokenResponse.json();
       throw new UnAuthorizeError(
+        "googleトークンを取得できません。",
         `failed to fetch token ${JSON.stringify(errorData)}`,
       );
     }
@@ -52,6 +53,7 @@ export class YoutubeDataSearchGateway {
       if (!statisticsResponse.ok) {
         const errorData = await statisticsResponse.text();
         throw new UnAuthorizeError(
+          "ビデオの詳細情報取得に失敗しました。",
           `failed to fetch video statistics in process 'fetchAllVideoByAccessToken': ${JSON.stringify(
             errorData,
           )}`,
@@ -85,6 +87,7 @@ export class YoutubeDataSearchGateway {
         if (!response.ok) {
           const errorData = await response.json();
           throw new UnAuthorizeError(
+            "アップロードプレイリスト取得に失敗しました。",
             `failed to fetch upload playlist in process 'fetchAllVideoByAccessToken': ${JSON.stringify(
               errorData,
             )}`,
@@ -159,6 +162,7 @@ export class YoutubeDataSearchGateway {
     if (!videoResponse.ok) {
       const errorData = await videoResponse.text();
       throw new UnAuthorizeError(
+        "ビデオ情報取得に失敗しました。",
         `failed to fetch video in process 'fetchVideoByVideoIds': ${JSON.stringify(
           errorData,
         )}`,

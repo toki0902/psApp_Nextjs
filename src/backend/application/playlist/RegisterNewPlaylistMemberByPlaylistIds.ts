@@ -13,7 +13,10 @@ export class RegisterNewPlaylistMemberByPlaylistIds {
       await this._playlistRepository.fetchPlaylistsByPlaylistIds(playlistIds);
 
     if (!playlistData) {
-      throw new NotFoundError("playlist is not found");
+      throw new NotFoundError(
+        "お気に入りが存在しません。",
+        "playlist is not found",
+      );
     }
 
     const allOwnedByUser = playlistData.every(
@@ -21,7 +24,10 @@ export class RegisterNewPlaylistMemberByPlaylistIds {
     );
 
     if (!allOwnedByUser) {
-      throw new UnAuthorizeError("you don't own this playlists");
+      throw new UnAuthorizeError(
+        "このお気に入りを所持していません。",
+        "you don't own this playlist",
+      );
     }
 
     const playlistMemberData =

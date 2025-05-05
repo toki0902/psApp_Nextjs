@@ -13,12 +13,12 @@ export class MySQLVideoRepository implements IVideoRepository {
         await this.pool
       ).execute<mysql.RowDataPacket[]>(
         "select * from videos where video_cache_id = ?",
-        [cacheId]
+        [cacheId],
       );
 
       const record = videoResult[0];
       if (record.length === 0) {
-        throw new NotFoundError("invalid cacheId");
+        throw new NotFoundError("キャッシュIDが無効です。", "invalid cacheId");
       }
 
       return record.map(
@@ -27,12 +27,13 @@ export class MySQLVideoRepository implements IVideoRepository {
             item.video_youtube_id,
             item.views,
             item.thumbnail,
-            item.title
-          )
+            item.title,
+          ),
       );
     } catch (err) {
       throw new MySQLError(
-        `failed to fetch video by cacheId in process 'fetchVideosByCacheId': ${err}`
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
+        `failed to fetch video by cacheId in process 'fetchVideosByCacheId': ${err}`,
       );
     }
   };
@@ -42,7 +43,7 @@ export class MySQLVideoRepository implements IVideoRepository {
       const videoCacheResult = await (
         await this.pool
       ).execute<mysql.RowDataPacket[]>(
-        "select * from video_caches where expires > now()"
+        "select * from video_caches where expires > now()",
       );
 
       const record = videoCacheResult[0];
@@ -53,7 +54,8 @@ export class MySQLVideoRepository implements IVideoRepository {
       return Number(record[0].video_cache_id);
     } catch (err) {
       throw new MySQLError(
-        `failed to fetch valid cacheId in process 'fetchValidCacheId': ${err}`
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
+        `failed to fetch valid cacheId in process 'fetchValidCacheId': ${err}`,
       );
     }
   };
@@ -67,7 +69,7 @@ export class MySQLVideoRepository implements IVideoRepository {
       // `video_caches`テーブルへの挿入
       const videoCacheInsertResult =
         await connection.execute<mysql.ResultSetHeader>(
-          `INSERT INTO video_caches (expires) VALUES (DATE_ADD(NOW(), INTERVAL 15 DAY))`
+          `INSERT INTO video_caches (expires) VALUES (DATE_ADD(NOW(), INTERVAL 15 DAY))`,
         );
 
       const cacheRecord = videoCacheInsertResult[0];
@@ -96,7 +98,8 @@ export class MySQLVideoRepository implements IVideoRepository {
       await connection.rollback();
       console.error("Transaction rolled back due to error:", err);
       throw new MySQLError(
-        `An unexpected error occurred. Please try again later`
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
+        `An unexpected error occurred. Please try again later`,
       );
     } finally {
       // 接続を解放
@@ -106,7 +109,7 @@ export class MySQLVideoRepository implements IVideoRepository {
 
   fetchVideoByYoutubeIdsAndCacheId = async (
     ids: string[],
-    cacheId: number
+    cacheId: number,
   ): Promise<Video[]> => {
     try {
       if (ids.length === 0) {
@@ -134,13 +137,16 @@ export class MySQLVideoRepository implements IVideoRepository {
           data.video_youtube_id,
           data.views,
           data.thumbnail,
-          data.title
+          data.title,
         );
       });
 
       return videos;
     } catch (err) {
-      throw new MySQLError(`failed to fetch video from cache: ${err}`);
+      throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
+        `failed to fetch video from cache: ${err}`,
+      );
     }
   };
 }

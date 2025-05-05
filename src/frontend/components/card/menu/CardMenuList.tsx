@@ -3,7 +3,7 @@ import { CardMenuData } from "@/src/frontend/types/cardMenu";
 import { menuDefinitions } from "./menuDefinitions";
 import MenuItem from "./MenuItem";
 import { useModal } from "@/src/frontend/hooks/useModal";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 type Props = {
   cardData: CardMenuData;

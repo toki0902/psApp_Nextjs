@@ -17,7 +17,10 @@ export const GET = async (req: NextRequest): Promise<NextResponse> => {
     });
 
     if (!JWT_str || !JWT) {
-      throw new UnAuthorizeError("JWT token is not valid");
+      throw new UnAuthorizeError(
+        "JWTトークンが無効です。",
+        "JWT token is not valid",
+      );
     }
 
     const response = NextResponse.redirect(new URL("/", process.env.ROOT_URL));

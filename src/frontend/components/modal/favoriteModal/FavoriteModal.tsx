@@ -4,13 +4,13 @@ import { playlist } from "../../../types/playlist";
 import { Kaisei } from "../../../assets/fonts/fonts";
 import FavoriteItemToAdd from "./FavoriteItemToAdd";
 
-type props = {
+type Props = {
   onPassCheck: (addPlaylistIds: string[]) => void;
   close: () => void;
-  playlists: playlist[];
+  payload: { playlists: playlist[] };
 };
 
-const FavoriteModal = ({ onPassCheck, close, playlists }: props) => {
+const FavoriteModal = ({ onPassCheck, close, payload }: Props) => {
   const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<string[]>([]);
   const [isValid, setIsValid] = useState<null | Boolean>(null);
   let timer: NodeJS.Timeout | null = null;
@@ -54,10 +54,10 @@ const FavoriteModal = ({ onPassCheck, close, playlists }: props) => {
         onClick={close}
       ></div>
       <div
-        className={`${Kaisei.className} justify fixed bottom-0 right-0 z-20 flex w-screen transform animate-toUp-in flex-col items-start justify-between space-y-3 overflow-hidden overflow-y-auto rounded-t-xl bg-red py-3 text-base text-back lg:left-1/2 lg:top-1/2 lg:aspect-[16/9] lg:w-1/2 lg:max-w-[650px] lg:-translate-x-1/2 lg:-translate-y-1/2 lg:animate-drop-in-forModal lg:rounded-xl lg:border-2 lg:border-red lg:bg-back lg:px-7 lg:py-7 lg:text-inherit`}
+        className={`${Kaisei.className} justify fixed bottom-0 right-0 z-20 flex max-h-[50%] w-screen transform animate-toUp-in flex-col items-start justify-between space-y-3 overflow-auto rounded-t-xl bg-red py-3 text-base text-back lg:left-1/2 lg:top-1/2 lg:aspect-[16/9] lg:w-1/2 lg:max-w-[650px] lg:-translate-x-1/2 lg:-translate-y-1/2 lg:animate-drop-in-forModal lg:rounded-xl lg:border-2 lg:border-red lg:bg-back lg:px-7 lg:py-7 lg:text-inherit`}
       >
         <div
-          className="absolute right-7 top-7 h-7 w-7 cursor-pointer"
+          className="absolute right-7 top-7 hidden h-7 w-7 cursor-pointer lg:block"
           onClick={close}
         >
           <div className="absolute top-1/2 h-[1px] w-full rotate-45 bg-red"></div>
@@ -73,13 +73,10 @@ const FavoriteModal = ({ onPassCheck, close, playlists }: props) => {
         <h2 className="text-2x mb-10 hidden h-fit w-fit lg:block">
           お気に入りへ追加
         </h2>
-        <ul className="mb-5 flex w-full flex-wrap items-start space-y-3">
-          {playlists.map((playlist) => (
-            <>
-              <li
-                key={playlist.playlistId}
-                className="mb-5 mr-10 hidden h-fit w-fit lg:block"
-              >
+        <ul className="mb-5 flex w-full flex-wrap items-center justify-start">
+          {payload.playlists.map((playlist) => (
+            <React.Fragment key={playlist.playlistId}>
+              <li className="mb-5 mr-10 hidden h-fit w-fit lg:block">
                 <label>
                   <input
                     type="checkbox"
@@ -91,13 +88,12 @@ const FavoriteModal = ({ onPassCheck, close, playlists }: props) => {
                 </label>
               </li>
               <FavoriteItemToAdd
-                key={playlist.playlistId}
                 id={playlist.playlistId}
                 selectedPlaylistIds={selectedPlaylistIds}
                 togglePlaylist={togglePlaylist}
                 title={playlist.title}
               />
-            </>
+            </React.Fragment>
           ))}
         </ul>
         <div className="hidden h-fit w-full justify-end space-x-10 lg:flex">

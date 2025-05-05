@@ -44,7 +44,10 @@ export const nextAuthOptions: NextAuthConfig = {
 
     async session({ token, session }: { token: JWT; session: Session }) {
       if (!token) {
-        throw new UnAuthorizeError("JWT token not granted");
+        throw new UnAuthorizeError(
+          "JWTトークンが存在しません。",
+          "JWT token not granted",
+        );
       }
 
       session.user.userId =

@@ -4,6 +4,7 @@ import PasswordModal from "./PasswordModal";
 import CheckModal from "./CheckModal";
 import EditModal from "./EditModal";
 import FavoriteModal from "./favoriteModal/FavoriteModal";
+import NotificationModal from "./NotificationModal";
 import {
   ModalContextType,
   ModalInfoType,
@@ -63,6 +64,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     edit: EditModal,
     share: CheckModal,
     addFavorite: FavoriteModal,
+    notice: NotificationModal,
   };
 
   const ModalComponent = modalInfo ? MODAL_COMPONENTS[modalInfo.type] : null;
@@ -74,8 +76,8 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
         <ModalComponent
           onPassCheck={onPass}
           close={onCancel}
-          {...(modalInfo.type === "addFavorite"
-            ? { playlists: modalInfo.payload.playlists }
+          {...(modalInfo.type === "addFavorite" || modalInfo.type === "notice"
+            ? { payload: modalInfo.payload }
             : {})}
         />
       )}

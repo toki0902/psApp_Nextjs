@@ -9,12 +9,15 @@ const createSignInURL = new CreateSignInURL();
 
 export const POST = async (
   req: Request,
-  { params }: { params: Promise<{ provider: string }> }
+  { params }: { params: Promise<{ provider: string }> },
 ): Promise<NextResponse> => {
   try {
     const { provider } = await params;
     if (!provider) {
-      throw new MissingParamsError("provider is not found");
+      throw new MissingParamsError(
+        "プロバイダーを指定してください。",
+        "provider is not found",
+      );
     }
 
     const URL = await createSignInURL.run(provider);
