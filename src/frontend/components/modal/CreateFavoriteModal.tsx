@@ -1,14 +1,9 @@
-"use client";
 import React, { useEffect, useState } from "react";
-
 import { Noto_Serif_bold } from "../../assets/fonts/fonts";
 
-type Props = {
-  onPassCheck: (newTitle: string) => void;
-  close: () => void;
-};
+type Props = { onPassCheck: (newTitle: string) => void; close: () => void };
 
-const EditModal = ({ onPassCheck, close }: Props) => {
+const CreateFavoriteModal = ({ onPassCheck, close }: Props) => {
   const [isFocus, setIsFocus] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [isValid, setIsValid] = useState<null | Boolean>(null);
@@ -49,7 +44,7 @@ const EditModal = ({ onPassCheck, close }: Props) => {
       >
         <div className="h-full w-full p-6">
           <div className="y-fit mb-10 flex w-full items-center justify-between">
-            <h2 className="text-lg font-bold lg:text-2xl">編集</h2>
+            <h2 className="text-lg font-bold lg:text-2xl">新規作成</h2>
             <div className="relative h-7 w-7 cursor-pointer" onClick={close}>
               <div className="absolute top-1/2 h-[2px] w-full rotate-45 bg-red"></div>
               <div className="absolute top-1/2 h-[2px] w-full -rotate-45 bg-red"></div>
@@ -62,7 +57,7 @@ const EditModal = ({ onPassCheck, close }: Props) => {
                 : "relative mb-5 flex h-full w-full flex-col items-start justify-center text-sm text-black opacity-60"
             }
           >
-            <label htmlFor="title">新しいタイトル</label>
+            <label htmlFor="title">タイトル</label>
             <input
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
@@ -73,29 +68,29 @@ const EditModal = ({ onPassCheck, close }: Props) => {
               id="title"
               placeholder="タイトルを入力してください"
             />
-            {isValid === false ? (
-              <div className="absolute left-1/2 top-full flex w-fit -translate-x-1/2 translate-y-1/2 items-center text-nowrap text-red">
-                <img
-                  className="mr-1 w-3 lg:mr-2 lg:w-5"
-                  src="/images/warning.svg"
-                  alt=""
-                />
-                <p className="text-sm lg:text-base">
-                  お気に入りのタイトルは1文字以上が有効です。
-                </p>
-              </div>
-            ) : null}
           </div>
         </div>
         <button
           onClick={onClick}
           className="h-fit w-full border-t border-red py-2 text-red hover:bg-red hover:text-back"
         >
-          編集する
+          新規作成する
         </button>
+        {isValid === false ? (
+          <div className="absolute left-1/2 top-full flex w-fit -translate-x-1/2 translate-y-1/2 items-center text-nowrap">
+            <img
+              className="mr-1 w-3 lg:mr-2 lg:w-5"
+              src="/images/warning.svg"
+              alt=""
+            />
+            <p className="text-sm lg:text-base">
+              お気に入りのタイトルは1文字以上が有効です。
+            </p>
+          </div>
+        ) : null}
       </div>
     </>
   );
 };
 
-export default EditModal;
+export default CreateFavoriteModal;

@@ -3,7 +3,7 @@ import React, { useState, createContext } from "react";
 import PasswordModal from "./PasswordModal";
 import CheckModal from "./CheckModal";
 import EditModal from "./EditModal";
-import FavoriteModal from "./favoriteModal/FavoriteModal";
+import AddFavoriteModal from "./addFavoriteModal/AddFavoriteModal";
 import NotificationModal from "./NotificationModal";
 import {
   ModalContextType,
@@ -12,6 +12,7 @@ import {
   ModalType,
   ModalDefinitionMap,
 } from "../../types/modal";
+import CreateFavoriteModal from "./CreateFavoriteModal";
 
 export const ModalContext = createContext<ModalContextType | null>(null);
 
@@ -63,7 +64,8 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     deletePlaylist: CheckModal,
     edit: EditModal,
     share: CheckModal,
-    addFavorite: FavoriteModal,
+    createFavorite: CreateFavoriteModal,
+    addFavorite: AddFavoriteModal,
     notice: NotificationModal,
   };
 

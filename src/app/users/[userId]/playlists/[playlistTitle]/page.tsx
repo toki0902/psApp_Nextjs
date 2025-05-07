@@ -20,7 +20,9 @@ const Playlist = async ({
 }: {
   params: Promise<{ userId: string; playlistTitle: string }>;
 }) => {
-  const { userId, playlistTitle } = await params;
+  const { userId, playlistTitle: beforePlaylistTitle } = await params;
+
+  const playlistTitle = decodeURIComponent(beforePlaylistTitle);
 
   const session = await auth();
 
@@ -28,26 +30,27 @@ const Playlist = async ({
 
   const cookie = await getAllCookies();
 
-  let playlist: playlist | null = null;
-  // videos: [
-  //   {
-  //     video: {
-  //       videoId: "HLkbX0YhToY",
-  //       thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-  //       title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
-  //       url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-  //       views: 32,
-  //     },
-  //     videoMemberId: "sagadgaasd",
-  //   },
-  // ],
-  // title: "何",
-  // playlistId: "safasdfasdhnom",
-  // ownerId: userId,
-  // createdAt: "lajdljfas",
+  let playlist: playlist = {
+    videos: [
+      {
+        video: {
+          videoId: "HLkbX0YhToY",
+          thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+          title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+          url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+          views: 32,
+        },
+        videoMemberId: "sagadgaasd",
+      },
+    ],
+    title: "何",
+    playlistId: "safasdfasdhnom",
+    ownerId: userId,
+    createdAt: "lajdljfas",
+  };
 
   const videoResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${userId}/playlists/title/${playlistTitle}`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${userId}/playlists/title/${beforePlaylistTitle}`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json", Cookie: cookie },
@@ -63,30 +66,30 @@ const Playlist = async ({
   } else {
     const playlistData = await videoResponse.json();
     if (!playlistData.playlist) {
-      notFound();
+      return;
     }
     playlist = playlistData.playlist;
   }
 
   let playlists: playlist[] = [
-    // {
-    //   videos: [
-    //     {
-    //       video: {
-    //         videoId: "HLkbX0YhToY",
-    //         thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-    //         title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
-    //         url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-    //         views: 32,
-    //       },
-    //       videoMemberId: "sagadgaasd",
-    //     },
-    //   ],
-    //   title: "何",
-    //   playlistId: "safasdfasdhnom",
-    //   ownerId: userId,
-    //   createdAt: "lajdljfas",
-    // },
+    {
+      videos: [
+        {
+          video: {
+            videoId: "HLkbX0YhToY",
+            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
+            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
+            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
+            views: 32,
+          },
+          videoMemberId: "sagadgaasd",
+        },
+      ],
+      title: "何",
+      playlistId: "safasdfasdhnom",
+      ownerId: userId,
+      createdAt: "lajdljfas",
+    },
   ];
 
   //APIリクエスト
@@ -107,7 +110,7 @@ const Playlist = async ({
     const playlistData = await playlistResponse.json();
 
     if (!playlistData.playlists) {
-      notFound();
+      return;
     }
 
     playlists = playlistData.playlists;

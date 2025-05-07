@@ -12,7 +12,7 @@ export const generateCardMenuData = (
   const data: CardMenuData = {};
   if (
     options.addFavorite &&
-    needData.userPlaylistsInfo &&
+    needData.userPlaylistsInfo?.length &&
     needData.thisVideoInfo
   ) {
     data.addFavorite = {

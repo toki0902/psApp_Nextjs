@@ -171,7 +171,8 @@ export const menuDefinitions = {
   deleteFromPlaylist: {
     icon: "/images/delete_823A42.svg",
     hoverIcon: "/images/delete_f1EBE5.svg",
-    getLabel: (data: CardMenuData) => `お気に入りから削除する`,
+    getLabel: (data: CardMenuData) =>
+      `「${data.deleteFromPlaylist?.ownerPlaylistInfo.title || "お気に入り"}」から削除する`,
     getOnClick: (
       data: CardMenuData,
       openModal: ModalContextType["openModal"],

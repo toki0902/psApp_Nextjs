@@ -1,9 +1,11 @@
 import CheckModal from "../components/modal/CheckModal";
 import EditModal from "../components/modal/EditModal";
-import FavoriteModal from "../components/modal/favoriteModal/FavoriteModal";
+import FavoriteModal from "../components/modal/addFavoriteModal/AddFavoriteModal";
 import NotificationModal from "../components/modal/NotificationModal";
 import PasswordModal from "../components/modal/PasswordModal";
 import { playlist } from "./playlist";
+import CreateFavoriteModal from "../components/modal/CreateFavoriteModal";
+import AddFavoriteModal from "../components/modal/addFavoriteModal/AddFavoriteModal";
 
 export type ModalDefinitionMap = {
   password: {
@@ -32,9 +34,14 @@ export type ModalDefinitionMap = {
     value: boolean;
   };
   addFavorite: {
-    component: typeof FavoriteModal;
+    component: typeof AddFavoriteModal;
     payload: { playlists: playlist[] };
     value: string[];
+  };
+  createFavorite: {
+    component: typeof CreateFavoriteModal;
+    payload: undefined;
+    value: string;
   };
   notice: {
     component: typeof NotificationModal;

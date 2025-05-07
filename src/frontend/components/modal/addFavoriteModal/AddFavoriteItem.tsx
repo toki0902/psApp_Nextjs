@@ -1,6 +1,6 @@
 import React from "react";
 
-const FavoriteItemToAdd = ({
+const AddFavoriteItem = ({
   id,
   selectedPlaylistIds,
   togglePlaylist,
@@ -12,21 +12,18 @@ const FavoriteItemToAdd = ({
   title: string;
 }) => {
   return (
-    <li
-      key={id}
-      className="group ml-2 flex w-full items-center py-3 hover:bg-red hover:text-back lg:hidden"
-    >
+    <li key={id} className="group flex w-full items-center">
       <img
         src={
           selectedPlaylistIds.includes(id)
-            ? "/images/checked_f1EBE5.svg"
-            : "/images/checkbox_f1EBE5.svg"
+            ? "/images/checked_823A42.svg"
+            : "/images/checkbox_823A42.svg"
         }
-        className="aspect-square w-4 cursor-pointer"
+        className="aspect-square w-5 cursor-pointer"
         onClick={() => togglePlaylist(id)}
       />
       <p
-        className="w-fit cursor-pointer px-2"
+        className="w-fit cursor-pointer overflow-hidden truncate px-2"
         onClick={() => togglePlaylist(id)}
       >
         {title}
@@ -35,4 +32,4 @@ const FavoriteItemToAdd = ({
   );
 };
 
-export default FavoriteItemToAdd;
+export default AddFavoriteItem;

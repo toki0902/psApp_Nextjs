@@ -4,7 +4,7 @@ import { Baloo_2 } from "next/font/google";
 import { Kaisei_Decol } from "next/font/google";
 
 export const Noto_Serif_bold = Noto_Serif({
-  weight: ["500"],
+  weight: ["500", "400"],
   subsets: ["latin"],
 });
 

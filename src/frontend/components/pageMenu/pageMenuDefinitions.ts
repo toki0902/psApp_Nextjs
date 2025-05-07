@@ -64,7 +64,7 @@ export const PageMenuDefinition = {
         const onPassCheck = async (playlistTitle: string) => {
           if (pageMenuData.create) {
             const res = await fetch(
-              `${process.env.NEXT_PUBLIC_URL}/v1/api/users/${pageMenuData.create}/playlists`,
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${pageMenuData.create}/playlists`,
               {
                 method: "POST",
                 body: JSON.stringify({ playlistTitle: playlistTitle }),
@@ -75,6 +75,7 @@ export const PageMenuDefinition = {
             if (!res.ok) {
               const errorData = await res.json();
               console.log(`${errorData.errorType!}: ${errorData.message}`);
+              console.log(errorData.message);
               openModal("notice", {
                 message: errorData.message,
                 type: "error",
@@ -92,10 +93,11 @@ export const PageMenuDefinition = {
           }
         };
 
-        // const playlistTitle = await openModal("");
-        // if (playlistTitle) {
-        //   await onPassCheck(playlistTitle);
-        // }
+        const playlistTitle = await openModal("createFavorite");
+
+        if (playlistTitle) {
+          await onPassCheck(playlistTitle);
+        }
       };
     },
   },

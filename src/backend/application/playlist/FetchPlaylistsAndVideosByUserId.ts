@@ -15,7 +15,7 @@ export class FetchPlaylistsAndVideosByUserId {
     const arr_playlistData =
       await this._playlistRepository.fetchPlaylistsByUserId(userId);
 
-    if (!arr_playlistData) {
+    if (!arr_playlistData?.length) {
       return [];
     }
 
