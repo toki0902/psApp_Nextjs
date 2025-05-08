@@ -1,5 +1,10 @@
 import { UnAuthorizeError } from "@/src/app/error/errors";
 import { Video } from "@/src/backend/domain/entities/Video";
+import {
+  PlaylistItem,
+  PlaylistItemsResponse,
+  YoutubeVideoResponse,
+} from "../type";
 
 export class YoutubeDataSearchGateway {
   fetchAccessToken = async (): Promise<string> => {
