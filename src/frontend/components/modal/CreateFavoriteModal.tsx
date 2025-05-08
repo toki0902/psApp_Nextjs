@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { Noto_Serif_bold } from "../../assets/fonts/fonts";
 
@@ -6,7 +7,7 @@ type Props = { onPassCheck: (newTitle: string) => void; close: () => void };
 const CreateFavoriteModal = ({ onPassCheck, close }: Props) => {
   const [isFocus, setIsFocus] = useState(false);
   const [newTitle, setNewTitle] = useState("");
-  const [isValid, setIsValid] = useState<null | Boolean>(null);
+  const [isValid, setIsValid] = useState<null | boolean>(null);
   let timer: NodeJS.Timeout | null = null;
 
   const onClick = () => {

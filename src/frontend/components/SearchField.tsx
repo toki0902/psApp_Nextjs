@@ -1,5 +1,5 @@
 "use client";
-import React, { EventHandler, useState } from "react";
+import React, { useState } from "react";
 import { buildEncodedUrl } from "../utils/url";
 import { useRouter } from "next/navigation";
 

@@ -12,7 +12,7 @@ type Props = {
 
 const AddFavoriteModal = ({ onPassCheck, close, payload }: Props) => {
   const [selectedPlaylistIds, setSelectedPlaylistIds] = useState<string[]>([]);
-  const [isValid, setIsValid] = useState<null | Boolean>(null);
+  const [isValid, setIsValid] = useState<null | boolean>(null);
   let timer: NodeJS.Timeout | null = null;
 
   const onClick = () => {
@@ -66,6 +66,7 @@ const AddFavoriteModal = ({ onPassCheck, close, payload }: Props) => {
         <div className="mt-16 flex h-fit w-full flex-col space-y-10 overflow-auto px-3 pb-5">
           {payload.playlists.map((playlist) => (
             <AddFavoriteItem
+              key={playlist.playlistId}
               id={playlist.playlistId}
               title={playlist.title}
               selectedPlaylistIds={selectedPlaylistIds}

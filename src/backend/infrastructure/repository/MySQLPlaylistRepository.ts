@@ -174,9 +174,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       const query = `INSERT INTO playlists (playlist_id, title, owner_id) VALUES (?, ?, ?)`;
       const playlist_id = nanoid(15);
       const value = [playlist_id, title, ownerId];
-      const insertResult = await (
-        await this.pool
-      ).execute<mysql.ResultSetHeader>(query, value);
+      await (await this.pool).execute<mysql.ResultSetHeader>(query, value);
 
       console.log(`create new playlist with userId:${ownerId}`);
     } catch (err) {
@@ -212,10 +210,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
         .map(() => "(?, ?, ?)")
         .join(",")}`;
 
-      const insertResult = await connection.execute<mysql.ResultSetHeader>(
-        query,
-        value,
-      );
+      await connection.execute<mysql.ResultSetHeader>(query, value);
 
       await connection.commit();
     } catch (err) {
@@ -234,7 +229,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
   deletePlaylistByPlaylistId = async (playlistId: string): Promise<void> => {
     try {
       const query = `DELETE FROM playlists WHERE playlist_id = ?`;
-      const deleteResult = await (
+      await (
         await this.pool
       ).execute<mysql.ResultSetHeader>(query, [playlistId]);
       console.log(`delete playlist playlistId: ${playlistId}`);
@@ -251,9 +246,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
   deletePlaylistMemberByMemberId = async (memberId: string): Promise<void> => {
     try {
       const query = `DELETE FROM playlist_members WHERE member_id = ?`;
-      const deleteResult = await (
-        await this.pool
-      ).execute<mysql.ResultSetHeader>(query, [memberId]);
+      await (await this.pool).execute<mysql.ResultSetHeader>(query, [memberId]);
       console.log(`delete playlist member memberId: ${memberId}}`);
     } catch (err) {
       throw new MySQLError(

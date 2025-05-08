@@ -11,9 +11,9 @@ import loading5 from "public/images/loading-5.png";
 import loading6 from "public/images/loading-6.png";
 import loading7 from "public/images/loading-7.png";
 import loading8 from "public/images/loading-8.png";
-import loading8_rock from "public/images/loading-8-rock.png";
-import loading8_scissor from "public/images/loading-8-scissor.png";
-import loading8_paper from "public/images/loading-8-paper.png";
+// import loading8_rock from "public/images/loading-8-rock.png";
+// import loading8_scissor from "public/images/loading-8-scissor.png";
+// import loading8_paper from "public/images/loading-8-paper.png";
 import { useEffect, useState } from "react";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 

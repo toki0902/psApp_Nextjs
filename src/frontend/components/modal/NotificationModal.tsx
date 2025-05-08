@@ -9,16 +9,17 @@ type Props = {
 
 const NotificationModal = ({ onPassCheck, payload }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
+  let timer: NodeJS.Timeout;
 
   const onClose = () => {
     setIsOpen(false);
-    const animationTimer = setTimeout(() => {
+    timer = setTimeout(() => {
       onPassCheck();
     }, 300);
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    timer = setTimeout(() => {
       onClose();
     }, 3000);
 

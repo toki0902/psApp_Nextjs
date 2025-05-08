@@ -1,13 +1,3 @@
-// playlistItems エンドポイントのレスポンス型
-type PlaylistItemsResponse = {
-  kind: "youtube#playlistItemListResponse";
-  etag: string;
-  nextPageToken?: string;
-  prevPageToken?: string;
-  pageInfo: PageInfo;
-  items: PlaylistItem[];
-};
-
 interface PageInfo {
   totalResults: number; // 検索結果の総数
   resultsPerPage: number; // 1ページあたりの結果数
@@ -53,16 +43,6 @@ type ResourceId = {
   kind: string;
   videoId: string;
 };
-
-interface YoutubeVideoResponse {
-  kind: string;
-  etag: string;
-  items: VideoDetails[];
-  pageInfo: {
-    totalResults: number;
-    resultsPerPage: number;
-  };
-}
 
 interface VideoDetails {
   kind: "youtube#video";

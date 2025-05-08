@@ -87,8 +87,6 @@ export class MySQLVideoRepository implements IVideoRepository {
         .map(() => "(?,?,?,?,?)")
         .join(",")}`;
 
-      console.log(values);
-
       const videosInsertResult = await connection.execute(videoQuery, values);
 
       await connection.commit();
@@ -122,7 +120,7 @@ export class MySQLVideoRepository implements IVideoRepository {
         .join(",")})`;
 
       const value = [cacheId, ...ids];
-      console.log(query, value);
+
       const selectResult = await (
         await this.pool
       ).execute<mysql.RowDataPacket[]>(query, value);

@@ -1,11 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { playlist } from "../../types/playlist";
-import {
-  CardMenuData,
-  CardMenuNeedData,
-  CardMenuOption,
-} from "../../types/cardMenu";
+import { CardMenuNeedData, CardMenuOption } from "../../types/cardMenu";
 
 import CardMenu from "./menu/CardMenu";
 

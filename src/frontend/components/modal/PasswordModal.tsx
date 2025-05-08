@@ -11,7 +11,7 @@ type props = {
 
 const PasswordModal = ({ onPassCheck, close }: props) => {
   const [password, setPassword] = useState("");
-  const [isCorrect, setIsCorrect] = useState<null | Boolean>(null);
+  const [isCorrect, setIsCorrect] = useState<null | boolean>(null);
   let timer: NodeJS.Timeout | null = null;
 
   const onIncorrect = () => {

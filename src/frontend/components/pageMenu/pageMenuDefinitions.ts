@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { ModalContextType } from "../../types/modal";
 import { PageMenuData } from "../../types/pageMenu";
 
@@ -9,7 +10,7 @@ export const PageMenuDefinition = {
     getOnClick: (
       pageMenuData: PageMenuData,
       openModal: ModalContextType["openModal"],
-      router: any,
+      router: ReturnType<typeof useRouter>,
     ) => {
       return async () => {
         const onPassCheck = async (newTitle: string) => {
@@ -58,7 +59,7 @@ export const PageMenuDefinition = {
     getOnClick: (
       pageMenuData: PageMenuData,
       openModal: ModalContextType["openModal"],
-      router: any,
+      router: ReturnType<typeof useRouter>,
     ) => {
       return async () => {
         const onPassCheck = async (playlistTitle: string) => {
@@ -108,7 +109,7 @@ export const PageMenuDefinition = {
     getOnClick: (
       pageMenuData: PageMenuData,
       openModal: ModalContextType["openModal"],
-      router: any,
+      router: ReturnType<typeof useRouter>,
     ) => {
       return async () => {
         const onPassCheck = async () => {

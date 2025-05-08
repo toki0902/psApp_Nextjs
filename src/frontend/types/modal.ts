@@ -1,6 +1,5 @@
 import CheckModal from "../components/modal/CheckModal";
 import EditModal from "../components/modal/EditModal";
-import FavoriteModal from "../components/modal/addFavoriteModal/AddFavoriteModal";
 import NotificationModal from "../components/modal/NotificationModal";
 import PasswordModal from "../components/modal/PasswordModal";
 import { playlist } from "./playlist";

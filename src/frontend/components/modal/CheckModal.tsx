@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Kaisei, Noto_Serif_bold } from "../../assets/fonts/fonts";
+import { Noto_Serif_bold } from "../../assets/fonts/fonts";
 
 type Props = { onPassCheck: () => void; close: () => void };
 

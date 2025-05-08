@@ -462,7 +462,6 @@ const Search = async ({
   if (!playlistResponse.ok) {
     const errorData = await playlistResponse.json();
     console.log(`${errorData.errorType!}: ${errorData.message}`);
-    notFound();
   } else {
     const playlistData = await playlistResponse.json();
     playlists = playlistData.playlists;

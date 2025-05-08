@@ -8,7 +8,7 @@ export const menuDefinitions = {
   edit: {
     icon: "/images/edit_823A42.svg",
     hoverIcon: "/images/edit_f1EBE5.svg",
-    getLabel: (data: CardMenuData) => "編集する",
+    getLabel: () => "編集する",
     getOnClick: (
       data: CardMenuData,
       openModal: ModalContextType["openModal"],
@@ -101,7 +101,7 @@ export const menuDefinitions = {
   addFavorite: {
     icon: "/images/favorite_823A42.svg",
     hoverIcon: "/images/favorite_f1EBE5.svg",
-    getLabel: (data: CardMenuData) => `お気に入りに追加する`,
+    getLabel: () => `お気に入りに追加する`,
     getOnClick: (
       data: CardMenuData,
       openModal: ModalContextType["openModal"],
@@ -160,10 +160,7 @@ export const menuDefinitions = {
     icon: "/images/share_823A42.svg",
     hoverIcon: "/images/share_f1EBE5.svg",
     getLabel: () => `共有する`,
-    getOnClick: (
-      data: CardMenuData,
-      openModal: ModalContextType["openModal"],
-    ) => {
+    getOnClick: () => {
       return async () => {};
     },
   },
