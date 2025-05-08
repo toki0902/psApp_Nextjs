@@ -11,6 +11,7 @@ import {
   ModalPayload,
   ModalType,
   ModalDefinitionMap,
+  ModalProps,
 } from "../../types/modal";
 import CreateFavoriteModal from "./CreateFavoriteModal";
 
@@ -57,7 +58,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const MODAL_COMPONENTS: {
-    [K in ModalType]: React.ComponentType<any>;
+    [K in ModalType]: React.ComponentType<ModalProps<K>>;
   } = {
     password: PasswordModal,
     deleteFromPlaylist: CheckModal,
@@ -69,7 +70,11 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     notice: NotificationModal,
   };
 
-  const ModalComponent = modalInfo ? MODAL_COMPONENTS[modalInfo.type] : null;
+  const ModalComponent = modalInfo
+    ? (MODAL_COMPONENTS[modalInfo.type] as React.ComponentType<
+        ModalProps<typeof modalInfo.type>
+      >)
+    : null;
 
   return (
     <ModalContext.Provider value={{ openModal }}>

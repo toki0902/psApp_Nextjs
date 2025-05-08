@@ -11,43 +11,85 @@ export type ModalDefinitionMap = {
     component: typeof PasswordModal;
     payload: undefined;
     value: boolean;
+    props: {
+      onPassCheck: (returnValue?: string | string[]) => void;
+      close: () => void;
+      payload: undefined;
+    };
   };
   deletePlaylist: {
     component: typeof CheckModal;
     payload: undefined;
     value: boolean;
+    props: {
+      onPassCheck: (returnValue?: string | string[]) => void;
+      close: () => void;
+      payload: undefined;
+    };
   };
   deleteFromPlaylist: {
     component: typeof CheckModal;
     payload: undefined;
     value: boolean;
+    props: {
+      onPassCheck: (returnValue?: string | string[]) => void;
+      close: () => void;
+      payload: undefined;
+    };
   };
   edit: {
     component: typeof EditModal;
     payload: undefined;
     value: string;
+    props: {
+      onPassCheck: (returnValue?: string | string[]) => void;
+      close: () => void;
+      payload: undefined;
+    };
   };
   share: {
     component: typeof CheckModal;
     payload: undefined;
     value: boolean;
+    props: {
+      onPassCheck: (returnValue?: string | string[]) => void;
+      close: () => void;
+      payload: undefined;
+    };
   };
   addFavorite: {
     component: typeof AddFavoriteModal;
     payload: { playlists: playlist[] };
     value: string[];
+    props: {
+      onPassCheck: (returnValue?: string | string[]) => void;
+      close: () => void;
+      payload: { playlists: playlist[] };
+    };
   };
   createFavorite: {
     component: typeof CreateFavoriteModal;
     payload: undefined;
     value: string;
+    props: {
+      onPassCheck: (returnValue?: string | string[]) => void;
+      close: () => void;
+      payload: undefined;
+    };
   };
   notice: {
     component: typeof NotificationModal;
     payload: { message: string; type: "error" | "normal" };
     value: boolean;
+    props: {
+      onPassCheck: (returnValue?: string | string[]) => void;
+      close: () => void;
+      payload: { message: string; type: "error" | "normal" };
+    };
   };
 };
+
+export type ModalProps<T extends ModalType> = ModalDefinitionMap[T]["props"];
 
 export type ModalPayload<T extends ModalType> =
   ModalDefinitionMap[T]["payload"];
