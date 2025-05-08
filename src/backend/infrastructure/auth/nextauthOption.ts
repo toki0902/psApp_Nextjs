@@ -16,7 +16,7 @@ const fetchUserAndRegister = new FetchUserAndRegister(userRepository);
 export const nextAuthOptions: NextAuthConfig = {
   debug: false,
   secret: process.env.AUTH_SECRET,
-  providers: [Google, LINE],
+  providers: [Google, LINE({ checks: ["state"] })],
   session: {
     strategy: "jwt",
   },

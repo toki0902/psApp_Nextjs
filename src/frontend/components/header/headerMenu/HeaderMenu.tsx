@@ -11,7 +11,6 @@ const HeaderMenu = ({
   isOpenUserMenu: boolean;
   closeUserMenu: () => void;
 }) => {
-  console.log(session);
   //パソコンの場合、そもそもログインしていないとこのメニューは開かない。
   //スマホの場合ハンバーガーメニューの中身になるためsessionがある場合とない場合がある。
 
@@ -55,7 +54,7 @@ const HeaderMenu = ({
         <ul className="w-full space-y-4">
           <HeaderMenuList
             session={session}
-            headerMenuOption={{ mobileLogout: true }}
+            headerMenuOption={{ mobileLogin: true, mobileLogout: true }}
             closeUserMenu={closeUserMenu}
           />
         </ul>

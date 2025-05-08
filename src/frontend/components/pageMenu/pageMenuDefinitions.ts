@@ -4,7 +4,7 @@ import { PageMenuData } from "../../types/pageMenu";
 export const PageMenuDefinition = {
   edit: {
     getText: (pageMenuData: PageMenuData) =>
-      `「${pageMenuData.edit?.title}」を削除`,
+      `「${pageMenuData.edit?.title}」を編集`,
     icon: "/images/edit_823A42.svg",
     getOnClick: (
       pageMenuData: PageMenuData,

@@ -8,6 +8,7 @@ import { Session } from "next-auth";
 import { auth } from "@/auth";
 import { getAllCookies } from "@/src/frontend/utils/cookie";
 import { Kaisei } from "@/src/frontend/assets/fonts/fonts";
+import { notFound } from "next/navigation";
 
 const Search = async ({
   searchParams,
@@ -461,6 +462,7 @@ const Search = async ({
   if (!playlistResponse.ok) {
     const errorData = await playlistResponse.json();
     console.log(`${errorData.errorType!}: ${errorData.message}`);
+    notFound();
   } else {
     const playlistData = await playlistResponse.json();
     playlists = playlistData.playlists;

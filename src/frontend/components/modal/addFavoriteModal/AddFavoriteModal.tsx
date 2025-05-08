@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { playlist } from "../../../types/playlist";
-import { Kaisei, Noto_Serif_bold } from "../../../assets/fonts/fonts";
+import { Noto_Serif_bold } from "../../../assets/fonts/fonts";
 import AddFavoriteItem from "./AddFavoriteItem";
 
 type Props = {
@@ -56,7 +56,7 @@ const AddFavoriteModal = ({ onPassCheck, close, payload }: Props) => {
       <div
         className={`${Noto_Serif_bold.className} fixed left-1/2 top-1/2 z-20 flex max-h-[600px] w-full max-w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col border-2 border-red bg-back lg:w-1/2`}
       >
-        <div className="fixed left-0 top-0 flex h-fit w-full items-center justify-between p-3 shadow-md shadow-red">
+        <div className="fixed left-0 top-0 flex h-fit w-full items-center justify-between p-3 shadow-sm shadow-red">
           <h2 className="text-base font-bold">お気に入りへ追加</h2>
           <div className="relative h-7 w-7 cursor-pointer" onClick={close}>
             <div className="absolute top-1/2 h-[2px] w-full rotate-45 bg-red"></div>

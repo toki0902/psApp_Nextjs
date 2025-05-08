@@ -18,7 +18,7 @@ export default async function RootLayout({
           <Header session={session} />
           <main className="h-[calc(100vh-48px)] w-screen px-[3%] lg:h-[calc(100vh-80px)]">
             <div
-              className="flex h-full w-full items-center justify-center overflow-auto bg-[url('/images/guitar.svg')] bg-fixed bg-no-repeat"
+              className="flex h-full w-full flex-col items-center justify-center overflow-auto bg-[url('/images/guitar.svg')] bg-fixed bg-no-repeat lg:flex-row"
               style={{ backgroundSize: "70%", backgroundPosition: "50% 70%" }}
             >
               {children}

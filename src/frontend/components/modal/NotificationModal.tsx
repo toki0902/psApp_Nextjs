@@ -20,7 +20,7 @@ const NotificationModal = ({ onPassCheck, payload }: Props) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
-    }, 5000);
+    }, 3000);
 
     return () => {
       clearTimeout(timer);

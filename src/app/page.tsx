@@ -2,7 +2,6 @@ import "@/src/frontend/assets/styles/global.css";
 import Image from "next/image";
 
 import Button from "@/components/Button";
-import SearchField from "@/components/SearchField";
 
 import { Noto_Serif_bold } from "@/fonts";
 import { Caveat_thin } from "@/fonts";
@@ -34,15 +33,14 @@ const App = async () => {
           </div>
         </div>
         <div
-          className={`${Baloo_thin.className} text-1xl mt-10 flex flex-col items-center justify-center text-center tracking-[.3em] text-blue lg:text-2xl`}
+          className={`${Baloo_thin.className} text-1xl mb-10 mt-10 flex flex-col items-center justify-center text-center tracking-[.3em] text-blue lg:mb-0 lg:text-2xl`}
         >
           DOSHISHA ACOUSTIC <br />
           MUSIC CIRCLE
         </div>
       </div>
-
       <div
-        className={`${Caveat_thin.className} hidden h-full w-1/3 flex-col items-center justify-center space-y-10 border-red lg:flex`}
+        className={`${Caveat_thin.className} flex w-1/3 flex-col items-center justify-center space-y-5 border-red lg:space-y-10`}
       >
         {session ? (
           <Button href={`/users/${session.user.userId}/playlists`}>
@@ -51,7 +49,6 @@ const App = async () => {
         ) : (
           <Button inVisible>FAVORITE</Button>
         )}
-        <Button href="/search">SEARCH</Button>
         <Button href="/v1/api/auth/signin">LOGIN</Button>
       </div>
     </>
