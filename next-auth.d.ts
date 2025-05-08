@@ -18,4 +18,5 @@ declare module "next-auth" {
   }
 }
 
+export { NextAuth };
 export { DefaultSession };

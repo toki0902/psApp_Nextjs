@@ -28,7 +28,7 @@ export const nextAuthOptions: NextAuthConfig = {
     }: {
       token: JWT;
       user: User | undefined;
-      account: Account | null;
+      account?: Account | null;
     }) {
       if (!user) {
         return token;
