@@ -1,15 +1,3 @@
-interface PageInfo {
-  totalResults: number; // 検索結果の総数
-  resultsPerPage: number; // 1ページあたりの結果数
-}
-
-type PlaylistItem = {
-  kind: "youtube#playlistItem";
-  etag: string;
-  id: string;
-  snippet: Snippet;
-};
-
 // 動画の基本情報（snippet）
 type Snippet = {
   publishedAt: string;
@@ -43,14 +31,6 @@ type ResourceId = {
   kind: string;
   videoId: string;
 };
-
-interface VideoDetails {
-  kind: "youtube#video";
-  etag: string;
-  id: string;
-  snippet?: Snippet;
-  statistics?: VideoStatistics;
-}
 
 interface VideoStatistics {
   viewCount: string; // 視聴回数

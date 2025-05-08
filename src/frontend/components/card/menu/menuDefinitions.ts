@@ -1,5 +1,6 @@
 import { CardMenuData } from "@/src/frontend/types/cardMenu";
 import { ModalContextType } from "@/src/frontend/types/modal";
+import { useRouter } from "next/navigation";
 //fix : router の型定義
 
 //getOnClickはそれぞれの通過後の処理を記述する
@@ -12,7 +13,7 @@ export const menuDefinitions = {
     getOnClick: (
       data: CardMenuData,
       openModal: ModalContextType["openModal"],
-      router: any,
+      router: ReturnType<typeof useRouter>,
     ) => {
       return async () => {
         const onPassCheck = async (newTitle: string) => {
@@ -60,7 +61,7 @@ export const menuDefinitions = {
     getOnClick: (
       data: CardMenuData,
       openModal: ModalContextType["openModal"],
-      router: any,
+      router: ReturnType<typeof useRouter>,
     ) => {
       return async () => {
         const onPassCheck = async () => {
@@ -105,7 +106,7 @@ export const menuDefinitions = {
     getOnClick: (
       data: CardMenuData,
       openModal: ModalContextType["openModal"],
-      router: any,
+      router: ReturnType<typeof useRouter>,
     ) => {
       return async () => {
         const onPassCheck = async (addPlaylistIds: string[]) => {
@@ -173,7 +174,7 @@ export const menuDefinitions = {
     getOnClick: (
       data: CardMenuData,
       openModal: ModalContextType["openModal"],
-      router: any,
+      router: ReturnType<typeof useRouter>,
     ) => {
       return async () => {
         const onPassCheck = async () => {

@@ -7,7 +7,7 @@ import { MySQLUserRepository } from "../repository/MySQLUserRepository";
 
 import { UnAuthorizeError } from "@/src/app/error/errors";
 import { JWT } from "next-auth/jwt";
-import { NextAuthConfig, User } from "next-auth/";
+import { Account, NextAuthConfig, User } from "next-auth/";
 import { Session } from "next-auth";
 
 const userRepository = new MySQLUserRepository();
@@ -28,10 +28,17 @@ export const nextAuthOptions: NextAuthConfig = {
     }: {
       token: JWT;
       user: User | undefined;
-      account: any;
+      account: Account | null;
     }) {
       if (!user) {
         return token;
+      }
+
+      if (!account) {
+        throw new UnAuthorizeError(
+          "ログインに失敗しました。",
+          "there is no account data",
+        );
       }
 
       const userData = { ...user, id: account.providerAccountId };

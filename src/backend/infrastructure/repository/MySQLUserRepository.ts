@@ -43,7 +43,7 @@ export class MySQLUserRepository implements IUserRepository {
     try {
       const userId = nanoid();
 
-      const insertResult = await (
+      await (
         await this.pool
       ).execute<mysql.ResultSetHeader>(
         "insert into users (user_id, name, social_id) values (?, ?, ?)",
@@ -54,7 +54,7 @@ export class MySQLUserRepository implements IUserRepository {
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
-        "failed to register new user in process 'insert'",
+        `failed to register new user in process 'insert' due to :${err}`,
       );
     }
   }

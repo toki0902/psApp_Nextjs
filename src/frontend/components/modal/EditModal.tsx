@@ -11,7 +11,7 @@ type Props = {
 const EditModal = ({ onPassCheck, close }: Props) => {
   const [isFocus, setIsFocus] = useState(false);
   const [newTitle, setNewTitle] = useState("");
-  const [isValid, setIsValid] = useState<null | Boolean>(null);
+  const [isValid, setIsValid] = useState<null | boolean>(null);
   let timer: NodeJS.Timeout | null = null;
 
   const onClick = () => {

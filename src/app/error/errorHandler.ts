@@ -12,7 +12,7 @@ export const errorHandler = (
     | NotFoundError
     | UnAuthorizeError
     | MySQLError
-    | any,
+    | unknown,
 ): NextResponse => {
   if (
     error instanceof MissingParamsError ||

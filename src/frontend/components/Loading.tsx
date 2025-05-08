@@ -17,13 +17,13 @@ import loading8 from "public/images/loading-8.png";
 import { useEffect, useState } from "react";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
-const STATUS = {
-  visible: "visible",
-  hiding: "hiding",
-  hidden: "hidden",
-} as const;
+type STATUS = {
+  visible: "visible";
+  hiding: "hiding";
+  hidden: "hidden";
+};
 
-type LoadingStatus = (typeof STATUS)[keyof typeof STATUS];
+type LoadingStatus = STATUS[keyof STATUS];
 
 type Props = {
   hideLoading: () => void;
