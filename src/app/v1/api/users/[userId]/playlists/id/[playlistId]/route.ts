@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth } from "@/src/backend/infrastructure/auth/auth";
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
 import { Session } from "next-auth";

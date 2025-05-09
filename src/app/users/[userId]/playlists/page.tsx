@@ -1,5 +1,5 @@
 import { Kaisei } from "@/fonts";
-import { auth } from "@/auth";
+import { auth } from "@/src/backend/infrastructure/auth/auth";
 import { playlist } from "@/src/frontend/types/playlist";
 import { CardMenuOption } from "@/src/frontend/types/cardMenu";
 import { checkSession, getAllCookies } from "@/src/frontend/utils/cookie";

@@ -20,7 +20,7 @@ export class MySQLUserRepository implements IUserRepository {
     if (!record) {
       return undefined;
     }
-    return new User(record.user_id, record.name, record.social_id, undefined);
+    return new User(record.user_id, record.name, record.social_id, "");
   }
 
   async findBySocialId(socialId: string): Promise<User | undefined> {
@@ -35,7 +35,7 @@ export class MySQLUserRepository implements IUserRepository {
     if (!record) {
       return undefined;
     }
-    return new User(record.user_id, record.name, record.social_id, undefined);
+    return new User(record.user_id, record.name, record.social_id, "");
   }
 
   //fix: 名前が???になります, idをランダム文字列へ
@@ -50,7 +50,7 @@ export class MySQLUserRepository implements IUserRepository {
         [userId, name, socialId],
       );
 
-      return new User(userId, name, socialId, undefined);
+      return new User(userId, name, socialId, "");
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",

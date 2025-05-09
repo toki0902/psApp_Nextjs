@@ -6,9 +6,7 @@ import { FetchUserAndRegister } from "@/src/backend/application/auth/FetchUserAn
 import { MySQLUserRepository } from "../repository/MySQLUserRepository";
 
 import { UnAuthorizeError } from "@/src/app/error/errors";
-import { JWT } from "next-auth/jwt";
-import { Account, NextAuthConfig, User } from "next-auth/";
-import { Session } from "next-auth";
+import { NextAuthConfig } from "next-auth/";
 
 const userRepository = new MySQLUserRepository();
 const fetchUserAndRegister = new FetchUserAndRegister(userRepository);
@@ -21,17 +19,13 @@ export const nextAuthOptions: NextAuthConfig = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({
-      token,
-      user,
-      account,
-    }: {
-      token: JWT;
-      user: User | undefined;
-      account?: Account | null;
-    }) {
+    async jwt({ token, user, account }) {
       if (!user) {
-        return token;
+        if (token.exp > Date.now()) {
+          const oneMonthMs = 1000 * 60 * 60 * 24 * 30;
+          token = { ...token, exp: Date.now() + oneMonthMs };
+        }
+        return null;
       }
 
       if (!account) {
@@ -45,11 +39,12 @@ export const nextAuthOptions: NextAuthConfig = {
 
       const userToken = await fetchUserAndRegister.run(userData);
 
-      token = { ...userToken };
+      const oneMonthMs = 1000 * 60 * 60 * 24 * 30;
+      token = { user: userToken, exp: Date.now() + oneMonthMs };
       return token;
     },
 
-    async session({ token, session }: { token: JWT; session: Session }) {
+    async session({ token, session }) {
       if (!token) {
         throw new UnAuthorizeError(
           "JWTトークンが存在しません。",
@@ -57,13 +52,9 @@ export const nextAuthOptions: NextAuthConfig = {
         );
       }
 
-      session.user.userId =
-        typeof token.userId === "string" ? token.userId : "";
-      session.user.socialId =
-        typeof token.socialId === "string" ? token.socialId : "";
-      session.user.image =
-        typeof token.image === "string" ? token.image : undefined;
-      session.user.name = typeof token.name === "string" ? token.name : "";
+      session.user.userId = token.user.userId;
+      session.user.image = token.user.image;
+      session.user.name = token.user.name;
       return session;
     },
   },

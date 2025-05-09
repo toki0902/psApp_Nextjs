@@ -9,7 +9,7 @@ import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
 import { RegisterNewPlaylist } from "@/src/backend/application/playlist/RegisterNewPlaylist";
 import { Session } from "next-auth";
-import { auth } from "@/auth";
+import { auth } from "@/src/backend/infrastructure/auth/auth";
 
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();

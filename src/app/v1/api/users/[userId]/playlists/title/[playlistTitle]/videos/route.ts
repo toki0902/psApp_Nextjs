@@ -6,7 +6,7 @@ import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository
 import { errorHandler } from "@/src/app/error/errorHandler";
 import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
 import { Session } from "next-auth";
-import { auth } from "@/auth";
+import { auth } from "@/src/backend/infrastructure/auth/auth";
 
 const playlistRepository = new MySQLPlaylistRepository();
 

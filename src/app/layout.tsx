@@ -1,6 +1,6 @@
 import "@/src/frontend/assets/styles/global.css";
 import ModalProvider from "../frontend/components/modal/ModalProvider";
-import { auth } from "@/auth";
+import { auth } from "@/src/backend/infrastructure/auth/auth";
 import Header from "../frontend/components/header/Header";
 import { Session } from "next-auth";
 

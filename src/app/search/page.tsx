@@ -5,7 +5,7 @@ import { CardMenuOption } from "@/src/frontend/types/cardMenu";
 import CardWrapper from "@/src/frontend/components/card/CardWrapper";
 
 import { Session } from "next-auth";
-import { auth } from "@/auth";
+import { auth } from "@/src/backend/infrastructure/auth/auth";
 import { getAllCookies } from "@/src/frontend/utils/cookie";
 import { Kaisei } from "@/src/frontend/assets/fonts/fonts";
 

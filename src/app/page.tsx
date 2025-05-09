@@ -8,7 +8,7 @@ import { Caveat_thin } from "@/fonts";
 import { Baloo_thin } from "@/fonts";
 
 import coffeeLogo from "public/images/coffee.svg";
-import { auth } from "@/auth";
+import { auth } from "@/src/backend/infrastructure/auth/auth";
 import { Session } from "next-auth";
 
 const App = async () => {

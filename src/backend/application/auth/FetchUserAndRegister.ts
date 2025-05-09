@@ -28,7 +28,7 @@ export class FetchUserAndRegister {
         insertResult.userId,
         insertResult.name,
         insertResult.socialId,
-        user.image || undefined,
+        user.image || "",
       );
     }
 
@@ -36,7 +36,7 @@ export class FetchUserAndRegister {
       selectedUser.userId,
       selectedUser.name,
       selectedUser.socialId,
-      user.image || undefined,
+      user.image || "",
     );
   };
 }
