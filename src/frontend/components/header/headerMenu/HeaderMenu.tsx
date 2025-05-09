@@ -7,7 +7,7 @@ const HeaderMenu = ({
   isOpenUserMenu,
   closeUserMenu,
 }: {
-  session: Session;
+  session: Session | null;
   isOpenUserMenu: boolean;
   closeUserMenu: () => void;
 }) => {
@@ -25,9 +25,9 @@ const HeaderMenu = ({
       <ul className="hidden w-full space-y-5 lg:block">
         {session ? (
           <li className="flex h-10 w-full items-center justify-start text-xl">
-            <p>{session.user.name}</p>
+            <p>{session.name}</p>
             <img
-              src={session.user.image}
+              src={session.image}
               alt="icon"
               className="ml-2 w-10 rounded-full"
             />
@@ -43,9 +43,9 @@ const HeaderMenu = ({
         <h2 className="text-base font-bold">アカウント</h2>
         {session ? (
           <div className="flex h-10 w-full items-center justify-start text-base">
-            <p>ユーザ: {session.user.name}</p>
+            <p>ユーザ: {session.name}</p>
             <img
-              src={session.user.image}
+              src={session.image}
               alt="icon"
               className="ml-3 w-10 rounded-full"
             />

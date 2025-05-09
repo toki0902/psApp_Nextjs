@@ -21,9 +21,9 @@ export const checkSession = async (userId: string): Promise<void> => {
     redirect("/login");
   }
 
-  if (session.user.userId !== userId) {
+  if (session.userId !== userId) {
     console.log("diff userId");
-    console.log(userId, session.user.userId);
+    console.log(userId, session.userId);
     notFound();
   }
 };

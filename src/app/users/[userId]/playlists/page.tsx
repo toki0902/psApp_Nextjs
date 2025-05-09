@@ -63,7 +63,7 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const cardMenuOption: CardMenuOption = { edit: true, deletePlaylist: true };
 
   const pageMenuOption: PageMenuOption = { create: true };
-  const pageMenuNeedData: PageMenuNeedData = { userId: session?.user.userId };
+  const pageMenuNeedData: PageMenuNeedData = { userId: session?.userId };
 
   return (
     <div className="h-full w-full">
@@ -71,7 +71,7 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
         <div className="flex w-full justify-between border-b-4 border-red">
           <div className="flex items-end">
             <p className={`${Kaisei.className} text-lg font-bold lg:text-2xl`}>
-              {session?.user.name}さんのお気に入り
+              {session?.name}さんのお気に入り
             </p>
             <p className="text-mg ml-4 hidden lg:block">
               {playlists.length}件のお気に入り

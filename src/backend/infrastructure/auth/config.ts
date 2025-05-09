@@ -52,9 +52,9 @@ export const nextAuthOptions: NextAuthConfig = {
         );
       }
 
-      session.user.userId = token.user.userId;
-      session.user.image = token.user.image;
-      session.user.name = token.user.name;
+      session.userId = token.user.userId;
+      session.image = token.user.image;
+      session.name = token.user.name;
       return session;
     },
   },

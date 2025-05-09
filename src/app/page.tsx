@@ -12,7 +12,7 @@ import { auth } from "@/src/backend/infrastructure/auth/auth";
 import { Session } from "next-auth";
 
 const App = async () => {
-  const session: Session = await auth();
+  const session: Session | null = await auth();
 
   return (
     <>
@@ -43,9 +43,7 @@ const App = async () => {
         className={`${Caveat_thin.className} flex w-1/3 flex-col items-center justify-center space-y-5 border-red lg:space-y-10`}
       >
         {session ? (
-          <Button href={`/users/${session.user.userId}/playlists`}>
-            FAVORITE
-          </Button>
+          <Button href={`/users/${session.userId}/playlists`}>FAVORITE</Button>
         ) : (
           <Button inVisible>FAVORITE</Button>
         )}

@@ -10,13 +10,13 @@ const HeaderMenuList = ({
   headerMenuOption,
   closeUserMenu,
 }: {
-  session: Session;
+  session: Session | null;
   headerMenuOption: HeaderMenuOption;
   closeUserMenu: () => void;
 }) => {
   const router = useRouter();
 
-  const { userId } = session?.user || { userId: "" };
+  const { userId } = session || { userId: "" };
 
   const defKeys = Object.keys(headerMenuOption).filter(
     (key): key is keyof typeof headerMenuDefinitions =>

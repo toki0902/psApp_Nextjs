@@ -6,7 +6,7 @@ import { Session } from "next-auth";
 import HeaderMenu from "./headerMenu/HeaderMenu";
 import { NavMenuList } from "./navigation/NavMenuList";
 
-const Header = ({ session }: { session: Session }) => {
+const Header = ({ session }: { session: Session | null }) => {
   const [isOpenUserMenu, setIsOpenUserMenu] = useState(false);
   const query = useSearchParams().get("q");
   const router = useRouter();
@@ -39,11 +39,11 @@ const Header = ({ session }: { session: Session }) => {
                 }}
               >
                 <img
-                  src={session.user.image}
+                  src={session.image}
                   alt="user"
                   className="h-10 w-10 rounded-full"
                 />
-                <p className="ml-2 group-hover:text-red">{session.user.name}</p>
+                <p className="ml-2 group-hover:text-red">{session.name}</p>
               </button>
             </li>
           </ul>

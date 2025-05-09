@@ -5,10 +5,10 @@ import { navItemDefinitions } from "./navItemDefinitions";
 import { useRouter } from "next/navigation";
 import NavItem from "./NavItem";
 
-type Props = { session: Session; navMenuOption: NavMenuOption };
+type Props = { session: Session | null; navMenuOption: NavMenuOption };
 
 export const NavMenuList = ({ session, navMenuOption }: Props) => {
-  const { userId } = session?.user || "";
+  const { userId } = session || { userId: "" };
 
   const router = useRouter();
 

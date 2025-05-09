@@ -107,7 +107,7 @@ const Playlist = async ({
 
   const pageMenuOption: PageMenuOption = { edit: true, delete: true };
   const pageMenuNeedData: PageMenuNeedData = {
-    userId: session.user.userId,
+    userId: session?.userId,
     thisPlaylistData: playlist ? playlist : undefined,
   };
 
