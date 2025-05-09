@@ -11,6 +11,8 @@ export default async function RootLayout({
 }) {
   const session: Session | null = await auth();
 
+  console.log(session);
+
   return (
     <html lang="ja">
       <body className="bg-back">

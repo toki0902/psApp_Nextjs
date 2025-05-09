@@ -54,7 +54,11 @@ const HeaderMenu = ({
         <ul className="w-full space-y-4">
           <HeaderMenuList
             session={session}
-            headerMenuOption={{ mobileLogin: true, mobileLogout: true }}
+            headerMenuOption={
+              session
+                ? { mobileLogin: true, mobileLogout: true }
+                : { mobileLogin: true }
+            }
             closeUserMenu={closeUserMenu}
           />
         </ul>

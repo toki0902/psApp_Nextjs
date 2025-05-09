@@ -20,10 +20,14 @@ export const nextAuthOptions: NextAuthConfig = {
   },
   callbacks: {
     async jwt({ token, user, account }) {
+      const now = Math.floor(Date.now() / 1000);
+      console.log(token.exp, now);
       if (!user) {
-        if (token.exp > Date.now()) {
+        if (token.exp > now) {
           const oneMonthMs = 1000 * 60 * 60 * 24 * 30;
-          token = { ...token, exp: Date.now() + oneMonthMs };
+
+          token = { ...token, exp: now + oneMonthMs };
+          return token;
         }
         return null;
       }
@@ -40,7 +44,7 @@ export const nextAuthOptions: NextAuthConfig = {
       const userToken = await fetchUserAndRegister.run(userData);
 
       const oneMonthMs = 1000 * 60 * 60 * 24 * 30;
-      token = { user: userToken, exp: Date.now() + oneMonthMs };
+      token = { user: userToken, exp: now + oneMonthMs };
       return token;
     },
 
