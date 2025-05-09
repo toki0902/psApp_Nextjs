@@ -23,10 +23,10 @@ export default async function RootLayout({
         />
         <link rel="icon" type="image/png" href="/images/p.s.logo.png" />
       </head>
-      <body className="min-h-screen bg-back">
+      <body className="relative bg-back">
         <ModalProvider>
           <Header session={session} />
-          <main className="min-h-[calc(100vh-48px)] w-full px-[3%] pt-12 lg:min-h-[calc(100vh-80px)] lg:pt-20">
+          <main className="absolute top-12 h-[calc(100dvh-48px)] w-full px-[3%] lg:top-20 lg:h-[calc(100dvh-80px)]">
             <div
               className="h-full w-full overflow-auto bg-[url('/images/guitar.svg')] bg-fixed bg-no-repeat"
               style={{ backgroundSize: "70%", backgroundPosition: "50% 70%" }}
