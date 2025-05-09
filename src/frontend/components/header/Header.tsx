@@ -16,7 +16,7 @@ const Header = ({ session }: { session: Session | null }) => {
   };
 
   return (
-    <header className="relative flex h-12 w-full items-center justify-between bg-back px-[3%] text-sm lg:h-20">
+    <header className="fixed z-30 flex h-12 w-full items-center justify-between bg-back px-[3%] text-sm lg:h-20">
       <h1
         className="hidden h-10 w-32 cursor-pointer items-center justify-center bg-red lg:flex"
         onClick={() => router.push("/")}

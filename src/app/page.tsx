@@ -15,7 +15,7 @@ const App = async () => {
   const session: Session | null = await auth();
 
   return (
-    <>
+    <div className="flex h-full w-full flex-col items-center justify-center lg:flex-row">
       <div className="flex w-1/3 flex-col items-center justify-center border-red">
         <div className="flex w-full items-center justify-center">
           <div className="mr-10 hidden h-full items-center justify-center lg:flex">
@@ -49,7 +49,7 @@ const App = async () => {
         )}
         <Button href="/v1/api/auth/signin">LOGIN</Button>
       </div>
-    </>
+    </div>
   );
 };
 
