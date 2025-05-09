@@ -34,10 +34,7 @@ const SearchField = ({ value = "" }: Props) => {
           className="h-8 w-full bg-inherit focus:outline-none"
           placeholder="動画を検索"
         />
-        <button
-          onClick={() => setKeyword("")}
-          className="relative flex h-6 w-6"
-        >
+        <button onClick={() => setKeyword("")} className="relative h-6 w-6">
           <span className="absolute left-1/2 top-1/2 block h-[1px] w-full -translate-x-1/2 -translate-y-1/2 rotate-45 bg-blue"></span>
           <span className="absolute left-1/2 top-1/2 block h-[1px] w-full -translate-x-1/2 -translate-y-1/2 -rotate-45 bg-blue"></span>
         </button>
