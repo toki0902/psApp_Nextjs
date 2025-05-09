@@ -7,7 +7,6 @@ import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/My
 
 import { errorHandler } from "@/src/app/error/errorHandler";
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const searchGateway = new YoutubeDataSearchGateway();
 const videoRepository = new MySQLVideoRepository();
 const findVideosByKeyword = new FindVideosByKeyword(
@@ -17,7 +16,6 @@ const findVideosByKeyword = new FindVideosByKeyword(
 
 export const GET = async (req: NextRequest): Promise<NextResponse> => {
   try {
-    await sleep(30000);
     const keyword = req.nextUrl.searchParams.get("q") || "";
 
     const videos = await findVideosByKeyword.run(keyword);
