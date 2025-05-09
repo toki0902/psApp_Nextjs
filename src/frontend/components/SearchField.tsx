@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { buildEncodedUrl } from "../utils/url";
 import { useRouter } from "next/navigation";
 
@@ -8,12 +8,14 @@ type Props = {
 };
 
 const SearchField = ({ value = "" }: Props) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [keyword, setKeyword] = useState(value);
 
   const router = useRouter();
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
+      inputRef.current?.blur();
       router.push(`/search?q=${keyword}`);
     }
   };
@@ -22,6 +24,7 @@ const SearchField = ({ value = "" }: Props) => {
     <div className="flex h-9 w-full items-center justify-between rounded-full border border-blue pl-4 text-base text-blue">
       <input
         type="text"
+        ref={inputRef}
         value={keyword}
         onKeyDown={(e) => onKeyDown(e)}
         onChange={(e) => {

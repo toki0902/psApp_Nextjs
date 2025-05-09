@@ -14,22 +14,8 @@ const Search = async ({
 }: {
   searchParams: Promise<{ q: string }>;
 }) => {
-  let videos: video[] = [
-    {
-      videoId: "HLkbX0YhToY",
-      thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-      title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
-      url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-      views: 32,
-    },
-  ];
-  // {
-  //     videoId: "HLkbX0YhToY",
-  //     thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-  //     title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
-  //     url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-  //     views: 32,
-  //   },
+  let videos: video[] = [];
+
   const { q: query } = await searchParams;
 
   const res = await fetch(
@@ -49,26 +35,7 @@ const Search = async ({
 
   const cookie = await getAllCookies();
 
-  let playlists: playlist[] = [
-    {
-      videos: [
-        {
-          video: {
-            videoId: "HLkbX0YhToY",
-            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
-            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-            views: 32,
-          },
-          videoMemberId: "sagadgaasd",
-        },
-      ],
-      title: "example",
-      playlistId: "easdkfnncksl1",
-      createdAt: "fasdfadsf",
-      ownerId: "sqkt5svY5mWFt2i3u1S1g",
-    },
-  ];
+  let playlists: playlist[] = [];
 
   const playlistResponse = await fetch(
     `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${session?.userId}/playlists`,

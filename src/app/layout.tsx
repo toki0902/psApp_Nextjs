@@ -15,7 +15,10 @@ export default async function RootLayout({
     <html lang="ja">
       <head>
         <title>P.S.民のためのアプリケーション</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+          name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0"
+        />
         <meta charSet="UTF-8" />
         <meta
           name="description"
