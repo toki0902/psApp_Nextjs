@@ -34,7 +34,7 @@ export const POST = async (
 
     const session: Session | null = await auth();
 
-    if (!(session?.user?.userId === userId)) {
+    if (!(session?.userId === userId)) {
       throw new UnAuthorizeError(
         "認証に失敗しました。もう一度ログインし直してください。",
         "You are not authenticated. Please log in and try again",

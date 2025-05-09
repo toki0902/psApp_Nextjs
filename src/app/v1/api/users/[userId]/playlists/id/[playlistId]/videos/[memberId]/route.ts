@@ -35,7 +35,7 @@ export const DELETE = async (
 
     const session: Session | null = await auth();
 
-    if (!(session?.user?.userId === userId)) {
+    if (!(session?.userId === userId)) {
       console.log("Unauthorized!");
       throw new UnAuthorizeError(
         "認証に失敗しました。もう一度ログインし直してください。",
