@@ -11,10 +11,18 @@ export default async function RootLayout({
 }) {
   const session: Session | null = await auth();
 
-  console.log(session);
-
   return (
     <html lang="ja">
+      <head>
+        <title>P.S.民のためのアプリケーション</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charSet="UTF-8" />
+        <meta
+          name="description"
+          content="P.S.民に告ぐ。動画を検索したいと思ったことはないのか。「ただ限定公開だしなあ...」そう思ったことが多々あるだろう。そんなあなた達のためのサイト、爆誕"
+        />
+        <link rel="icon" type="image/png" href="/images/p.s.logo.png" />
+      </head>
       <body className="bg-back">
         <ModalProvider>
           <Header session={session} />
