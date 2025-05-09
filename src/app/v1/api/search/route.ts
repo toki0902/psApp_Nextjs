@@ -1,3 +1,4 @@
+console.log("⏱️ NEXT_RUNTIME:", process.env.NEXT_RUNTIME);
 import { NextRequest, NextResponse } from "next/server";
 
 import { FindVideosByKeyword } from "@/src/backend/application/search/FindVideosByKeyword";
