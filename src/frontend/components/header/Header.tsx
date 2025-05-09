@@ -18,9 +18,11 @@ const Header = ({ session }: { session: Session | null }) => {
   return (
     <header className="fixed z-30 flex h-12 w-full items-center justify-between bg-back px-[3%] text-sm lg:h-20">
       <h1
-        className="hidden h-10 w-32 cursor-pointer items-center justify-center bg-red lg:flex"
+        className="hidden h-full cursor-pointer lg:flex"
         onClick={() => router.push("/")}
-      />
+      >
+        <img src="/images/h1.logo.svg" alt="logo" />
+      </h1>
       <div className="left-1/2 top-1/2 h-fit w-[80%] lg:absolute lg:w-1/3 lg:-translate-x-1/2 lg:-translate-y-1/2">
         <SearchField value={query || undefined} />
       </div>
