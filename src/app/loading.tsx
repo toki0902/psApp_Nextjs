@@ -56,20 +56,17 @@ const Loading = async () => {
             ? "星 初夏紀"
             : "宮脇 虎太郎";
 
-  const width =
-    randomImage === loading6
-      ? 280
-      : randomImage === loading10 ||
-          randomImage === loading11 ||
-          randomImage === loading12
-        ? 150
-        : 200;
-
   return (
-    <div className="fixed right-0 top-0 z-30 flex h-screen w-screen animate-focus-in items-center justify-center bg-back">
+    <div className="fixed right-0 top-0 z-30 flex h-dvh w-dvw animate-focus-in items-center justify-center bg-back">
       <div className="animate-slowSpin">
         {randomImage && (
-          <Image src={randomImage} alt="Official LOGO" width={width}></Image>
+          <div className="h-32 w-32 lg:h-48 lg:w-48">
+            <Image
+              src={randomImage}
+              className="h-full w-full"
+              alt="Official LOGO"
+            ></Image>
+          </div>
         )}
       </div>
       <p
