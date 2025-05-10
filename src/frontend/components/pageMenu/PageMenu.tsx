@@ -13,7 +13,7 @@ const PageMenu = ({ pageMenuOption, pageMenuNeedData }: Props) => {
   const pageMenuData = generatePageMenuData(pageMenuOption, pageMenuNeedData);
 
   return (
-    <ul className="flex space-x-2 py-1 text-red">
+    <ul className="flex min-w-fit space-x-2 py-1 text-red">
       <PageMenuList pageMenuData={pageMenuData} />
     </ul>
   );

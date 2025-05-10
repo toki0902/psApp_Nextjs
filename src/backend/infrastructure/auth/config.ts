@@ -19,9 +19,11 @@ export const nextAuthOptions: NextAuthConfig = {
     strategy: "jwt",
   },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      return `${baseUrl}?loginSuccess=true`;
+    },
     async jwt({ token, user, account }) {
       const now = Math.floor(Date.now() / 1000);
-      console.log(token.exp, now);
       if (!user) {
         if (token.exp > now) {
           const oneMonthMs = 1000 * 60 * 60 * 24 * 30;
@@ -47,7 +49,6 @@ export const nextAuthOptions: NextAuthConfig = {
       token = { user: userToken, exp: now + oneMonthMs };
       return token;
     },
-
     async session({ token, session }) {
       if (!token) {
         throw new UnAuthorizeError(

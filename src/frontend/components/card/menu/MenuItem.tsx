@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const MenuItem = ({
   icon,
@@ -30,19 +30,17 @@ const MenuItem = ({
 
   return (
     <div
-      className="group flex w-full px-2 py-1 hover:bg-red hover:text-back"
+      className="group flex w-full px-2 py-1 hover:bg-red hover:text-back lg:px-[6px]"
       onClick={onClick}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <div
-        style={{
-          backgroundImage: `url(${isMobile ? hoverIcon : isHover ? hoverIcon : icon})`,
-          backgroundSize: "93%",
-        }}
-        className="aspect-square w-6 bg-center bg-no-repeat group-hover:animate-shake lg:w-[10%]"
+      <img
+        src={isMobile ? hoverIcon : isHover ? hoverIcon : icon}
+        alt={text}
+        className="mr-2 aspect-square w-5 group-hover:animate-shake"
       />
-      <p className="w-[90%] px-2">{text}</p>
+      <div className="">{text}</div>
     </div>
   );
 };

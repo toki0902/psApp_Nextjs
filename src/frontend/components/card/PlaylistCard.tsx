@@ -4,6 +4,7 @@ import { playlist } from "../../types/playlist";
 import { CardMenuNeedData, CardMenuOption } from "../../types/cardMenu";
 
 import CardMenu from "./menu/CardMenu";
+import Link from "next/link";
 
 type Props = {
   playlistInfo: playlist;
@@ -32,7 +33,9 @@ const PlaylistCard = ({
     }
   };
 
-  const thumbnail = playlistInfo.videos[0]?.video?.thumbnail || "";
+  const thumbnail =
+    playlistInfo.videos[0]?.video?.thumbnail ||
+    "https://placehold.jp/160x90.png";
 
   let cardMenuNeedData: CardMenuNeedData = {};
   //ここの条件式はcloneElementを使用しているからしゃあない！！
@@ -40,9 +43,9 @@ const PlaylistCard = ({
 
   return (
     <>
-      <a
+      <Link
         href={`/users/${playlistInfo.ownerId}/playlists/${playlistInfo.title}`}
-        className="mx-[calc(0.5%)] mb-10 flex cursor-pointer rounded-lg sm:block sm:w-half-divided lg:w-third-divided 2xl:w-fourth-divided 3xl:w-fifth-divided 4xl:w-sixth-divided"
+        className="mx-[calc(0.5%)] mb-10 flex w-full cursor-pointer rounded-lg sm:block sm:w-half-divided lg:w-third-divided 2xl:w-fourth-divided 3xl:w-fifth-divided 4xl:w-sixth-divided"
       >
         <div className="aspect-[16/9] w-1/2 sm:w-full">
           <img
@@ -53,7 +56,7 @@ const PlaylistCard = ({
         </div>
         <div className="flex w-1/2 p-2 align-middle sm:w-full">
           <div className="flex h-full w-[80%] flex-col justify-center sm:w-[90%]">
-            <p className="line-clamp-2 sm:line-clamp-3">{playlistInfo.title}</p>
+            <p className="line-clamp-2 break-all">{playlistInfo.title}</p>
             <p className="text-sm text-blue">
               {playlistInfo.videos.length} 件の動画
             </p>
@@ -81,7 +84,7 @@ const PlaylistCard = ({
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </>
   );
 };

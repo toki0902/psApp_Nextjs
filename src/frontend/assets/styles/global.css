@@ -12,3 +12,12 @@ html,
 body {
   @apply h-[100dvh];
 }
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-51%);
+  }
+}

@@ -37,11 +37,11 @@ const CreateFavoriteModal = ({ onPassCheck, close }: Props) => {
   return (
     <>
       <div
-        className="fixed left-0 top-0 z-10 h-screen w-screen bg-black opacity-50"
+        className="fixed left-0 top-0 z-40 h-screen w-screen bg-black opacity-50"
         onClick={close}
       ></div>
       <div
-        className={`${Noto_Serif_bold.className} fixed left-1/2 top-1/2 z-20 flex w-full max-w-[400px] -translate-x-1/2 -translate-y-1/2 transform animate-drop-in-forModal flex-col items-center justify-start rounded-md border-2 border-red bg-back lg:w-1/2 lg:max-w-[700px]`}
+        className={`${Noto_Serif_bold.className} fixed left-1/2 top-1/2 z-40 flex w-full max-w-[400px] -translate-x-1/2 -translate-y-1/2 transform animate-drop-in-forModal flex-col items-center justify-start rounded-md border-2 border-red bg-back lg:w-1/2 lg:max-w-[700px]`}
       >
         <div className="h-full w-full p-6">
           <div className="y-fit mb-10 flex w-full items-center justify-between">

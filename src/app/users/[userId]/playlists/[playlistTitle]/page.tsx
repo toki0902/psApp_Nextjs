@@ -114,12 +114,14 @@ const Playlist = async ({
   return (
     <div className="h-full w-full">
       <div className="flex h-full w-full flex-col pt-10">
-        <div className="flex w-full justify-between border-b-4 border-red">
-          <div className="flex items-end">
-            <p className={`${Kaisei.className} text-lg font-bold lg:text-2xl`}>
+        <div className="flex justify-between border-b-4 border-red">
+          <div className="flex w-[85%] items-end">
+            <p
+              className={`${Kaisei.className} truncate text-lg font-bold lg:text-2xl`}
+            >
               {playlistTitle}
             </p>
-            <p className="text-mg ml-4 hidden lg:block">
+            <p className="text-mg ml-4 hidden min-w-fit lg:block">
               {(playlist?.videos || []).length}件の動画
             </p>
           </div>

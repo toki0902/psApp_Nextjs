@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { playlist, video } from "../../types/playlist";
 import { CardMenuNeedData, CardMenuOption } from "../../types/cardMenu";
 import CardMenu from "./menu/CardMenu";
+import Link from "next/link";
 
 type Props = {
   videoInfo: video;
@@ -52,7 +53,7 @@ const VideoCard = ({
 
   return (
     <>
-      <a
+      <Link
         href={videoInfo.url}
         className="mx-[calc(0.5%)] mb-10 cursor-pointer rounded-lg sm:w-half-divided lg:w-third-divided 2xl:w-fourth-divided 3xl:w-fifth-divided 4xl:w-sixth-divided"
       >
@@ -65,7 +66,7 @@ const VideoCard = ({
         </div>
         <div className="flex w-full p-2">
           <div className="flex h-full w-[90%] flex-col items-start justify-center">
-            <p className="line-clamp-3">{videoInfo.title}</p>
+            <p className="line-clamp-2">{videoInfo.title}</p>
             <p className="mt-2 text-sm">{videoInfo.views} 回視聴</p>
           </div>
           <div className="flex w-[10%] items-start justify-center">
@@ -90,7 +91,7 @@ const VideoCard = ({
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </>
   );
 };

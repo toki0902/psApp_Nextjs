@@ -50,11 +50,11 @@ const AddFavoriteModal = ({ onPassCheck, close, payload }: Props) => {
   return (
     <>
       <div
-        className="fixed left-0 top-0 z-10 h-screen w-screen bg-black opacity-50"
+        className="fixed left-0 top-0 z-40 h-screen w-screen bg-black opacity-50"
         onClick={close}
       ></div>
       <div
-        className={`${Noto_Serif_bold.className} fixed left-1/2 top-1/2 z-20 flex max-h-[600px] w-full max-w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col border-2 border-red bg-back lg:w-1/2`}
+        className={`${Noto_Serif_bold.className} fixed left-1/2 top-1/2 z-40 flex max-h-[600px] w-full max-w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col border-2 border-red bg-back lg:w-1/2`}
       >
         <div className="fixed left-0 top-0 flex h-fit w-full items-center justify-between p-3 shadow-sm shadow-red">
           <h2 className="text-base font-bold">お気に入りへ追加</h2>

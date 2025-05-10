@@ -17,6 +17,7 @@ const config: Config = {
         blue: "var(--blue)",
       },
       animation: {
+        "scroll-x": "scroll 10s linear infinite",
         slowSpin: "spin 8s linear infinite",
         toLeftForFavorite: "toLeftForFavorite 0.3s",
         toUpInForFavorite: "toUp-in 0.8s",
@@ -36,6 +37,10 @@ const config: Config = {
         shake: "shake 1s linear 1",
       },
       keyframes: {
+        scroll: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
         toLeftForFavorite: {
           "0%": { transform: "translate(100px, 0%)" },
           "100%": { transform: "translate(0, 0%)" },

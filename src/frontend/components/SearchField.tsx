@@ -2,6 +2,7 @@
 import React, { useRef, useState } from "react";
 import { buildEncodedUrl } from "../utils/url";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 type Props = {
   value?: string;

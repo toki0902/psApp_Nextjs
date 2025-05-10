@@ -14,14 +14,7 @@ const PageMenuItem = ({
       className="group flex cursor-pointer items-center overflow-hidden"
       onClick={onClick}
     >
-      <img
-        src={icon}
-        alt="icon"
-        className="group h-6 w-6 lg:group-hover:animate-toLeftForFavorite"
-      />
-      <p className="hidden lg:group-hover:block lg:group-hover:animate-toUpInForFavorite">
-        {text}
-      </p>
+      <img src={icon} alt="icon" className="h-6 w-6" />
     </li>
   );
 };
