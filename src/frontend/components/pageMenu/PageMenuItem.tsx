@@ -1,7 +1,6 @@
 import React from "react";
 
 const PageMenuItem = ({
-  text,
   icon,
   onClick,
 }: {

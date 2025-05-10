@@ -19,7 +19,7 @@ export const nextAuthOptions: NextAuthConfig = {
     strategy: "jwt",
   },
   callbacks: {
-    async redirect({ url, baseUrl }) {
+    async redirect({ baseUrl }) {
       return `${baseUrl}?loginSuccess=true`;
     },
     async jwt({ token, user, account }) {
