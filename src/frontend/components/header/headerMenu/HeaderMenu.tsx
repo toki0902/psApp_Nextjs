@@ -1,6 +1,8 @@
+"use client";
 import { Session } from "next-auth";
 import React from "react";
 import HeaderMenuList from "./HeaderMenuList";
+import Image from "next/image";
 
 const HeaderMenu = ({
   session,
@@ -26,11 +28,14 @@ const HeaderMenu = ({
         {session ? (
           <li className="flex h-10 w-full items-center justify-start text-xl">
             <p>{session.name}</p>
-            <img
-              src={session.image}
-              alt="icon"
-              className="ml-2 w-10 rounded-full"
-            />
+            <div className="relative ml-2 aspect-square w-10">
+              <Image
+                src={session?.image || ""}
+                alt="icon"
+                className="rounded-full"
+                fill
+              />
+            </div>
           </li>
         ) : null}
         <HeaderMenuList
@@ -44,11 +49,14 @@ const HeaderMenu = ({
         {session ? (
           <div className="flex h-10 w-full items-center justify-start text-base">
             <p>ユーザ: {session.name}</p>
-            <img
-              src={session.image}
-              alt="icon"
-              className="ml-3 w-10 rounded-full"
-            />
+            <div className="relative ml-3 aspect-square w-10">
+              <Image
+                src={session?.image || ""}
+                alt="icon"
+                className="rounded-full"
+                fill
+              />
+            </div>
           </div>
         ) : null}
         <ul className="w-full space-y-4">
