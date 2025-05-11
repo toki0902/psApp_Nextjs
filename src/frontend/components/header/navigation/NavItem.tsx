@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+import Image from "next/image";
+import React, { useState } from "react";
 
 const NavItem = ({
   text,
@@ -11,21 +13,21 @@ const NavItem = ({
   hoverIcon: string;
   onClick: () => void;
 }) => {
+  const [isHover, setIsHover] = useState(false);
   return (
     <li
       style={{ margin: text === "ログイン" ? "0" : "0 20px 0 0" }}
       className="cursor-pointer"
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       <button
         className="group relative flex w-fit items-center"
         onClick={onClick}
       >
-        <img src={icon} alt={text} className="mr-1 w-5 group-hover:opacity-0" />
-        <img
-          src={hoverIcon}
-          alt={text}
-          className="absolute left-0 top-1/2 w-5 -translate-y-1/2 opacity-0 group-hover:opacity-100"
-        />
+        <div className="relative mr-1 aspect-square w-5">
+          <Image src={isHover ? hoverIcon : icon} alt="icon" fill />
+        </div>
         <p className="group-hover:text-red">{text}</p>
       </button>
     </li>

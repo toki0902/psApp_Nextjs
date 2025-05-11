@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import { Kaisei } from "../../assets/fonts/fonts";
 import { isCorrectPassword } from "../../utils/validation";
+import Image from "next/image";
 
 type props = {
   onPassCheck: () => void;
@@ -74,11 +75,9 @@ const PasswordModal = ({ onPassCheck, close }: props) => {
         </button>
         {isCorrect === false ? (
           <div className="absolute left-1/2 top-[45%] flex w-fit -translate-x-1/2 -translate-y-1/2 items-center text-nowrap text-red lg:top-[40%]">
-            <img
-              className="mr-1 w-3 lg:mr-2 lg:w-5"
-              src="/images/warning.svg"
-              alt=""
-            />
+            <div className="relative mr-1 aspect-square w-3 lg:mr-2 lg:w-5">
+              <Image src="/images/warning.svg" alt="warningIcon" fill />
+            </div>
             <p className="text-sm lg:text-base">合言葉が違います。</p>
           </div>
         ) : null}

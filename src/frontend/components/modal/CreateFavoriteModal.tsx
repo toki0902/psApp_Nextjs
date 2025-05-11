@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Noto_Serif_bold } from "../../assets/fonts/fonts";
+import Image from "next/image";
 
 type Props = { onPassCheck: (newTitle: string) => void; close: () => void };
 
@@ -73,22 +74,20 @@ const CreateFavoriteModal = ({ onPassCheck, close }: Props) => {
         </div>
         <button
           onClick={onClick}
-          className="h-fit w-full border-t border-red py-2 text-red hover:bg-red hover:text-back"
+          className="relative h-fit w-full border-t border-red py-2 text-red hover:bg-red hover:text-back"
         >
-          新規作成する
+          <p>新規作成する</p>
+          {isValid === false ? (
+            <div className="absolute left-1/2 top-0 flex w-fit -translate-x-1/2 -translate-y-[150%] items-center text-nowrap text-red">
+              <div className="relative mr-1 aspect-square w-3 lg:mr-2 lg:w-5">
+                <Image src="/images/warning.svg" alt="warningIcon" fill />
+              </div>
+              <p className="text-sm lg:text-base">
+                お気に入りのタイトルは1文字以上が有効です。
+              </p>
+            </div>
+          ) : null}
         </button>
-        {isValid === false ? (
-          <div className="absolute left-1/2 top-full flex w-fit -translate-x-1/2 translate-y-1/2 items-center text-nowrap">
-            <img
-              className="mr-1 w-3 lg:mr-2 lg:w-5"
-              src="/images/warning.svg"
-              alt=""
-            />
-            <p className="text-sm lg:text-base">
-              お気に入りのタイトルは1文字以上が有効です。
-            </p>
-          </div>
-        ) : null}
       </div>
     </>
   );

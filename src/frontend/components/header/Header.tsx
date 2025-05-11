@@ -1,14 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import SearchField from "../SearchField";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
 import HeaderMenu from "./headerMenu/HeaderMenu";
 import { NavMenuList } from "./navigation/NavMenuList";
+import Image from "next/image";
 
 const Header = ({ session }: { session: Session | null }) => {
   const [isOpenUserMenu, setIsOpenUserMenu] = useState(false);
-  const query = useSearchParams().get("q");
+
   const router = useRouter();
 
   const closeUserMenu = () => {
@@ -18,13 +19,13 @@ const Header = ({ session }: { session: Session | null }) => {
   return (
     <header className="fixed z-30 flex h-12 w-full items-center justify-between bg-back px-[3%] text-sm lg:h-20">
       <h1
-        className="hidden h-full cursor-pointer lg:flex"
+        className="relative hidden h-full w-[180px] cursor-pointer lg:flex"
         onClick={() => router.push("/")}
       >
-        <img src="/images/h1.logo.svg" alt="logo" />
+        <Image src="/images/h1.logo.svg" alt="psLogo" fill />
       </h1>
       <div className="left-1/2 top-1/2 h-fit w-[80%] lg:absolute lg:w-1/3 lg:-translate-x-1/2 lg:-translate-y-1/2">
-        <SearchField value={query || undefined} />
+        <SearchField />
       </div>
       {session ? (
         <nav>
@@ -40,11 +41,14 @@ const Header = ({ session }: { session: Session | null }) => {
                   return setIsOpenUserMenu((prev) => !prev);
                 }}
               >
-                <img
-                  src={session.image}
-                  alt="user"
-                  className="h-10 w-10 rounded-full"
-                />
+                <div className="relative h-10 w-10">
+                  <Image
+                    src={session?.image || ""}
+                    alt="userIcon"
+                    fill
+                    className="rounded-full"
+                  />
+                </div>
                 <p className="ml-2 group-hover:text-red">{session.name}</p>
               </button>
             </li>

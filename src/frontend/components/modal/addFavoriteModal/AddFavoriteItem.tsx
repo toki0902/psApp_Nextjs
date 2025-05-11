@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const AddFavoriteItem = ({
@@ -13,15 +14,20 @@ const AddFavoriteItem = ({
 }) => {
   return (
     <li key={id} className="group flex w-full items-center">
-      <img
-        src={
-          selectedPlaylistIds.includes(id)
-            ? "/images/checked_823A42.svg"
-            : "/images/checkbox_823A42.svg"
-        }
-        className="aspect-square w-5 cursor-pointer"
+      <div
+        className="relative aspect-square w-5 cursor-pointer"
         onClick={() => togglePlaylist(id)}
-      />
+      >
+        <Image
+          src={
+            selectedPlaylistIds.includes(id)
+              ? "/images/checked_823A42.svg"
+              : "/images/checkbox_823A42.svg"
+          }
+          alt="checkIcon"
+          fill
+        />
+      </div>
       <p
         className="w-fit cursor-pointer overflow-hidden truncate px-2"
         onClick={() => togglePlaylist(id)}

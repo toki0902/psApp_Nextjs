@@ -1,3 +1,4 @@
+"use client";
 import { HeaderMenuOption } from "@/src/frontend/types/header";
 import React from "react";
 import { headerMenuDefinitions } from "./headerMenuDefinitions";

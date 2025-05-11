@@ -1,3 +1,4 @@
+"use client";
 import { NavMenuOption } from "@/src/frontend/types/header";
 import { Session } from "next-auth";
 import React from "react";

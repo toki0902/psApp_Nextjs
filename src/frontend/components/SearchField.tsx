@@ -2,21 +2,19 @@
 import React, { useRef, useState } from "react";
 import { buildEncodedUrl } from "../utils/url";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
-type Props = {
-  value?: string;
-};
-
-const SearchField = ({ value = "" }: Props) => {
+const SearchField = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [keyword, setKeyword] = useState(value);
+  const [keyword, setKeyword] = useState<string>("");
 
   const router = useRouter();
 
-  const onKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && e.currentTarget === document.activeElement) {
+      e.preventDefault();
       inputRef.current?.blur();
-      router.push(`/search?q=${keyword}`);
+      router.push(`/search?q=${e.currentTarget.value}`);
     }
   };
 
@@ -43,11 +41,9 @@ const SearchField = ({ value = "" }: Props) => {
         href={buildEncodedUrl(`/search?q=${keyword}`)}
         className="flex h-full w-14 cursor-pointer items-center justify-center border-l border-blue"
       >
-        <img
-          src="/images/searchIcon.svg"
-          alt="search"
-          className="h-[70%] w-[70%]"
-        />
+        <div className="relative h-[70%] w-[70%]">
+          <Image src="/images/searchIcon.svg" alt="searchIcon" fill />
+        </div>
       </a>
     </div>
   );
