@@ -1,5 +1,6 @@
 import { CardMenuData } from "@/src/frontend/types/cardMenu";
 import { ModalContextType } from "@/src/frontend/types/modal";
+import { isMobile } from "@/src/frontend/utils/device";
 import { useRouter } from "next/navigation";
 //fix : router の型定義
 
@@ -161,8 +162,28 @@ export const menuDefinitions = {
     icon: "/images/share_823A42.svg",
     hoverIcon: "/images/share_f1EBE5.svg",
     getLabel: () => `共有する`,
-    getOnClick: () => {
-      return async () => {};
+    getOnClick: (
+      data: CardMenuData,
+      openModal: ModalContextType["openModal"],
+    ) => {
+      return async () => {
+        if (data.share) {
+          const shareData = {
+            title: data.share.title,
+            text: "おすすめの動画が届きました。ぜひみんなで見返してね。",
+            url: data.share.url,
+          };
+          if (isMobile()) {
+            await navigator.share(shareData);
+          } else {
+            navigator.clipboard.writeText(data.share.url);
+            openModal("notice", {
+              message: "動画のURLをコピーしました。",
+              type: "normal",
+            });
+          }
+        }
+      };
     },
   },
 

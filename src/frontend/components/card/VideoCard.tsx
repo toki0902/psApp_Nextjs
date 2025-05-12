@@ -5,6 +5,7 @@ import { playlist, video } from "../../types/playlist";
 import { CardMenuNeedData, CardMenuOption } from "../../types/cardMenu";
 import CardMenu from "./menu/CardMenu";
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   videoInfo: video;
@@ -55,21 +56,50 @@ const VideoCard = ({
     <>
       <Link
         href={videoInfo.url}
-        className="mx-[calc(0.5%)] mb-10 cursor-pointer rounded-lg sm:w-half-divided lg:w-third-divided 2xl:w-fourth-divided 3xl:w-fifth-divided 4xl:w-sixth-divided"
+        className={
+          ownerPlaylist
+            ? "mx-[calc(0.5%)] mb-10 flex w-full cursor-pointer rounded-lg sm:block sm:w-half-divided lg:w-third-divided 2xl:w-fourth-divided 3xl:w-fifth-divided 4xl:w-sixth-divided"
+            : "mx-[calc(0.5%)] mb-10 w-full cursor-pointer rounded-lg sm:w-half-divided lg:w-third-divided 2xl:w-fourth-divided 3xl:w-fifth-divided 4xl:w-sixth-divided"
+        }
       >
-        <div className="aspect-[16/9] w-full">
-          <img
-            src={videoInfo.thumbnail}
-            alt="image"
-            className="h-full w-full rounded-lg object-cover"
+        <div
+          className={
+            ownerPlaylist
+              ? "relative aspect-[16/9] w-1/2 sm:w-full"
+              : "relative aspect-[16/9] w-full"
+          }
+        >
+          <Image
+            src={videoInfo.thumbnail || "/images/failedImage.svg"}
+            alt="videoImage"
+            className="rounded-lg object-cover"
+            fill
           />
         </div>
-        <div className="flex w-full p-2">
-          <div className="flex h-full w-[90%] flex-col items-start justify-center">
+        <div
+          className={
+            ownerPlaylist
+              ? "flex w-1/2 p-2 align-middle sm:w-full"
+              : "flex w-full p-2"
+          }
+        >
+          <div
+            className={
+              ownerPlaylist
+                ? "flex h-full w-[80%] flex-col justify-center sm:w-[90%]"
+                : "flex h-full w-[90%] flex-col justify-center"
+            }
+          >
             <p className="line-clamp-2">{videoInfo.title}</p>
             <p className="mt-2 text-sm">{videoInfo.views} 回視聴</p>
           </div>
-          <div className="flex w-[10%] items-start justify-center">
+          <div
+            className={
+              ownerPlaylist
+                ? "flex w-[20%] items-center justify-center sm:w-[10%] sm:items-start"
+                : "flex w-[10%] items-start justify-center"
+            }
+          >
             <div
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}

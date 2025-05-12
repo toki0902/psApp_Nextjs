@@ -1,3 +1,5 @@
+"use client";
+import Image from "next/image";
 import React from "react";
 
 const HeaderMenuItem = ({
@@ -15,8 +17,8 @@ const HeaderMenuItem = ({
         className="flex h-full w-full items-center justify-start rounded-md hover:bg-[rgb(97,112,132)] lg:hover:bg-[rgb(217,217,217)]"
         onClick={onClick}
       >
-        <div className="mr-2 h-6 w-6">
-          <img src={icon} alt="icon" className="w-full" />
+        <div className="relative mr-2 h-6 w-6">
+          <Image src={icon} alt="icon" fill />
         </div>
         <p className="text-base">{text}</p>
       </button>
