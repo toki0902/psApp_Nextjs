@@ -6,7 +6,7 @@ import Fuse from "fuse.js";
 export class FindVideosByKeyword {
   constructor(
     private _searchGateway: ISearchGateway,
-    private _videoRepository: IVideoRepository
+    private _videoRepository: IVideoRepository,
   ) {}
 
   run = async (keyword: string): Promise<Video[]> => {
@@ -16,21 +16,19 @@ export class FindVideosByKeyword {
 
     if (!cacheId) {
       const accessToken = await this._searchGateway.fetchAccessToken();
-      allUploadedVideos = await this._searchGateway.fetchAllVideoByAccessToken(
-        accessToken
-      );
+      allUploadedVideos =
+        await this._searchGateway.fetchAllVideoByAccessToken(accessToken);
 
       await this._videoRepository.insert(allUploadedVideos);
     } else {
-      allUploadedVideos = await this._videoRepository.fetchVideosByCacheId(
-        cacheId
-      );
+      allUploadedVideos =
+        await this._videoRepository.fetchVideosByCacheId(cacheId);
     }
 
     const fuseOptions = {
       keys: ["title"],
       shouldSort: true,
-      threshold: 0.5,
+      threshold: 0.3,
       distance: 100,
     };
 
@@ -38,7 +36,9 @@ export class FindVideosByKeyword {
 
     const results = fuse.search(keyword);
 
-    const searchedVideos = results.map((result) => result.item);
+    const searchedVideos = results
+      .map((result) => result.item)
+      .sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
 
     console.log(`hit ${searchedVideos.length} videos`);
 

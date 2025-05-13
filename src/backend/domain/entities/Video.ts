@@ -3,7 +3,8 @@ export class Video {
     public videoId: string,
     public views: number,
     public thumbnail: string,
-    public title: string
+    public title: string,
+    public publishedAt: Date,
   ) {}
 
   public get url(): string {

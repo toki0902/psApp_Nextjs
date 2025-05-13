@@ -3,6 +3,7 @@ import { createConnectionPool } from "../db/MySQLConnection";
 import { Video } from "@/src/backend/domain/entities/Video";
 import mysql from "mysql2/promise";
 import { MySQLError, NotFoundError } from "@/src/app/error/errors";
+import { toMysqlDatetimeFromUtc } from "@/src/share/utils/format";
 
 export class MySQLVideoRepository implements IVideoRepository {
   private pool = createConnectionPool();
@@ -28,6 +29,7 @@ export class MySQLVideoRepository implements IVideoRepository {
             item.views,
             item.thumbnail,
             item.title,
+            item.published_at,
           ),
       );
     } catch (err) {
@@ -78,13 +80,14 @@ export class MySQLVideoRepository implements IVideoRepository {
       const values = videos.flatMap((item) => [
         item.videoId || null,
         cacheId,
-        item.views || 0,
-        item.thumbnail || "none",
-        item.title || "Untitled",
+        item.views,
+        item.thumbnail,
+        item.title,
+        toMysqlDatetimeFromUtc(item.publishedAt),
       ]);
 
-      const videoQuery = `INSERT INTO videos (video_youtube_id, video_cache_id, views, thumbnail, title) VALUES ${videos
-        .map(() => "(?,?,?,?,?)")
+      const videoQuery = `INSERT INTO videos (video_youtube_id, video_cache_id, views, thumbnail, title, published_at) VALUES ${videos
+        .map(() => "(?,?,?,?,?,?)")
         .join(",")}`;
 
       const videosInsertResult = await connection.execute(videoQuery, values);
@@ -136,6 +139,7 @@ export class MySQLVideoRepository implements IVideoRepository {
           data.views,
           data.thumbnail,
           data.title,
+          data.published_at,
         );
       });
 
