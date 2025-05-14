@@ -3,7 +3,7 @@ import LINE from "next-auth/providers/line";
 
 import { FetchUserAndRegister } from "@/src/backend/application/auth/FetchUserAndRegister";
 
-import { MySQLUserRepository } from "../repository/MySQLUserRepository";
+import { MySQLUserRepository } from "../../infrastructure/repository/MySQLUserRepository";
 
 import { UnAuthorizeError } from "@/src/app/error/errors";
 import { NextAuthConfig } from "next-auth/";
