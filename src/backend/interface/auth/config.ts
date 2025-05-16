@@ -5,7 +5,7 @@ import { FetchUserAndRegister } from "@/src/backend/application/auth/FetchUserAn
 
 import { MySQLUserRepository } from "../../infrastructure/repository/MySQLUserRepository";
 
-import { UnAuthorizeError } from "@/src/app/error/errors";
+import { UnAuthorizeError } from "@/src/backend/interface/error/errors";
 import { NextAuthConfig } from "next-auth/";
 
 const userRepository = new MySQLUserRepository();
@@ -60,6 +60,7 @@ export const nextAuthOptions: NextAuthConfig = {
       session.userId = token.user.userId;
       session.image = token.user.image;
       session.name = token.user.name;
+      session.graduationYear = token.user.graduationYear;
       return session;
     },
   },

@@ -4,7 +4,7 @@ import { User } from "@/src/backend/domain/entities/User";
 
 import { createConnectionPool } from "../db/MySQLConnection";
 import { nanoid } from "nanoid";
-import { MySQLError } from "@/src/app/error/errors";
+import { MySQLError } from "@/src/backend/interface/error/errors";
 
 export class MySQLUserRepository implements IUserRepository {
   private pool = createConnectionPool();
@@ -20,7 +20,14 @@ export class MySQLUserRepository implements IUserRepository {
     if (!record) {
       return undefined;
     }
-    return new User(record.user_id, record.name, record.social_id, "");
+
+    return new User(
+      record.user_id,
+      record.name,
+      record.social_id,
+      "",
+      record.graduation_year,
+    );
   }
 
   async findBySocialId(socialId: string): Promise<User | undefined> {
@@ -35,10 +42,34 @@ export class MySQLUserRepository implements IUserRepository {
     if (!record) {
       return undefined;
     }
-    return new User(record.user_id, record.name, record.social_id, "");
+    return new User(
+      record.user_id,
+      record.name,
+      record.social_id,
+      "",
+      record.graduation_year,
+    );
   }
 
-  //fix: 名前が???になります, idをランダム文字列へ
+  async changeGraduationYearByUserId(
+    graduationYear: number,
+    userId: string,
+  ): Promise<void> {
+    try {
+      await (
+        await this.pool
+      ).execute<mysql.ResultSetHeader>(
+        "update users set (graduation_year = ?) where user_id = ?",
+        [graduationYear, userId],
+      );
+    } catch (err) {
+      throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
+        `failed to change graduation year in process 'changeGraduationYearByUserId' due to :${err}`,
+      );
+    }
+  }
+
   async insert(socialId: string, name: string): Promise<User> {
     try {
       const userId = nanoid();
@@ -50,7 +81,7 @@ export class MySQLUserRepository implements IUserRepository {
         [userId, name, socialId],
       );
 
-      return new User(userId, name, socialId, "");
+      return new User(userId, name, socialId, "", null);
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",

@@ -5,8 +5,11 @@ import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository
 import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
 import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/YoutubeDataSearchGateway";
 
-import { errorHandler } from "@/src/app/error/errorHandler";
-import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
+import { errorHandler } from "@/src/backend/interface/error/errorHandler";
+import {
+  MissingParamsError,
+  UnAuthorizeError,
+} from "@/src/backend/interface/error/errors";
 import { Session } from "next-auth";
 import { auth } from "@/src/backend/interface/auth/auth";
 

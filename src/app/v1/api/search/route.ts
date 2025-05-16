@@ -5,7 +5,7 @@ import { FindVideosByKeyword } from "@/src/backend/application/search/FindVideos
 import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/YoutubeDataSearchGateway";
 import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
 
-import { errorHandler } from "@/src/app/error/errorHandler";
+import { errorHandler } from "@/src/backend/interface/error/errorHandler";
 
 const searchGateway = new YoutubeDataSearchGateway();
 const videoRepository = new MySQLVideoRepository();

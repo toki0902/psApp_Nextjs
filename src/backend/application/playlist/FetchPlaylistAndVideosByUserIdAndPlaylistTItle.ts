@@ -1,4 +1,4 @@
-import { NotFoundError } from "@/src/app/error/errors";
+import { NotFoundError } from "@/src/backend/interface/error/errors";
 import { ISearchGateway } from "@/src/backend/domain/dataAccess/gateways/ISearchGateway";
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";

@@ -63,6 +63,37 @@ paths:
                 items:
                   $ref: "#/components/schemas/Video"
 
+  /users/{userId}/graduationYear:
+    patch:
+      summary: Change graduationYear
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                graduationYear:
+                  type: number
+                  example: 2025
+      responses:
+        200:
+          description: notice creation new graduation year successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 卒業年を設定しました。
+
   /users/{userId}/playlists:
     get:
       summary: Get playlist from userId
@@ -358,22 +389,3 @@ paths:
                 type: string
                 format: uri
               example: ${process.env.NEXTAUTH_URL}/signin/${provider}?callbackUrl=${callbackUrl}
-
-  /sessions/callback:
-    get:
-      summary: after signIn or signUp, Returns a response that causes the client to store a JWT token created by the provider in a cookie
-      responses:
-        302:
-          description: redirect home page and set authentication cookie
-          headers:
-            Location:
-              description: home page URL
-              schema:
-                type: string
-                format: uri
-              example: https://example.ps.app
-            Set-Cookie:
-              description: set authentication token in cookie
-              schema:
-                type: string
-              example: "authToken=your-token; HttpOnly; Max-Age=86400; SameSite=Strict"

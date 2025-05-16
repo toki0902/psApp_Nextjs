@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { buildEncodedUrl } from "../utils/url";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 const SearchField = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -37,14 +38,14 @@ const SearchField = () => {
           <span className="absolute left-1/2 top-1/2 block h-[1px] w-full -translate-x-1/2 -translate-y-1/2 -rotate-45 bg-blue"></span>
         </button>
       </div>
-      <a
+      <Link
         href={buildEncodedUrl(`/search?q=${keyword}`)}
         className="flex h-full w-14 cursor-pointer items-center justify-center border-l border-blue"
       >
         <div className="relative h-[70%] w-[70%]">
           <Image src="/images/searchIcon.svg" alt="searchIcon" fill />
         </div>
-      </a>
+      </Link>
     </div>
   );
 };

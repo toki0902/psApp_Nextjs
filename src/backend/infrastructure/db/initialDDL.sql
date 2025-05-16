@@ -9,7 +9,8 @@
 CREATE TABLE IF NOT EXISTS users (
     user_id CHAR(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci PRIMARY KEY,
     name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-    social_id VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+    social_id VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    graduation_year INT,
 );
 
 -- テーブル: playlists

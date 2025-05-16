@@ -1,6 +1,9 @@
 import { auth } from "@/src/backend/interface/auth/auth";
-import { errorHandler } from "@/src/app/error/errorHandler";
-import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
+import { errorHandler } from "@/src/backend/interface/error/errorHandler";
+import {
+  MissingParamsError,
+  UnAuthorizeError,
+} from "@/src/backend/interface/error/errors";
 import { Session } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 

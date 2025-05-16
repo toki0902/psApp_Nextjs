@@ -4,5 +4,6 @@ export class User {
     public name: string,
     public socialId: string,
     public image: string,
+    public graduationYear: number | null,
   ) {}
 }

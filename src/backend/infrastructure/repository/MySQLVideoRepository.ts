@@ -2,7 +2,10 @@ import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVi
 import { createConnectionPool } from "../db/MySQLConnection";
 import { Video } from "@/src/backend/domain/entities/Video";
 import mysql from "mysql2/promise";
-import { MySQLError, NotFoundError } from "@/src/app/error/errors";
+import {
+  MySQLError,
+  NotFoundError,
+} from "@/src/backend/interface/error/errors";
 import { toMysqlDatetimeFromUtc } from "@/src/share/utils/format";
 
 export class MySQLVideoRepository implements IVideoRepository {

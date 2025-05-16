@@ -4,6 +4,7 @@ declare module "next-auth" {
     userId: string;
     name: string;
     image?: string;
+    graduationYear: number | null;
   }
 }
 
@@ -15,6 +16,7 @@ declare module "next-auth/jwt" {
       socialId: string;
       name: string;
       image: string;
+      graduationYear: number | null;
     };
     exp: number;
   }

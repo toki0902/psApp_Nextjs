@@ -1,4 +1,4 @@
-import { UnAuthorizeError } from "@/src/app/error/errors";
+import { UnAuthorizeError } from "@/src/backend/interface/error/errors";
 import { Video } from "@/src/backend/domain/entities/Video";
 import { toZonedTime } from "date-fns-tz";
 import {

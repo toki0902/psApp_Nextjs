@@ -2,6 +2,8 @@ import { Video } from "@/src/backend/domain/entities/Video";
 import { ISearchGateway } from "@/src/backend/domain/dataAccess/gateways/ISearchGateway";
 import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";
 import Fuse from "fuse.js";
+import { auth } from "../../interface/auth/auth";
+import { endOfMonth, startOfMonth } from "date-fns";
 
 export class FindVideosByKeyword {
   constructor(
@@ -25,14 +27,27 @@ export class FindVideosByKeyword {
         await this._videoRepository.fetchVideosByCacheId(cacheId);
     }
 
+    const session = await auth();
+    const graduationYear =
+      session?.graduationYear || new Date().getMonth() > 4
+        ? new Date().getFullYear() + 1
+        : new Date().getFullYear();
+
+    const startDate = startOfMonth(new Date(graduationYear - 4, 3));
+    const endDate = endOfMonth(new Date(graduationYear, 3));
+
+    const filteredUploadedVideos = allUploadedVideos.filter(
+      (video) => video.publishedAt > startDate && video.publishedAt < endDate,
+    );
+
     const fuseOptions = {
       keys: ["title"],
       shouldSort: true,
-      threshold: 0.3,
+      threshold: 0.4,
       distance: 100,
     };
 
-    const fuse = new Fuse(allUploadedVideos, fuseOptions);
+    const fuse = new Fuse(filteredUploadedVideos, fuseOptions);
 
     const results = fuse.search(keyword);
 
