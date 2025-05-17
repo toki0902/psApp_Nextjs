@@ -21,13 +21,7 @@ export class MySQLUserRepository implements IUserRepository {
       return undefined;
     }
 
-    return new User(
-      record.user_id,
-      record.name,
-      record.social_id,
-      "",
-      record.graduation_year,
-    );
+    return new User(record.user_id, record.name, "", record.graduation_year);
   }
 
   async findBySocialId(socialId: string): Promise<User | undefined> {
@@ -42,13 +36,7 @@ export class MySQLUserRepository implements IUserRepository {
     if (!record) {
       return undefined;
     }
-    return new User(
-      record.user_id,
-      record.name,
-      record.social_id,
-      "",
-      record.graduation_year,
-    );
+    return new User(record.user_id, record.name, "", record.graduation_year);
   }
 
   async changeGraduationYearByUserId(
@@ -81,7 +69,7 @@ export class MySQLUserRepository implements IUserRepository {
         [userId, name, socialId],
       );
 
-      return new User(userId, name, socialId, "", null);
+      return new User(userId, name, "", null);
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
