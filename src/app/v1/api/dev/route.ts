@@ -1,7 +1,6 @@
-import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/YoutubeDataSearchGateway";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-const gateway = new YoutubeDataSearchGateway();
+
 export const GET = async (req: NextRequest) => {
   // const token = await gateway.fetchAccessToken();
   // let playlists: any = [];

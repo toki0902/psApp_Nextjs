@@ -12,7 +12,7 @@ const UpdateProfileButton = () => {
         type: "error",
       });
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/dev`, {
+    await fetch(`${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/dev`, {
       method: "GET",
     });
   };

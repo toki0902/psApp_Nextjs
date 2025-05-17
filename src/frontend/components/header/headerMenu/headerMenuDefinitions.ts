@@ -12,7 +12,7 @@ export const headerMenuDefinitions = {
   setting: {
     text: "ユーザ設定",
     icon: "/images/setting_2c4a52.svg",
-    getHref: (userId: string) => `/settings/profile`,
+    getHref: () => `/settings/profile`,
   },
 
   mobileLogout: {
