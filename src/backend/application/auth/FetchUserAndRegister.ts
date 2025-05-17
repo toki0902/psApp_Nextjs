@@ -27,7 +27,6 @@ export class FetchUserAndRegister {
       return new User(
         insertResult.userId,
         insertResult.name,
-        insertResult.socialId,
         user.image || "",
         null,
       );
@@ -36,7 +35,6 @@ export class FetchUserAndRegister {
     return new User(
       selectedUser.userId,
       selectedUser.name,
-      selectedUser.socialId,
       user.image || "",
       selectedUser.graduationYear,
     );

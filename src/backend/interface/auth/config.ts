@@ -6,7 +6,8 @@ import { FetchUserAndRegister } from "@/src/backend/application/auth/FetchUserAn
 import { MySQLUserRepository } from "../../infrastructure/repository/MySQLUserRepository";
 
 import { UnAuthorizeError } from "@/src/backend/interface/error/errors";
-import { NextAuthConfig } from "next-auth/";
+import { NextAuthConfig, Session } from "next-auth/";
+import { JWT } from "next-auth/jwt";
 
 const userRepository = new MySQLUserRepository();
 const fetchUserAndRegister = new FetchUserAndRegister(userRepository);
@@ -19,9 +20,6 @@ export const nextAuthOptions: NextAuthConfig = {
     strategy: "jwt",
   },
   callbacks: {
-    async redirect({ baseUrl }) {
-      return `${baseUrl}?loginSuccess=true`;
-    },
     async jwt({ token, user, account }) {
       const now = Math.floor(Date.now() / 1000);
       if (!user) {
@@ -41,12 +39,29 @@ export const nextAuthOptions: NextAuthConfig = {
         );
       }
 
-      const userData = { ...user, id: account.providerAccountId };
+      if (!user.name || !user.id || !user.image)
+        throw new UnAuthorizeError(
+          "プロバイダーデータ取得に失敗しました。",
+          "missing provider data",
+        );
 
+      const userData = { ...user, id: account.providerAccountId };
       const userToken = await fetchUserAndRegister.run(userData);
+      const providerInfo: JWT["provider"] = {
+        provider: account.provider,
+        displayName: user.name,
+        socialId: user.id,
+        image: user.image,
+      };
 
       const oneMonthMs = 1000 * 60 * 60 * 24 * 30;
-      token = { user: userToken, exp: now + oneMonthMs };
+
+      token = {
+        user: userToken,
+        provider: providerInfo,
+        exp: now + oneMonthMs,
+      };
+
       return token;
     },
     async session({ token, session }) {
@@ -61,6 +76,13 @@ export const nextAuthOptions: NextAuthConfig = {
       session.image = token.user.image;
       session.name = token.user.name;
       session.graduationYear = token.user.graduationYear;
+
+      const providerInfo: Session["provider"] = {
+        provider: token.provider.provider,
+        displayName: token.provider.displayName,
+        image: token.provider.image,
+      };
+      session.provider = providerInfo;
       return session;
     },
   },

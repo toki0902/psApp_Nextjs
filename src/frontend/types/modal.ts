@@ -5,6 +5,7 @@ import PasswordModal from "../components/modal/PasswordModal";
 import { playlist } from "./playlist";
 import CreateFavoriteModal from "../components/modal/CreateFavoriteModal";
 import AddFavoriteModal from "../components/modal/addFavoriteModal/AddFavoriteModal";
+import UpdateProfileModal from "../components/modal/UpdateProfileModal";
 
 export type ModalDefinitionMap = {
   password: {
@@ -12,7 +13,7 @@ export type ModalDefinitionMap = {
     payload: undefined;
     value: boolean;
     props: {
-      onPassCheck: (returnValue?: string | string[]) => void;
+      onPassCheck: () => void;
       close: () => void;
       payload: undefined;
     };
@@ -22,7 +23,7 @@ export type ModalDefinitionMap = {
     payload: undefined;
     value: boolean;
     props: {
-      onPassCheck: (returnValue?: string | string[]) => void;
+      onPassCheck: () => void;
       close: () => void;
       payload: undefined;
     };
@@ -32,7 +33,7 @@ export type ModalDefinitionMap = {
     payload: undefined;
     value: boolean;
     props: {
-      onPassCheck: (returnValue?: string | string[]) => void;
+      onPassCheck: () => void;
       close: () => void;
       payload: undefined;
     };
@@ -42,17 +43,7 @@ export type ModalDefinitionMap = {
     payload: undefined;
     value: string;
     props: {
-      onPassCheck: (returnValue?: string | string[]) => void;
-      close: () => void;
-      payload: undefined;
-    };
-  };
-  share: {
-    component: typeof CheckModal;
-    payload: undefined;
-    value: boolean;
-    props: {
-      onPassCheck: (returnValue?: string | string[]) => void;
+      onPassCheck: (newTitle: string) => void;
       close: () => void;
       payload: undefined;
     };
@@ -62,7 +53,7 @@ export type ModalDefinitionMap = {
     payload: { playlists: playlist[] };
     value: string[];
     props: {
-      onPassCheck: (returnValue?: string | string[]) => void;
+      onPassCheck: (addPlaylistIds: string[]) => void;
       close: () => void;
       payload: { playlists: playlist[] };
     };
@@ -72,7 +63,7 @@ export type ModalDefinitionMap = {
     payload: undefined;
     value: string;
     props: {
-      onPassCheck: (returnValue?: string | string[]) => void;
+      onPassCheck: (newTitle: string) => void;
       close: () => void;
       payload: undefined;
     };
@@ -82,12 +73,33 @@ export type ModalDefinitionMap = {
     payload: { message: string; type: "error" | "normal" };
     value: boolean;
     props: {
-      onPassCheck: (returnValue?: string | string[]) => void;
+      onPassCheck: () => void;
       close: () => void;
       payload: { message: string; type: "error" | "normal" };
     };
   };
+  updateProfileModal: {
+    component: typeof UpdateProfileModal;
+    payload: undefined;
+    value: { name: string | null; graduationYear: number | null };
+    props: {
+      onPassCheck: (arg: {
+        name: string | null;
+        graduationYear: number | null;
+      }) => void;
+      close: () => void;
+      payload: undefined;
+    };
+  };
 };
+
+export type allValue =
+  | boolean
+  | string
+  | string[]
+  | { name: string | null; graduationYear: number | null };
+
+export type returnValue<T extends ModalType> = ModalDefinitionMap[T]["value"];
 
 export type ModalProps<T extends ModalType> = ModalDefinitionMap[T]["props"];
 

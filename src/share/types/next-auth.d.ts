@@ -5,6 +5,11 @@ declare module "next-auth" {
     name: string;
     image?: string;
     graduationYear: number | null;
+    provider: {
+      provider: string;
+      displayName: string;
+      image: string;
+    };
   }
 }
 
@@ -13,10 +18,15 @@ declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
     user: {
       userId: string;
-      socialId: string;
       name: string;
       image: string;
       graduationYear: number | null;
+    };
+    provider: {
+      provider: string;
+      displayName: string;
+      socialId: string;
+      image: string;
     };
     exp: number;
   }
