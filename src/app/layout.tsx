@@ -29,7 +29,7 @@ export default async function RootLayout({
       <body className="relative bg-back">
         <ModalProvider>
           <Header session={session} />
-          <main className="absolute top-12 h-[calc(100dvh-48px)] w-full px-[3%] lg:top-20 lg:h-[calc(100dvh-80px)]">
+          <main className="absolute top-[70px] h-[calc(100dvh-70px)] w-full px-[3%]">
             <div
               className="h-full w-full overflow-auto bg-[url('/images/guitar.svg')] bg-fixed bg-no-repeat"
               style={{ backgroundSize: "70%", backgroundPosition: "50% 70%" }}

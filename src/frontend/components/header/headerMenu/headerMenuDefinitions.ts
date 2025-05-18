@@ -10,11 +10,15 @@ export const headerMenuDefinitions = {
     getHref: () => "/v1/api/auth/signin",
   },
   setting: {
-    text: "ユーザ設定",
+    text: "設定",
     icon: "/images/setting_2c4a52.svg",
     getHref: () => `/settings/profile`,
   },
-
+  mobileSetting: {
+    text: "設定",
+    icon: "/images/setting_f1EBE5.svg",
+    getHref: () => "/settings/profile",
+  },
   mobileLogout: {
     text: "ログアウトする",
     icon: "/images/logout_f1EBE5.svg",

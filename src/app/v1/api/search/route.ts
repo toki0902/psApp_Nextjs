@@ -17,8 +17,9 @@ const findVideosByKeyword = new FindVideosByKeyword(
 export const GET = async (req: NextRequest): Promise<NextResponse> => {
   try {
     const keyword = req.nextUrl.searchParams.get("q") || "";
+    const isAllVideo = req.nextUrl.searchParams.get("isAllVideo") === "true";
 
-    const videos = await findVideosByKeyword.run(keyword);
+    const videos = await findVideosByKeyword.run(keyword, isAllVideo);
 
     const resObj = videos.map((videoObj) => {
       return { ...videoObj, url: videoObj.url };

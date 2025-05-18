@@ -8,6 +8,7 @@ export type HeaderMenuOption = {
   logout?: true;
   login?: true;
   setting?: true;
+  mobileSetting?: true;
   mobileLogout?: true;
   mobileFavorite?: true;
   mobileLogin?: true;

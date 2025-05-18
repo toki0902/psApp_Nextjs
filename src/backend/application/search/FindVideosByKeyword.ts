@@ -11,7 +11,7 @@ export class FindVideosByKeyword {
     private _videoRepository: IVideoRepository,
   ) {}
 
-  run = async (keyword: string): Promise<Video[]> => {
+  run = async (keyword: string, isAllVideo: boolean): Promise<Video[]> => {
     const cacheId = await this._videoRepository.fetchValidCacheId();
 
     let allUploadedVideos;
@@ -27,6 +27,8 @@ export class FindVideosByKeyword {
         await this._videoRepository.fetchVideosByCacheId(cacheId);
     }
 
+    let targetVideos = [...allUploadedVideos];
+
     const session = await auth();
     const graduationYear =
       session?.graduationYear || new Date().getMonth() > 4
@@ -36,9 +38,11 @@ export class FindVideosByKeyword {
     const startDate = startOfMonth(new Date(graduationYear - 4, 3));
     const endDate = endOfMonth(new Date(graduationYear, 3));
 
-    const filteredUploadedVideos = allUploadedVideos.filter(
-      (video) => video.publishedAt > startDate && video.publishedAt < endDate,
-    );
+    if (!isAllVideo) {
+      targetVideos = targetVideos.filter(
+        (video) => video.publishedAt > startDate && video.publishedAt < endDate,
+      );
+    }
 
     const fuseOptions = {
       keys: ["title"],
@@ -47,7 +51,7 @@ export class FindVideosByKeyword {
       distance: 100,
     };
 
-    const fuse = new Fuse(filteredUploadedVideos, fuseOptions);
+    const fuse = new Fuse(targetVideos, fuseOptions);
 
     const results = fuse.search(keyword);
 
