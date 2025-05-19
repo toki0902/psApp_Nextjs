@@ -3,10 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { RegisterNewPlaylistMemberByPlaylistTitle } from "@/src/backend/application/playlist/RegisterNewPlaylistMember";
 import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
 
-import { errorHandler } from "@/src/app/error/errorHandler";
-import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
+import { errorHandler } from "@/src/backend/interface/error/errorHandler";
+import {
+  MissingParamsError,
+  UnAuthorizeError,
+} from "@/src/backend/interface/error/errors";
 import { Session } from "next-auth";
-import { auth } from "@/src/backend/infrastructure/auth/auth";
+import { auth } from "@/src/backend/interface/auth/auth";
 
 const playlistRepository = new MySQLPlaylistRepository();
 

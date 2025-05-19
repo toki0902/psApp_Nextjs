@@ -5,21 +5,21 @@ import { CardMenuOption } from "@/src/frontend/types/cardMenu";
 import CardWrapper from "@/src/frontend/components/card/CardWrapper";
 
 import { Session } from "next-auth";
-import { auth } from "@/src/backend/infrastructure/auth/auth";
+import { auth } from "@/src/backend/interface/auth/auth";
 import { getAllCookies } from "@/src/frontend/utils/cookie";
 import { Kaisei } from "@/src/frontend/assets/fonts/fonts";
 
 const Search = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ q: string }>;
+  searchParams: Promise<{ q: string; isAllVideo: string }>;
 }) => {
   let videos: video[] = [];
 
-  const { q: query } = await searchParams;
+  const { q: query, isAllVideo } = await searchParams;
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/search?q=${query}`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/search?q=${query}${isAllVideo ? "&isAllVideo=true" : ""}`,
     { method: "GET", headers: { "Content-Type": "application/json" } },
   );
 

@@ -12,8 +12,10 @@ import {
   ModalType,
   ModalDefinitionMap,
   ModalProps,
+  allValue,
 } from "../../types/modal";
 import CreateFavoriteModal from "./CreateFavoriteModal";
+import UpdateProfileModal from "./UpdateProfileModal";
 
 export const ModalContext = createContext<ModalContextType | null>(null);
 
@@ -21,7 +23,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalInfo, setModalInfo] = useState<ModalInfoType | null>(null);
   const [resolver, setResolver] = useState<{
-    resolve: (result: boolean | string | string[] | null) => void;
+    resolve: (result: allValue | null) => void;
   } | null>(null);
 
   const openModal = <T extends ModalType>(
@@ -41,7 +43,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const onPass = (returnValue?: string | string[]) => {
+  const onPass = (returnValue?: allValue) => {
     resolver?.resolve(returnValue || true);
     cleanup();
   };
@@ -64,10 +66,10 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     deleteFromPlaylist: CheckModal,
     deletePlaylist: CheckModal,
     edit: EditModal,
-    share: CheckModal,
     createFavorite: CreateFavoriteModal,
     addFavorite: AddFavoriteModal,
     notice: NotificationModal,
+    updateProfileModal: UpdateProfileModal,
   };
 
   const ModalComponent = modalInfo

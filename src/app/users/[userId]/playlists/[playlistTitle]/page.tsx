@@ -11,7 +11,7 @@ import {
   PageMenuOption,
 } from "@/src/frontend/types/pageMenu";
 import PageMenu from "@/src/frontend/components/pageMenu/PageMenu";
-import { auth } from "@/src/backend/infrastructure/auth/auth";
+import { auth } from "@/src/backend/interface/auth/auth";
 import { notFound } from "next/navigation";
 
 //直し

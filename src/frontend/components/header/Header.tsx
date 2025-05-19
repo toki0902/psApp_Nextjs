@@ -17,7 +17,7 @@ const Header = ({ session }: { session: Session | null }) => {
   };
 
   return (
-    <header className="fixed z-30 flex h-12 w-full items-center justify-between bg-back px-[3%] text-sm lg:h-20">
+    <header className="fixed z-30 flex h-[70px] w-full items-start justify-between bg-back px-[3%] pt-2 text-sm lg:h-24 lg:items-center lg:pt-0">
       <h1
         className="relative hidden h-full w-[180px] cursor-pointer lg:flex"
         onClick={() => router.push("/")}
@@ -68,7 +68,7 @@ const Header = ({ session }: { session: Session | null }) => {
         </nav>
       )}
       <button
-        className="relative flex h-7 w-7 flex-col justify-center lg:hidden"
+        className="relative flex h-9 w-7 flex-col justify-center lg:hidden"
         onClick={() => setIsOpenUserMenu((prev) => !prev)}
       >
         <span
@@ -93,7 +93,6 @@ const Header = ({ session }: { session: Session | null }) => {
           }
         ></span>
       </button>
-      {/* <nav className="absolute left-0 top-full flex h-[calc(100vh-48px)] w-full flex-col rounded-t-xl bg-blue"></nav> */}
       <HeaderMenu
         session={session}
         isOpenUserMenu={isOpenUserMenu}

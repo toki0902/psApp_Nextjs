@@ -1,2 +1,3 @@
-import { handlers } from "@/src/backend/infrastructure/auth/auth";
+import { handlers } from "@/src/backend/interface/auth/auth";
+
 export const { GET, POST } = handlers;

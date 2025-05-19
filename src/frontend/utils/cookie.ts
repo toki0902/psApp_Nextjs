@@ -1,4 +1,4 @@
-import { auth } from "@/src/backend/infrastructure/auth/auth";
+import { auth } from "@/src/backend/interface/auth/auth";
 import { Session } from "next-auth";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";

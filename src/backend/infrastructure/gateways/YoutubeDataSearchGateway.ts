@@ -1,5 +1,6 @@
-import { UnAuthorizeError } from "@/src/app/error/errors";
+import { UnAuthorizeError } from "@/src/backend/interface/error/errors";
 import { Video } from "@/src/backend/domain/entities/Video";
+import { toZonedTime } from "date-fns-tz";
 import {
   PlaylistItem,
   PlaylistItemsResponse,
@@ -131,21 +132,15 @@ export class YoutubeDataSearchGateway {
       return seen.has(videoId) ? false : seen.add(videoId);
     });
 
-    const arr_videoId = videoDataWithoutDuplicates.map(
-      (item) => item.video.snippet.resourceId.videoId,
-    );
-
-    const arr_viewCount = videoDataWithoutDuplicates.map((item) => item.view);
-
-    const arr_video = videoDataWithoutDuplicates.map((item, index) => {
-      const videoId = arr_videoId[index];
-      const views = arr_viewCount[index];
-      const thumbnail = item?.video?.snippet?.thumbnails?.standard?.url || "";
-      const title = item.video.snippet.title;
-      return new Video(videoId, views, thumbnail, title);
+    const arr_video = videoDataWithoutDuplicates.map((item) => {
+      const videoId = item.video.snippet.resourceId.videoId;
+      const views = item.view || 0;
+      const thumbnail = item.video.snippet.thumbnails.standard?.url || "";
+      const title = item.video.snippet.title || "";
+      const publishedAt =
+        toZonedTime(item.video.snippet.publishedAt, "Asia/Tokyo") || "";
+      return new Video(videoId, views, thumbnail, title, publishedAt);
     });
-
-    console.log(arr_video.length);
 
     return arr_video;
   };
@@ -175,13 +170,13 @@ export class YoutubeDataSearchGateway {
     }
 
     const videoData: YoutubeVideoResponse = await videoResponse.json();
-    console.log(JSON.stringify(videoData));
     return videoData.items.map((item) => {
       return new Video(
         item.id || "",
         Number(item.statistics?.viewCount) || 0,
         item.snippet?.thumbnails.standard?.url || "",
         item.snippet?.title || "",
+        toZonedTime(item.snippet.publishedAt, "Asia/Tokyo") || "",
       );
     });
   };

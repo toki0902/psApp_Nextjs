@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       "profile.line-scdn.net",
       "placehold.jp",
       "i9.ytimg.com",
+      "lh3.googleusercontent.com",
     ],
   },
 };

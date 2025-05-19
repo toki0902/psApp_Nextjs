@@ -1,5 +1,4 @@
-import { NotFoundError } from "@/src/app/error/errors";
-import { ISearchGateway } from "@/src/backend/domain/dataAccess/gateways/ISearchGateway";
+import { NotFoundError } from "@/src/backend/interface/error/errors";
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";
 import { Playlist } from "@/src/backend/domain/entities/Playlist";
@@ -8,7 +7,6 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
   constructor(
     private _playlistRepository: IPlaylistRepository,
     private _videoRepository: IVideoRepository,
-    private _searchGateway: ISearchGateway,
   ) {}
 
   run = async (userId: string, playlistTitle: string): Promise<Playlist> => {
@@ -25,12 +23,11 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
       );
     }
 
-    const playlistMembersObj =
+    const playlistMemberObj = (
       await this._playlistRepository.fetchPlaylistMembersByPlaylistIds([
         playlistData.playlistId,
-      ]);
-
-    const playlistMemberObj = playlistMembersObj[0];
+      ])
+    )[0];
 
     if (!playlistMemberObj.videos.length) {
       return new Playlist(
@@ -42,36 +39,16 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
       );
     }
 
-    const cacheId = await this._videoRepository.fetchValidCacheId();
-
-    let arr_videoInfo;
-    if (!cacheId) {
-      const accessToken = await this._searchGateway.fetchAccessToken();
-      const videos = await this._searchGateway.fetchVideoByVideoIds(
+    const arr_videoInfo = (
+      await this._videoRepository.fetchVideoByYoutubeIds(
         playlistMemberObj.videos.map((i) => i.videoId),
-        accessToken,
-      );
-      const memberIds = playlistMemberObj.videos.map((obj) => obj.memberId);
-      arr_videoInfo = memberIds.map((id, index) => {
-        return {
-          videoMemberId: id,
-          video: { ...videos[index], url: videos[index].url },
-        };
-      });
-    } else {
-      const videos =
-        await this._videoRepository.fetchVideoByYoutubeIdsAndCacheId(
-          playlistMemberObj.videos.map((i) => i.videoId),
-          cacheId,
-        );
-      const memberIds = playlistMemberObj.videos.map((i) => i.memberId);
-      arr_videoInfo = memberIds.map((id, index) => {
-        return {
-          videoMemberId: id,
-          video: { ...videos[index], url: videos[index].url },
-        };
-      });
-    }
+      )
+    ).map((video, index) => {
+      return {
+        videoMemberId: playlistMemberObj.videos[index].memberId,
+        video: { ...video, url: video.url },
+      };
+    });
 
     return new Playlist(
       playlistData.playlistId,

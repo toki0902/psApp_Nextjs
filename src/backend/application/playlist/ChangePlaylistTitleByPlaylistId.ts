@@ -1,4 +1,7 @@
-import { NotFoundError, UnAuthorizeError } from "@/src/app/error/errors";
+import {
+  NotFoundError,
+  UnAuthorizeError,
+} from "@/src/backend/interface/error/errors";
 import { IPlaylistRepository } from "../../domain/dataAccess/repository/IPlaylistRepository";
 
 export class ChangePlaylistTitleByPlaylistId {

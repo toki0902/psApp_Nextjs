@@ -4,6 +4,21 @@ export const headerMenuDefinitions = {
     icon: "/images/logout_2c4a52.svg",
     getHref: () => "/v1/api/auth/signout",
   },
+  login: {
+    text: "ログインする",
+    icon: "/images/login_2c4a52.svg",
+    getHref: () => "/v1/api/auth/signin",
+  },
+  setting: {
+    text: "設定",
+    icon: "/images/setting_2c4a52.svg",
+    getHref: () => `/settings/profile`,
+  },
+  mobileSetting: {
+    text: "設定",
+    icon: "/images/setting_f1EBE5.svg",
+    getHref: () => "/settings/profile",
+  },
   mobileLogout: {
     text: "ログアウトする",
     icon: "/images/logout_f1EBE5.svg",

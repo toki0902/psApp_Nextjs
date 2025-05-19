@@ -1,6 +1,9 @@
-import { auth } from "@/src/backend/infrastructure/auth/auth";
-import { errorHandler } from "@/src/app/error/errorHandler";
-import { MissingParamsError, UnAuthorizeError } from "@/src/app/error/errors";
+import { auth } from "@/src/backend/interface/auth/auth";
+import { errorHandler } from "@/src/backend/interface/error/errorHandler";
+import {
+  MissingParamsError,
+  UnAuthorizeError,
+} from "@/src/backend/interface/error/errors";
 import { Session } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,17 +13,14 @@ import { ChangePlaylistTitleByPlaylistId } from "@/src/backend/application/playl
 
 import { FetchPlaylistAndVideosByUserIdAndPlaylistId } from "@/src/backend/application/playlist/FetchPlaylistAndVideosByUserIdAndPlaylistId";
 import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
-import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/YoutubeDataSearchGateway";
 
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
-const searchGateway = new YoutubeDataSearchGateway();
 
 const FetchPlaylistsAndVideosByPlaylistId =
   new FetchPlaylistAndVideosByUserIdAndPlaylistId(
     playlistRepository,
     videoRepository,
-    searchGateway,
   );
 const deletePlaylistByPlaylistId = new DeletePlaylistByPlaylistId(
   playlistRepository,

@@ -1,4 +1,4 @@
-import { NotFoundError } from "@/src/app/error/errors";
+import { NotFoundError } from "@/src/backend/interface/error/errors";
 import { IUserRepository } from "@/src/backend/domain/dataAccess/repository/IUserRepository";
 import { User } from "@/src/backend/domain/entities/User";
 
@@ -27,16 +27,16 @@ export class FetchUserAndRegister {
       return new User(
         insertResult.userId,
         insertResult.name,
-        insertResult.socialId,
         user.image || "",
+        null,
       );
     }
 
     return new User(
       selectedUser.userId,
       selectedUser.name,
-      selectedUser.socialId,
       user.image || "",
+      selectedUser.graduationYear,
     );
   };
 }

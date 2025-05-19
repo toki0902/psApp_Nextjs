@@ -35,8 +35,7 @@ const PlaylistCard = ({
   };
 
   const thumbnail =
-    playlistInfo.videos[0]?.video?.thumbnail ||
-    "https://placehold.jp/160x90.png";
+    playlistInfo.videos[0]?.video?.thumbnail || "/images/failedImage.svg";
 
   let cardMenuNeedData: CardMenuNeedData = {};
   //ここの条件式はcloneElementを使用しているからしゃあない！！

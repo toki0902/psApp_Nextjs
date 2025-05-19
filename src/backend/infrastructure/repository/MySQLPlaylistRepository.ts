@@ -1,6 +1,6 @@
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 import { createConnectionPool } from "../db/MySQLConnection";
-import { MySQLError } from "@/src/app/error/errors";
+import { MySQLError } from "@/src/backend/interface/error/errors";
 import mysql from "mysql2/promise";
 import { nanoid } from "nanoid";
 
