@@ -33,7 +33,7 @@ const VideoCard = ({
   const [isHovered, setIsHovered] = useState(false);
 
   const onClick: (e: React.MouseEvent<HTMLInputElement>) => void = (e) => {
-    e.preventDefault();
+    e.stopPropagation();
     if (whichMenuIsOpen === videoInfo.videoId) {
       if (closeMenu) closeMenu();
     } else {
