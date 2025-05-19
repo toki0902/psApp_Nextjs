@@ -31,7 +31,7 @@ export default async function RootLayout({
           <Header session={session} />
           <main className="absolute top-[70px] h-[calc(100dvh-70px)] w-full px-[3%] lg:top-[96px] lg:h-[calc(100dvh-96px)]">
             <div
-              className="h-full w-full overflow-auto bg-[url('/images/guitar.svg')] bg-fixed bg-no-repeat"
+              className="h-full w-full overflow-auto bg-[url('/images/guitar.svg')] bg-scroll bg-no-repeat"
               style={{ backgroundSize: "70%", backgroundPosition: "50% 70%" }}
             >
               {children}
