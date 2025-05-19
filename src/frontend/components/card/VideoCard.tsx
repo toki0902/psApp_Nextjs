@@ -55,7 +55,7 @@ const VideoCard = ({
   return (
     <div
       onClick={() => {
-        window.location.href = "youtube://watch?v=abc123;
+        window.location.href = 'youtube://watch?v=${videoInfo.videoId}'
       }}
       className={
         ownerPlaylist
