@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { playlist, video } from "../../types/playlist";
 import { CardMenuNeedData, CardMenuOption } from "../../types/cardMenu";
 import CardMenu from "./menu/CardMenu";
-import Link from "next/link";
+
 import Image from "next/image";
 
 type Props = {
