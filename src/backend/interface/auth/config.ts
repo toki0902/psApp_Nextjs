@@ -1,4 +1,3 @@
-import Google from "next-auth/providers/google";
 import LINE from "next-auth/providers/line";
 
 import { FetchUserAndRegister } from "@/src/backend/application/auth/FetchUserAndRegister";
@@ -15,7 +14,8 @@ const fetchUserAndRegister = new FetchUserAndRegister(userRepository);
 export const nextAuthOptions: NextAuthConfig = {
   debug: false,
   secret: process.env.AUTH_SECRET,
-  providers: [Google, LINE({ checks: ["state"] })],
+  //googleは認可が降りるまでなしで。
+  providers: [LINE({ checks: ["state"] })],
   session: {
     strategy: "jwt",
   },
