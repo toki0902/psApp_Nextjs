@@ -13,17 +13,14 @@ import { ChangePlaylistTitleByPlaylistId } from "@/src/backend/application/playl
 
 import { FetchPlaylistAndVideosByUserIdAndPlaylistId } from "@/src/backend/application/playlist/FetchPlaylistAndVideosByUserIdAndPlaylistId";
 import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
-import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/YoutubeDataSearchGateway";
 
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
-const searchGateway = new YoutubeDataSearchGateway();
 
 const FetchPlaylistsAndVideosByPlaylistId =
   new FetchPlaylistAndVideosByUserIdAndPlaylistId(
     playlistRepository,
     videoRepository,
-    searchGateway,
   );
 const deletePlaylistByPlaylistId = new DeletePlaylistByPlaylistId(
   playlistRepository,

@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { FetchPlaylistAndVideosByUserIdAndPlaylistTitle } from "@/src/backend/application/playlist/FetchPlaylistAndVideosByUserIdAndPlaylistTItle";
 import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
 import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
-import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/YoutubeDataSearchGateway";
 
 import { errorHandler } from "@/src/backend/interface/error/errorHandler";
 import {
@@ -15,13 +14,11 @@ import { auth } from "@/src/backend/interface/auth/auth";
 
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
-const searchGateway = new YoutubeDataSearchGateway();
 
 const fetchPlaylistAndVideosByUserIdAndPlaylistTitle =
   new FetchPlaylistAndVideosByUserIdAndPlaylistTitle(
     playlistRepository,
     videoRepository,
-    searchGateway,
   );
 
 export const GET = async (
