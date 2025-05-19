@@ -1,14 +1,11 @@
-import { ISearchGateway } from "@/src/backend/domain/dataAccess/gateways/ISearchGateway";
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";
 import { Playlist } from "@/src/backend/domain/entities/Playlist";
-import { Video } from "@/src/backend/domain/entities/Video";
 
 export class FetchPlaylistsAndVideosByUserId {
   constructor(
     private _playlistRepository: IPlaylistRepository,
     private _videoRepository: IVideoRepository,
-    private _searchGateway: ISearchGateway,
   ) {}
 
   run = async (userId: string): Promise<Playlist[]> => {
