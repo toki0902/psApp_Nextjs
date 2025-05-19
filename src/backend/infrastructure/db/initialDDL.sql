@@ -31,20 +31,13 @@ CREATE TABLE IF NOT EXISTS playlist_members (
     FOREIGN KEY (playlist_id) REFERENCES playlists(playlist_id) ON DELETE CASCADE
 );
 
--- テーブル: video_caches
-CREATE TABLE IF NOT EXISTS video_caches (
-    video_cache_id INT PRIMARY KEY AUTO_INCREMENT,
-    expires DATE NOT NULL
-);
-
 -- テーブル: videos
 CREATE TABLE IF NOT EXISTS videos (
     video_id INT PRIMARY KEY AUTO_INCREMENT,
     video_youtube_id VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-    video_cache_id INT NOT NULL,
     views INT NOT NULL,
     thumbnail VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     title VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     published_at DATETIME NOT NULL,
-    FOREIGN KEY (video_cache_id) REFERENCES video_caches(video_cache_id) ON DELETE CASCADE
 );
+

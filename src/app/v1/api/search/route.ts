@@ -2,17 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { FindVideosByKeyword } from "@/src/backend/application/search/FindVideosByKeyword";
 
-import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/YoutubeDataSearchGateway";
 import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
 
 import { errorHandler } from "@/src/backend/interface/error/errorHandler";
 
-const searchGateway = new YoutubeDataSearchGateway();
 const videoRepository = new MySQLVideoRepository();
-const findVideosByKeyword = new FindVideosByKeyword(
-  searchGateway,
-  videoRepository,
-);
+const findVideosByKeyword = new FindVideosByKeyword(videoRepository);
 
 export const GET = async (req: NextRequest): Promise<NextResponse> => {
   try {
