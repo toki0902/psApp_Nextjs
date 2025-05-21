@@ -43,7 +43,7 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const cookie = await getAllCookies();
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${userId}/playlists`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/${userId}/playlists`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json", Cookie: cookie },

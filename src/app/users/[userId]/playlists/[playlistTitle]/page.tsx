@@ -33,7 +33,7 @@ const Playlist = async ({
   let playlist: playlist | null = null;
 
   const videoResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${userId}/playlists/title/${beforePlaylistTitle}`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/${userId}/playlists/title/${beforePlaylistTitle}`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json", Cookie: cookie },
@@ -77,7 +77,7 @@ const Playlist = async ({
 
   //APIリクエスト
   const playlistResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${userId}/playlists`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/${userId}/playlists`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json", Cookie: cookie },
