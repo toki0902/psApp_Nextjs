@@ -215,7 +215,9 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
-        `An unexpected error occurred. Please try again later`,
+        `failed to insert playlist member in process 'insertPlaylistMemberByPlaylistIdsAndVideoId' due to: ${JSON.stringify(
+          err,
+        )}`,
       );
     }
   };
