@@ -11,7 +11,9 @@ import {
 } from "@/src/backend/interface/error/errors";
 import { Session } from "next-auth";
 import { auth } from "@/src/backend/interface/auth/auth";
+import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
 
+const pool = await createConnectionPool();
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
 
@@ -47,6 +49,7 @@ export const GET = async (
     }
 
     const playlist = await fetchPlaylistAndVideosByUserIdAndPlaylistTitle.run(
+      pool,
       userId,
       playlistTitle,
     );

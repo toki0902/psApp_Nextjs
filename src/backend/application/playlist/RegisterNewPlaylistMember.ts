@@ -3,13 +3,21 @@ import {
   UnAuthorizeError,
 } from "@/src/backend/interface/error/errors";
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
+import { Pool } from "mysql2/promise";
 
 export class RegisterNewPlaylistMemberByPlaylistTitle {
   constructor(private _playlistRepository: IPlaylistRepository) {}
 
-  run = async (playlistTitle: string, userId: string, videoId: string) => {
+  run = async (
+    pool: Pool,
+    playlistTitle: string,
+    userId: string,
+    videoId: string,
+  ) => {
+    const conn = await pool.getConnection();
     const playlistData =
       await this._playlistRepository.fetchPlaylistByPlaylistTitleAndUserId(
+        conn,
         playlistTitle,
         userId,
       );
@@ -29,6 +37,7 @@ export class RegisterNewPlaylistMemberByPlaylistTitle {
     }
 
     await this._playlistRepository.insertPlaylistMemberByPlaylistIdsAndVideoId(
+      conn,
       videoId,
       [playlistData.playlistId],
     );

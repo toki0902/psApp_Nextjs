@@ -6,7 +6,9 @@ import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/My
 import { YoutubeDataSearchGateway } from "@/src/backend/infrastructure/gateways/YoutubeDataSearchGateway";
 
 import { SyncYoutubeVideos } from "@/src/backend/application/video/SyncYoutubeVideos";
+import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
 
+const pool = await createConnectionPool();
 const videoRepository = new MySQLVideoRepository();
 const youtubeGateway = new YoutubeDataSearchGateway();
 
@@ -26,7 +28,7 @@ export const GET = async (req: NextRequest) => {
       );
     }
 
-    await syncYoutubeVideos.run();
+    await syncYoutubeVideos.run(pool);
 
     return new NextResponse(
       JSON.stringify({

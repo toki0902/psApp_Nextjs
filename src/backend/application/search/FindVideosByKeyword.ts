@@ -3,12 +3,18 @@ import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVi
 import Fuse from "fuse.js";
 import { auth } from "../../interface/auth/auth";
 import { endOfMonth, startOfMonth } from "date-fns";
+import { Pool } from "mysql2/promise";
 
 export class FindVideosByKeyword {
   constructor(private _videoRepository: IVideoRepository) {}
 
-  run = async (keyword: string, isAllVideo: boolean): Promise<Video[]> => {
-    const allUploadedVideos = await this._videoRepository.fetchVideos();
+  run = async (
+    pool: Pool,
+    keyword: string,
+    isAllVideo: boolean,
+  ): Promise<Video[]> => {
+    const conn = await pool.getConnection();
+    const allUploadedVideos = await this._videoRepository.fetchAllVideos(conn);
 
     let targetVideos = [...allUploadedVideos];
 

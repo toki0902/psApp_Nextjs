@@ -8,7 +8,9 @@ import { DeletePlaylistMemberByMemberId } from "@/src/backend/application/playli
 import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
 import { Session } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
 
+const pool = await createConnectionPool();
 const playlistRepository = new MySQLPlaylistRepository();
 const deletePlaylistMemberByMemberId = new DeletePlaylistMemberByMemberId(
   playlistRepository,
@@ -46,7 +48,12 @@ export const DELETE = async (
       );
     }
 
-    await deletePlaylistMemberByMemberId.run(playlistId, userId, memberId);
+    await deletePlaylistMemberByMemberId.run(
+      pool,
+      playlistId,
+      userId,
+      memberId,
+    );
 
     return new NextResponse(
       JSON.stringify({ message: "お気に入りから動画を削除しました。" }),

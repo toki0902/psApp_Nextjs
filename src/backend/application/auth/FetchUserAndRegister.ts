@@ -3,11 +3,13 @@ import { IUserRepository } from "@/src/backend/domain/dataAccess/repository/IUse
 import { User } from "@/src/backend/domain/entities/User";
 
 import type { User as NextAuthUser } from "next-auth/";
+import { Pool } from "mysql2/promise";
 
 export class FetchUserAndRegister {
   constructor(private _userRepository: IUserRepository) {}
 
-  run = async (user: NextAuthUser): Promise<User> => {
+  run = async (pool: Pool, user: NextAuthUser): Promise<User> => {
+    const conn = await pool.getConnection();
     if (!user.name || !user.id) {
       //fix: インターフェース層のerror.tsに依存している、、。
       throw new NotFoundError(
@@ -16,10 +18,14 @@ export class FetchUserAndRegister {
       );
     }
 
-    const selectedUser = await this._userRepository.findBySocialId(user.id);
+    const selectedUser = await this._userRepository.findBySocialId(
+      conn,
+      user.id,
+    );
 
     if (!selectedUser) {
       const insertResult = await this._userRepository.insert(
+        conn,
         user.id,
         user.name,
       );

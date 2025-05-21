@@ -1,8 +1,10 @@
+import { Connection } from "mysql2/promise";
 import { Video } from "../../entities/Video";
 
 export interface IVideoRepository {
-  fetchVideos: () => Promise<Video[]>;
-  insert: (videos: Video[]) => Promise<void>;
-  syncVideos: (videos: Video[]) => Promise<void>;
-  fetchVideoByYoutubeIds: (ids: string[]) => Promise<Video[]>;
+  fetchAllVideos: (conn: Connection) => Promise<Video[]>;
+  insert: (conn: Connection, videos: Video[]) => Promise<void>;
+  syncVideos: (conn: Connection, videos: Video[]) => Promise<void>;
+  deleteVideoCache: (conn: Connection) => Promise<void>;
+  fetchVideoByYoutubeIds: (conn: Connection, ids: string[]) => Promise<Video[]>;
 }

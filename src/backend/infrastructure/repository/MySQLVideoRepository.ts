@@ -1,7 +1,7 @@
 import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";
-import { createConnectionPool } from "../db/MySQLConnection";
+
 import { Video } from "@/src/backend/domain/entities/Video";
-import mysql from "mysql2/promise";
+import mysql, { Connection } from "mysql2/promise";
 import {
   MySQLError,
   NotFoundError,
@@ -9,13 +9,11 @@ import {
 import { toMysqlDatetimeFromUtc } from "@/src/share/utils/format";
 
 export class MySQLVideoRepository implements IVideoRepository {
-  private pool = createConnectionPool();
-
-  fetchVideos = async (): Promise<Video[]> => {
+  fetchAllVideos = async (conn: Connection): Promise<Video[]> => {
     try {
-      const videoResult = await (
-        await this.pool
-      ).execute<mysql.RowDataPacket[]>("select * from videos;");
+      const videoResult = await conn.execute<mysql.RowDataPacket[]>(
+        "select * from videos;",
+      );
 
       const record = videoResult[0];
       if (record.length === 0) {
@@ -36,6 +34,10 @@ export class MySQLVideoRepository implements IVideoRepository {
           ),
       );
     } catch (err) {
+      if (err instanceof NotFoundError) {
+        throw err;
+      }
+
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
         `failed to fetch video by cacheId in process 'fetchVideosByCacheId': ${err}`,
@@ -43,12 +45,8 @@ export class MySQLVideoRepository implements IVideoRepository {
     }
   };
 
-  insert = async (videos: Video[]): Promise<void> => {
-    const connection = await (await this.pool).getConnection();
+  insert = async (conn: Connection, videos: Video[]): Promise<void> => {
     try {
-      // トランザクション開始
-      await connection.beginTransaction();
-
       const values = videos.flatMap((item) => [
         item.videoId || null,
         item.views,
@@ -61,32 +59,30 @@ export class MySQLVideoRepository implements IVideoRepository {
         .map(() => "(?,?,?,?,?)")
         .join(",")}`;
 
-      const videosInsertResult = await connection.execute(videoQuery, values);
-
-      await connection.commit();
-
-      console.log("Transaction committed:", videosInsertResult);
+      await conn.execute(videoQuery, values);
+      return;
     } catch (err) {
-      await connection.rollback();
-      console.error("Transaction rolled back due to error:", err);
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
-        `An unexpected error occurred. Please try again later`,
+        `failed to insert video cache in process 'insert': ${err}`,
       );
-    } finally {
-      // 接続を解放
-      connection.release();
     }
   };
 
-  syncVideos = async (videos: Video[]) => {
-    const connection = await (await this.pool).getConnection();
+  deleteVideoCache = async (conn: Connection) => {
     try {
-      // トランザクション開始
-      await connection.beginTransaction();
+      const query = `DELETE FROM videos`;
+      await conn.execute(query);
+    } catch (err) {
+      throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
+        `failed to delete video cache in process 'deleteVideoCache': ${err}`,
+      );
+    }
+  };
 
-      await connection.execute("DELETE FROM videos");
-
+  syncVideos = async (conn: Connection, videos: Video[]) => {
+    try {
       const values = videos.flatMap((item) => [
         item.videoId || null,
         item.views,
@@ -99,25 +95,19 @@ export class MySQLVideoRepository implements IVideoRepository {
         .map(() => "(?,?,?,?,?)")
         .join(",")}`;
 
-      const videosInsertResult = await connection.execute(videoQuery, values);
-
-      await connection.commit();
-
-      console.log("Transaction committed:", videosInsertResult);
+      await conn.execute(videoQuery, values);
     } catch (err) {
-      await connection.rollback();
-      console.error("Transaction rolled back due to error:", err);
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
-        `An unexpected error occurred. Please try again later`,
+        `failed to sync video cache in process 'syncVideos': ${err}`,
       );
-    } finally {
-      // 接続を解放
-      connection.release();
     }
   };
 
-  fetchVideoByYoutubeIds = async (ids: string[]): Promise<Video[]> => {
+  fetchVideoByYoutubeIds = async (
+    conn: Connection,
+    ids: string[],
+  ): Promise<Video[]> => {
     try {
       if (ids.length === 0) {
         return [];
@@ -130,9 +120,10 @@ export class MySQLVideoRepository implements IVideoRepository {
 
       const value = [...ids];
 
-      const selectResult = await (
-        await this.pool
-      ).execute<mysql.RowDataPacket[]>(query, value);
+      const selectResult = await conn.execute<mysql.RowDataPacket[]>(
+        query,
+        value,
+      );
 
       const record = selectResult[0];
       if (!record.length) {

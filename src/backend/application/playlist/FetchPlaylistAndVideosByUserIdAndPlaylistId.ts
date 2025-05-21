@@ -5,6 +5,7 @@ import {
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";
 import { Playlist } from "@/src/backend/domain/entities/Playlist";
+import { Pool } from "mysql2/promise";
 
 export class FetchPlaylistAndVideosByUserIdAndPlaylistId {
   constructor(
@@ -13,11 +14,15 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistId {
   ) {}
 
   run = async (
+    pool: Pool,
     userId: string,
     playlistId: string,
   ): Promise<Playlist | undefined> => {
+    const conn = await pool.getConnection();
     const playlistData =
-      await this._playlistRepository.fetchPlaylistsByPlaylistIds([playlistId]);
+      await this._playlistRepository.fetchPlaylistsByPlaylistIds(conn, [
+        playlistId,
+      ]);
 
     if (!playlistData?.length) {
       throw new NotFoundError(
@@ -34,7 +39,7 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistId {
     }
 
     const playlistMemberObj = (
-      await this._playlistRepository.fetchPlaylistMembersByPlaylistIds([
+      await this._playlistRepository.fetchPlaylistMembersByPlaylistIds(conn, [
         playlistId,
       ])
     )[0];
@@ -51,6 +56,7 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistId {
 
     const arr_videoInfo = (
       await this._videoRepository.fetchVideoByYoutubeIds(
+        conn,
         playlistMemberObj.videos.map((i) => i.videoId),
       )
     ).map((video, index) => {

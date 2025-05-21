@@ -1,6 +1,7 @@
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";
 import { Playlist } from "@/src/backend/domain/entities/Playlist";
+import { Pool } from "mysql2/promise";
 
 export class FetchPlaylistsAndVideosByUserId {
   constructor(
@@ -8,9 +9,10 @@ export class FetchPlaylistsAndVideosByUserId {
     private _videoRepository: IVideoRepository,
   ) {}
 
-  run = async (userId: string): Promise<Playlist[]> => {
+  run = async (pool: Pool, userId: string): Promise<Playlist[]> => {
+    const conn = await pool.getConnection();
     const arr_playlistData =
-      await this._playlistRepository.fetchPlaylistsByUserId(userId);
+      await this._playlistRepository.fetchPlaylistsByUserId(conn, userId);
 
     if (!arr_playlistData?.length) {
       return [];
@@ -20,6 +22,7 @@ export class FetchPlaylistsAndVideosByUserId {
 
     const arr_playlistMemberData =
       await this._playlistRepository.fetchPlaylistMembersByPlaylistIds(
+        conn,
         playlistIds,
       );
 
@@ -27,8 +30,10 @@ export class FetchPlaylistsAndVideosByUserId {
       arr_playlistMemberData.map(async (data) => {
         const youtubeIds = data.videos.map((data) => data.videoId);
         const memberIds = data.videos.map((data) => data.memberId);
-        const videos =
-          await this._videoRepository.fetchVideoByYoutubeIds(youtubeIds);
+        const videos = await this._videoRepository.fetchVideoByYoutubeIds(
+          conn,
+          youtubeIds,
+        );
         return memberIds.map((memberId, index) => {
           return {
             video: { ...videos[index], url: videos[index].url },

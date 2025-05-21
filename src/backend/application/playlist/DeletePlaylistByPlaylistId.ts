@@ -3,12 +3,20 @@ import {
   UnAuthorizeError,
 } from "@/src/backend/interface/error/errors";
 import { IPlaylistRepository } from "../../domain/dataAccess/repository/IPlaylistRepository";
+import { Pool } from "mysql2/promise";
 
 export class DeletePlaylistByPlaylistId {
   constructor(private _playlistRepository: IPlaylistRepository) {}
-  run = async (playlistId: string, userId: string): Promise<void> => {
+  run = async (
+    pool: Pool,
+    playlistId: string,
+    userId: string,
+  ): Promise<void> => {
+    const conn = await pool.getConnection();
     const playlistData =
-      await this._playlistRepository.fetchPlaylistsByPlaylistIds([playlistId]);
+      await this._playlistRepository.fetchPlaylistsByPlaylistIds(conn, [
+        playlistId,
+      ]);
 
     if (!playlistData?.length) {
       throw new NotFoundError(
@@ -24,7 +32,7 @@ export class DeletePlaylistByPlaylistId {
       );
     }
 
-    await this._playlistRepository.deletePlaylistByPlaylistId(playlistId);
+    await this._playlistRepository.deletePlaylistByPlaylistId(conn, playlistId);
 
     return;
   };
