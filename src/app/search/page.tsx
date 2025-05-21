@@ -8,7 +8,6 @@ import { Session } from "next-auth";
 import { auth } from "@/src/backend/interface/auth/auth";
 import { getAllCookies } from "@/src/frontend/utils/cookie";
 import { Kaisei } from "@/src/frontend/assets/fonts/fonts";
-import { headers } from "next/headers";
 
 const Search = async ({
   searchParams,
