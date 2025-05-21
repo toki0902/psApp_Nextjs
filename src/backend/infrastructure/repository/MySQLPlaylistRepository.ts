@@ -53,7 +53,6 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
   ): Promise<
     { playlistId: string; videos: { videoId: string; memberId: string }[] }[]
   > => {
-    const start = Date.now();
     try {
       const [rows] = await conn.execute<mysql.RowDataPacket[]>(
         `SELECT * FROM playlist_members WHERE playlist_id IN (${playlistIds.map(() => "?").join(", ")})`,
@@ -71,9 +70,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
         if (!grouped.has(playlistId)) grouped.set(playlistId, []);
         grouped.get(playlistId)!.push({ videoId, memberId });
       }
-      console.log(
-        `fetchPlaylistMembersByPlaylistIds took ${Date.now() - start}ms`,
-      );
+
       return playlistIds.map((id) => ({
         playlistId: id,
         videos: grouped.get(id) ?? [],
@@ -99,7 +96,6 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       ownerId: string;
     }[]
   > => {
-    const start = Date.now();
     try {
       const query = "select * from playlists where owner_id = ?";
       const selectResult = await conn.execute<mysql.RowDataPacket[]>(query, [
@@ -120,7 +116,6 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
         };
       });
 
-      console.log(`fetchPlaylistsByUserId took ${Date.now() - start}ms`);
       return playlistData;
     } catch (err) {
       throw new MySQLError(

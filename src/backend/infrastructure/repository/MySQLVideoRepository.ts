@@ -108,7 +108,6 @@ export class MySQLVideoRepository implements IVideoRepository {
     conn: Connection,
     ids: string[],
   ): Promise<Video[]> => {
-    const start = Date.now();
     try {
       if (ids.length === 0) {
         return [];
@@ -141,7 +140,6 @@ export class MySQLVideoRepository implements IVideoRepository {
         );
       });
 
-      console.log(`fetchVideoByYoutubeIds took ${Date.now() - start}ms`);
       return videos;
     } catch (err) {
       throw new MySQLError(
