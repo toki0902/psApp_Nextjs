@@ -29,6 +29,7 @@ export const GET = async (
   { params }: { params: Promise<{ userId: string }> },
 ): Promise<NextResponse> => {
   try {
+    const start = Date.now();
     const { userId } = await params;
 
     if (!userId) {
@@ -53,6 +54,8 @@ export const GET = async (
 
     const playlists = await fetchPlaylistsAndVideos.run(pool, userId);
 
+    const end = Date.now();
+    console.log(`GET took ${end - start}ms`);
     return new NextResponse(JSON.stringify({ playlists: playlists }), {
       status: 200,
       headers: { "Content-Type": "application/json" },

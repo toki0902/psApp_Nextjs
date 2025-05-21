@@ -57,6 +57,7 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
         video: { ...video, url: video.url },
       };
     });
+    conn.release();
 
     return new Playlist(
       playlistData.playlistId,

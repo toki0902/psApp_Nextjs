@@ -38,6 +38,7 @@ export class ChangePlaylistTitleByPlaylistId {
       playlistId,
       newTitle,
     );
+    conn.release();
 
     return;
   };

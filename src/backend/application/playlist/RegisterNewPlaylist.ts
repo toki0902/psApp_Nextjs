@@ -7,6 +7,7 @@ export class RegisterNewPlaylist {
   run = async (pool: Pool, title: string, ownerId: string) => {
     const conn = await pool.getConnection();
     await this._playlistRepository.insertPlaylist(conn, title, ownerId);
+    conn.release();
     return;
   };
 }

@@ -28,6 +28,7 @@ export const GET = async (
   { params }: { params: Promise<{ userId: string; playlistTitle: string }> },
 ): Promise<NextResponse> => {
   try {
+    const start = Date.now();
     const { userId, playlistTitle } = await params;
 
     if (!userId || !playlistTitle) {
@@ -54,6 +55,10 @@ export const GET = async (
       playlistTitle,
     );
 
+    const end = Date.now();
+    console.log(
+      `GET /v1/api/users/[userId]/playlists/title/[playlistTitle] took ${end - start}ms`,
+    );
     return new NextResponse(JSON.stringify({ playlist: playlist }), {
       status: 200,
       headers: { "Content-Type": "application/json" },

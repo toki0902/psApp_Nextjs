@@ -43,6 +43,7 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistId {
         playlistId,
       ])
     )[0];
+    conn.release();
 
     if (!playlistMemberObj.videos.length) {
       return new Playlist(

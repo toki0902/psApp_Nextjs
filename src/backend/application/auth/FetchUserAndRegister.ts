@@ -30,6 +30,7 @@ export class FetchUserAndRegister {
         user.name,
       );
 
+      conn.release();
       return new User(
         insertResult.userId,
         insertResult.name,
@@ -37,7 +38,7 @@ export class FetchUserAndRegister {
         null,
       );
     }
-
+    conn.release();
     return new User(
       selectedUser.userId,
       selectedUser.name,

@@ -26,6 +26,7 @@ export class FetchPlaylistsAndVideosByUserId {
         playlistIds,
       );
 
+    //fix :: N + 1問題発生
     const arr_videos = await Promise.all(
       arr_playlistMemberData.map(async (data) => {
         const youtubeIds = data.videos.map((data) => data.videoId);
@@ -42,6 +43,8 @@ export class FetchPlaylistsAndVideosByUserId {
         });
       }),
     );
+
+    conn.release();
 
     const playlists: Playlist[] = await Promise.all(
       arr_videos.map(async (videos, index) => {

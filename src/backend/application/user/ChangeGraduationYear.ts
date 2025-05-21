@@ -16,6 +16,8 @@ export class ChangeGraduationYearByUserId {
       userId,
     );
 
+    conn.release();
+
     return;
   };
 }

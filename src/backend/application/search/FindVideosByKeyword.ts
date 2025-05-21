@@ -15,6 +15,7 @@ export class FindVideosByKeyword {
   ): Promise<Video[]> => {
     const conn = await pool.getConnection();
     const allUploadedVideos = await this._videoRepository.fetchAllVideos(conn);
+    conn.release();
 
     let targetVideos = [...allUploadedVideos];
 

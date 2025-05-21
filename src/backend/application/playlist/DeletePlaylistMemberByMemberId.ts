@@ -37,6 +37,7 @@ export class DeletePlaylistMemberByMemberId {
       conn,
       memberId,
     );
+    conn.release();
 
     return;
   };

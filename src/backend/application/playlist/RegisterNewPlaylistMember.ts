@@ -41,6 +41,7 @@ export class RegisterNewPlaylistMemberByPlaylistTitle {
       videoId,
       [playlistData.playlistId],
     );
+    conn.release();
     return;
   };
 }

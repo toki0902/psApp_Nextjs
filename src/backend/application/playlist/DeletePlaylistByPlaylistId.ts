@@ -33,6 +33,7 @@ export class DeletePlaylistByPlaylistId {
     }
 
     await this._playlistRepository.deletePlaylistByPlaylistId(conn, playlistId);
+    conn.release();
 
     return;
   };

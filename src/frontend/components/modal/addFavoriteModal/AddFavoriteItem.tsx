@@ -29,7 +29,7 @@ const AddFavoriteItem = ({
         />
       </div>
       <p
-        className="w-fit cursor-pointer overflow-hidden truncate px-2"
+        className="w-full cursor-pointer overflow-hidden truncate px-2"
         onClick={() => togglePlaylist(id)}
       >
         {title}
