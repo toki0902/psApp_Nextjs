@@ -18,14 +18,9 @@ const Search = async ({
   let videos: video[] = [];
 
   const { q: query, isAllVideo } = await searchParams;
-  const headersList = await headers();
-  const host = headersList.get("host");
-  const protocol = headersList.get("x-forwarded-proto") || "https";
-
-  const baseUrl = `${protocol}://${host}`;
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL ?? baseUrl}/v1/api/search?q=${query}${isAllVideo ? "&isAllVideo=true" : ""}`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/search?q=${query}${isAllVideo ? "&isAllVideo=true" : ""}`,
     { method: "GET", headers: { "Content-Type": "application/json" } },
   );
 
@@ -44,7 +39,7 @@ const Search = async ({
   let playlists: playlist[] = [];
 
   const playlistResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL ?? baseUrl}/v1/api/users/${session?.userId}/playlists`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${session?.userId}/playlists`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json", Cookie: cookie },

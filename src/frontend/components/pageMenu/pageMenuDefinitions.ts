@@ -16,7 +16,7 @@ export const PageMenuDefinition = {
         const onPassCheck = async (newTitle: string) => {
           if (pageMenuData.edit) {
             const res = await fetch(
-              `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/${pageMenuData.edit.ownerId}/playlists/id/${pageMenuData.edit.playlistId}`,
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${pageMenuData.edit.ownerId}/playlists/id/${pageMenuData.edit.playlistId}`,
               {
                 method: "PATCH",
                 body: JSON.stringify({ newTitle }),
@@ -65,7 +65,7 @@ export const PageMenuDefinition = {
         const onPassCheck = async (playlistTitle: string) => {
           if (pageMenuData.create) {
             const res = await fetch(
-              `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/${pageMenuData.create}/playlists`,
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${pageMenuData.create}/playlists`,
               {
                 method: "POST",
                 body: JSON.stringify({ playlistTitle: playlistTitle }),
@@ -115,7 +115,7 @@ export const PageMenuDefinition = {
         const onPassCheck = async () => {
           if (pageMenuData.delete) {
             const res = await fetch(
-              `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/${pageMenuData.delete.ownerId}/playlists/id/${pageMenuData.delete.playlistId}`,
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${pageMenuData.delete.ownerId}/playlists/id/${pageMenuData.delete.playlistId}`,
               { method: "DELETE" },
             );
 
