@@ -6,7 +6,6 @@ import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/My
 
 import { errorHandler } from "@/src/backend/interface/error/errorHandler";
 import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
-import { auth } from "@/src/backend/interface/auth/auth";
 
 const pool = await createConnectionPool();
 const videoRepository = new MySQLVideoRepository();
