@@ -44,7 +44,7 @@ export class MySQLUserRepository implements IUserRepository {
   ): Promise<void> {
     try {
       await conn.execute<mysql.ResultSetHeader>(
-        "update users set (graduation_year = ?) where user_id = ?",
+        "update users set graduation_year = ? where user_id = ?",
         [graduationYear, userId],
       );
     } catch (err) {
@@ -65,8 +65,6 @@ export class MySQLUserRepository implements IUserRepository {
         "update users set name = ? where user_id = ?",
         [name, userId],
       );
-
-      return;
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",

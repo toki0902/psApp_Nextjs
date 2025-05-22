@@ -49,9 +49,9 @@ const page = async () => {
               <UpdateProfileButton />
             </div>
             <ul className="mt-4 flex w-full flex-col space-y-4 lg:mt-0 lg:w-80 lg:space-y-8">
-              <li className="flex w-full items-center justify-between px-4 lg:px-0">
-                <p>名前:</p>
-                <p className="font-bold">{session.name}</p>
+              <li className="flex h-fit w-full items-center justify-between px-4 lg:px-0">
+                <p className="min-w-fit">名前:</p>
+                <p className="max-w-[80%] truncate font-bold">{session.name}</p>
               </li>
               <li className="flex w-full items-center justify-between px-4 lg:px-0">
                 <p>卒業・卒業予定年度</p>

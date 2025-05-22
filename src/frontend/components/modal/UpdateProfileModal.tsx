@@ -13,7 +13,7 @@ type Props = {
 
 const UpdateProfileModal = ({ onPassCheck, close }: Props) => {
   const [newName, setNewName] = useState<string | null>(null);
-  const [shouldChangeName, setShouldChangeName] = useState(false);
+  const [shouldChangeName, setShouldChangeName] = useState(true);
   const [isValidName, setIsValidName] = useState(true);
   const toggleNameCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) setShouldChangeName(true);
@@ -26,7 +26,7 @@ const UpdateProfileModal = ({ onPassCheck, close }: Props) => {
   const [newGraduationYear, setNewGraduationYear] = useState<number | null>(
     null,
   );
-  const [shouldChangeYear, setShouldChangeYear] = useState(false);
+  const [shouldChangeYear, setShouldChangeYear] = useState(true);
   const [isValidYear, setIsValidYear] = useState(true);
   const toggleYearCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) setShouldChangeYear(true);
@@ -89,6 +89,7 @@ const UpdateProfileModal = ({ onPassCheck, close }: Props) => {
                   <input
                     type="checkbox"
                     id="namebox"
+                    checked={shouldChangeName}
                     onChange={toggleNameCheck}
                   />
                   <label htmlFor="namebox">変更する</label>
@@ -128,6 +129,7 @@ const UpdateProfileModal = ({ onPassCheck, close }: Props) => {
                   <input
                     type="checkbox"
                     id="yearBox"
+                    checked={shouldChangeYear}
                     onChange={toggleYearCheck}
                   />
                   <label htmlFor="yearBox">変更する</label>

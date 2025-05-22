@@ -20,10 +20,12 @@ export class FindVideosByKeyword {
     let targetVideos = [...allUploadedVideos];
 
     const session = await auth();
+
     const graduationYear =
-      session?.graduationYear || new Date().getMonth() > 3
+      session?.graduationYear ||
+      (new Date().getMonth() > 3
         ? new Date().getFullYear() + 1
-        : new Date().getFullYear();
+        : new Date().getFullYear());
 
     const startDate = startOfMonth(new Date(graduationYear - 4, 3));
     const endDate = endOfMonth(new Date(graduationYear, 3));
@@ -33,8 +35,6 @@ export class FindVideosByKeyword {
         (video) => video.publishedAt > startDate && video.publishedAt < endDate,
       );
     }
-
-    console.log(targetVideos);
 
     const fuseOptions = {
       keys: ["title"],

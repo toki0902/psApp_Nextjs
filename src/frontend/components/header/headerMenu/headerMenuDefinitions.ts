@@ -2,12 +2,12 @@ export const headerMenuDefinitions = {
   logout: {
     text: "ログアウトする",
     icon: "/images/logout_2c4a52.svg",
-    getHref: () => "/v1/api/auth/signout",
+    getHref: () => "/api/auth/signout",
   },
   login: {
     text: "ログインする",
     icon: "/images/login_2c4a52.svg",
-    getHref: () => "/v1/api/auth/signin",
+    getHref: () => "/api/auth/signin",
   },
   setting: {
     text: "設定",
@@ -22,7 +22,7 @@ export const headerMenuDefinitions = {
   mobileLogout: {
     text: "ログアウトする",
     icon: "/images/logout_f1EBE5.svg",
-    getHref: () => "/v1/api/auth/signout",
+    getHref: () => "/api/auth/signout",
   },
   mobileFavorite: {
     text: "お気に入りを閲覧する",
@@ -32,7 +32,7 @@ export const headerMenuDefinitions = {
   mobileLogin: {
     text: "ログインする",
     icon: "/images/login_f1EBE5.svg",
-    getHref: () => "/v1/api/auth/signin",
+    getHref: () => "/api/auth/signin",
   },
   mobileHome: {
     text: "ホームに戻る",

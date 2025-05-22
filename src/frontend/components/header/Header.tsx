@@ -49,7 +49,6 @@ const Header = ({ session }: { session: Session | null }) => {
                     className="rounded-full"
                   />
                 </div>
-                <p className="ml-2 group-hover:text-red">{session.name}</p>
               </button>
             </li>
           </ul>
