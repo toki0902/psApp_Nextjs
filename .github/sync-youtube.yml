@@ -1,0 +1,17 @@
+name: Scheduled sync-youtube-video
+
+on:
+  schedule:
+    # UTC時間で記述（例: 日本時間 7:00 → UTC 22:00、23:00 → UTC 14:00）
+    - cron: "0 22 * * *" # JST 7:00
+    - cron: "0 14 * * *" # JST 23:00
+
+jobs:
+  call-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call API Endpoint
+        run: |
+          curl -X POST "https://ps-app-nextjs.vercel.app/v1/api/cron/youtube-sync?secret=${{ secrets.API_KEY }}" \
+            -H "Content-Type: application/json"

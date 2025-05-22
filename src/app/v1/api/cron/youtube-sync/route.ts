@@ -17,7 +17,7 @@ const syncYoutubeVideos = new SyncYoutubeVideos(
   youtubeGateway,
 );
 
-export const GET = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     const secret = req.nextUrl.searchParams.get("secret") || "";
 
