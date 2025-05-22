@@ -21,7 +21,7 @@ const HeaderMenu = ({
       className={
         isOpenUserMenu
           ? "fixed right-0 top-[70px] z-10 h-[calc(100vh-70px)] w-full rounded-t-xl bg-blue p-5 text-back transition-all duration-300 ease-in-out lg:right-[3%] lg:top-[80px] lg:h-fit lg:w-fit lg:rounded-lg lg:border lg:border-blue lg:bg-back lg:text-blue lg:shadow-xl"
-          : "fixed right-0 top-full z-10 h-[calc(100vh-70px)] w-full rounded-t-xl bg-blue p-5 text-back transition-all duration-300 ease-in-out lg:right-[-50%] lg:top-[80px] lg:h-fit lg:w-fit lg:rounded-lg lg:border lg:border-blue lg:bg-back lg:text-blue lg:shadow-xl"
+          : "fixed right-0 top-full z-10 h-[calc(100vh-70px)] w-full rounded-t-xl bg-blue p-5 text-back transition-all duration-300 ease-in-out lg:right-[-100%] lg:top-[80px] lg:h-fit lg:w-fit lg:rounded-lg lg:border lg:border-blue lg:bg-back lg:text-blue lg:shadow-xl"
       }
     >
       <div className="hidden w-full space-y-4 lg:block">

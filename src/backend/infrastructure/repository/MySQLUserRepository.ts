@@ -1,20 +1,17 @@
-import mysql from "mysql2/promise";
+import mysql, { Connection } from "mysql2/promise";
 import { IUserRepository } from "@/src/backend/domain/dataAccess/repository/IUserRepository";
 import { User } from "@/src/backend/domain/entities/User";
 
-import { createConnectionPool } from "../db/MySQLConnection";
 import { nanoid } from "nanoid";
 import { MySQLError } from "@/src/backend/interface/error/errors";
 
 export class MySQLUserRepository implements IUserRepository {
-  private pool = createConnectionPool();
   //undefinedを返しても問題ない！
-  async findById(id: string): Promise<User | undefined> {
-    const userResult = await (
-      await this.pool
-    ).execute<mysql.RowDataPacket[]>("select * from users where user_id = ?", [
-      id,
-    ]);
+  async findById(conn: Connection, id: string): Promise<User | undefined> {
+    const userResult = await conn.execute<mysql.RowDataPacket[]>(
+      "select * from users where user_id = ?",
+      [id],
+    );
     const record = userResult[0][0];
 
     if (!record) {
@@ -24,10 +21,11 @@ export class MySQLUserRepository implements IUserRepository {
     return new User(record.user_id, record.name, "", record.graduation_year);
   }
 
-  async findBySocialId(socialId: string): Promise<User | undefined> {
-    const userResult = await (
-      await this.pool
-    ).execute<mysql.RowDataPacket[]>(
+  async findBySocialId(
+    conn: Connection,
+    socialId: string,
+  ): Promise<User | undefined> {
+    const userResult = await conn.execute<mysql.RowDataPacket[]>(
       "select * from users where social_id = ?",
       [socialId],
     );
@@ -40,14 +38,13 @@ export class MySQLUserRepository implements IUserRepository {
   }
 
   async changeGraduationYearByUserId(
+    conn: Connection,
     graduationYear: number,
     userId: string,
   ): Promise<void> {
     try {
-      await (
-        await this.pool
-      ).execute<mysql.ResultSetHeader>(
-        "update users set (graduation_year = ?) where user_id = ?",
+      await conn.execute<mysql.ResultSetHeader>(
+        "update users set graduation_year = ? where user_id = ?",
         [graduationYear, userId],
       );
     } catch (err) {
@@ -58,13 +55,33 @@ export class MySQLUserRepository implements IUserRepository {
     }
   }
 
-  async insert(socialId: string, name: string): Promise<User> {
+  async changeNameByUserId(
+    conn: Connection,
+    name: string,
+    userId: string,
+  ): Promise<void> {
+    try {
+      await conn.execute<mysql.ResultSetHeader>(
+        "update users set name = ? where user_id = ?",
+        [name, userId],
+      );
+    } catch (err) {
+      throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
+        `failed to change name in process 'changeNameByUserId' due to :${err}`,
+      );
+    }
+  }
+
+  async insert(
+    conn: Connection,
+    socialId: string,
+    name: string,
+  ): Promise<User> {
     try {
       const userId = nanoid();
 
-      await (
-        await this.pool
-      ).execute<mysql.ResultSetHeader>(
+      await conn.execute<mysql.ResultSetHeader>(
         "insert into users (user_id, name, social_id) values (?, ?, ?)",
         [userId, name, socialId],
       );

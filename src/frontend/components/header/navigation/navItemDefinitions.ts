@@ -13,7 +13,7 @@ export const navItemDefinitions = {
   },
   login: {
     text: "ログイン",
-    getHref: () => "/v1/api/auth/signin",
+    getHref: () => "/api/auth/signin",
     hoverIcon: "/images/login_823A42.svg",
     defaultIcon: "/images/login_2c4a52.svg",
   },

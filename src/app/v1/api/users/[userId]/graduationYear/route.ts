@@ -9,7 +9,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { MySQLUserRepository } from "@/src/backend/infrastructure/repository/MySQLUserRepository";
 import { ChangeGraduationYearByUserId } from "@/src/backend/application/user/ChangeGraduationYear";
+import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
 
+const pool = await createConnectionPool();
 const userRepository = new MySQLUserRepository();
 const changeGraduationYearByUserId = new ChangeGraduationYearByUserId(
   userRepository,
@@ -47,7 +49,7 @@ export const PATCH = async (
       );
     }
 
-    await changeGraduationYearByUserId.run(graduationYear, userId);
+    await changeGraduationYearByUserId.run(pool, graduationYear, userId);
 
     return new NextResponse(
       JSON.stringify({ message: "卒業年度を設定しました。" }),

@@ -1,11 +1,21 @@
+import { Connection } from "mysql2/promise";
 import { User } from "../../entities/User";
 
 export interface IUserRepository {
-  findById: (id: string) => Promise<User | undefined>;
-  findBySocialId: (socialId: string) => Promise<User | undefined>;
+  findById: (conn: Connection, id: string) => Promise<User | undefined>;
+  findBySocialId: (
+    conn: Connection,
+    socialId: string,
+  ) => Promise<User | undefined>;
   changeGraduationYearByUserId: (
+    conn: Connection,
     graduationYear: number,
     userId: string,
   ) => Promise<void>;
-  insert: (socialId: string, name: string) => Promise<User>;
+  changeNameByUserId: (
+    conn: Connection,
+    name: string,
+    userId: string,
+  ) => Promise<void>;
+  insert: (conn: Connection, socialId: string, name: string) => Promise<User>;
 }

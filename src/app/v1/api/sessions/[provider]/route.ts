@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { CreateSignInURL } from "@/src/backend/application/auth/CreateSignInURL";
 
@@ -8,7 +8,7 @@ import { MissingParamsError } from "@/src/backend/interface/error/errors";
 const createSignInURL = new CreateSignInURL();
 
 export const POST = async (
-  req: Request,
+  req: NextRequest,
   { params }: { params: Promise<{ provider: string }> },
 ): Promise<NextResponse> => {
   try {

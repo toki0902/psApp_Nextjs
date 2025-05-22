@@ -13,7 +13,9 @@ import { ChangePlaylistTitleByPlaylistId } from "@/src/backend/application/playl
 
 import { FetchPlaylistAndVideosByUserIdAndPlaylistId } from "@/src/backend/application/playlist/FetchPlaylistAndVideosByUserIdAndPlaylistId";
 import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
+import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
 
+const pool = await createConnectionPool();
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
 
@@ -54,6 +56,7 @@ export const GET = async (
     }
 
     const playlist = await FetchPlaylistsAndVideosByPlaylistId.run(
+      pool,
       userId,
       playlistId,
     );
@@ -90,7 +93,7 @@ export const DELETE = async (
       );
     }
 
-    await deletePlaylistByPlaylistId.run(playlistId, userId);
+    await deletePlaylistByPlaylistId.run(pool, playlistId, userId);
 
     return new NextResponse(
       JSON.stringify({ message: "お気に入りを削除しました。" }),
@@ -132,7 +135,12 @@ export const PATCH = async (
       );
     }
 
-    await changePlaylistTitleByPlaylistId.run(playlistId, userId, newTitle);
+    await changePlaylistTitleByPlaylistId.run(
+      pool,
+      playlistId,
+      userId,
+      newTitle,
+    );
 
     return new NextResponse(
       JSON.stringify({ message: "お気に入りのタイトルを変更しました。" }),

@@ -8,8 +8,12 @@ import { UnAuthorizeError } from "@/src/backend/interface/error/errors";
 import { NextAuthConfig, Session } from "next-auth/";
 import { JWT } from "next-auth/jwt";
 
+import { createConnectionPool } from "../../infrastructure/db/MySQLConnection";
+import { Pool } from "mysql2/promise";
+
 const userRepository = new MySQLUserRepository();
 const fetchUserAndRegister = new FetchUserAndRegister(userRepository);
+const pool: Pool = await createConnectionPool();
 
 export const nextAuthOptions: NextAuthConfig = {
   debug: false,
@@ -46,7 +50,7 @@ export const nextAuthOptions: NextAuthConfig = {
         );
 
       const userData = { ...user, id: account.providerAccountId };
-      const userToken = await fetchUserAndRegister.run(userData);
+      const userToken = await fetchUserAndRegister.run(pool, userData);
       const providerInfo: JWT["provider"] = {
         provider: account.provider,
         displayName: user.name,

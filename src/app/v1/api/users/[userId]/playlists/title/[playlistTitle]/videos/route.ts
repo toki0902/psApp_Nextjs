@@ -10,7 +10,9 @@ import {
 } from "@/src/backend/interface/error/errors";
 import { Session } from "next-auth";
 import { auth } from "@/src/backend/interface/auth/auth";
+import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
 
+const pool = await createConnectionPool();
 const playlistRepository = new MySQLPlaylistRepository();
 
 const registerNewPlaylistMember = new RegisterNewPlaylistMemberByPlaylistTitle(
@@ -45,7 +47,7 @@ export const POST = async (
       );
     }
 
-    await registerNewPlaylistMember.run(playlistTitle, userId, videoId);
+    await registerNewPlaylistMember.run(pool, playlistTitle, userId, videoId);
 
     return new NextResponse(
       JSON.stringify({ message: "お気に入りに動画を追加しました。" }),

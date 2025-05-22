@@ -1,13 +1,12 @@
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
-import { createConnectionPool } from "../db/MySQLConnection";
+
 import { MySQLError } from "@/src/backend/interface/error/errors";
-import mysql from "mysql2/promise";
+import mysql, { Connection } from "mysql2/promise";
 import { nanoid } from "nanoid";
 
 export class MySQLPlaylistRepository implements IPlaylistRepository {
-  private pool = createConnectionPool();
-
   fetchPlaylistsByPlaylistIds = async (
+    conn: Connection,
     playlistIds: string[],
   ): Promise<
     | {
@@ -21,9 +20,10 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     try {
       const query = `select * from playlists where playlist_id in (${playlistIds.map(() => "?").join(", ")})`;
 
-      const selectResult = await (
-        await this.pool
-      ).execute<mysql.RowDataPacket[]>(query, playlistIds);
+      const selectResult = await conn.execute<mysql.RowDataPacket[]>(
+        query,
+        playlistIds,
+      );
 
       if (selectResult[0].length !== playlistIds.length) {
         return undefined;
@@ -48,36 +48,33 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
   };
 
   fetchPlaylistMembersByPlaylistIds = async (
+    conn: Connection,
     playlistIds: string[],
   ): Promise<
     { playlistId: string; videos: { videoId: string; memberId: string }[] }[]
   > => {
     try {
-      const query = "select * from playlist_members where playlist_id = ?";
-
-      const arr_resObj = await Promise.all(
-        playlistIds.map(async (playlistId) => {
-          const selectResult = await (
-            await this.pool
-          ).execute<mysql.RowDataPacket[]>(query, [playlistId]);
-
-          const record = selectResult[0];
-
-          if (!record.length) {
-            return { playlistId, videos: [] };
-          }
-
-          const arr_videoInfo = record.map((item) => {
-            const videoId: string = item.video_id;
-            const memberId: string = item.member_id;
-            return { videoId, memberId };
-          });
-
-          return { playlistId, videos: arr_videoInfo };
-        }),
+      const [rows] = await conn.execute<mysql.RowDataPacket[]>(
+        `SELECT * FROM playlist_members WHERE playlist_id IN (${playlistIds.map(() => "?").join(", ")})`,
+        playlistIds,
       );
 
-      return arr_resObj;
+      const grouped = new Map<
+        string,
+        { videoId: string; memberId: string }[]
+      >();
+      for (const row of rows) {
+        const playlistId = row.playlist_id;
+        const videoId = row.video_id;
+        const memberId = row.member_id;
+        if (!grouped.has(playlistId)) grouped.set(playlistId, []);
+        grouped.get(playlistId)!.push({ videoId, memberId });
+      }
+
+      return playlistIds.map((id) => ({
+        playlistId: id,
+        videos: grouped.get(id) ?? [],
+      }));
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
@@ -89,6 +86,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
   };
 
   fetchPlaylistsByUserId = async (
+    conn: Connection,
     userId: string,
   ): Promise<
     {
@@ -100,9 +98,9 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
   > => {
     try {
       const query = "select * from playlists where owner_id = ?";
-      const selectResult = await (
-        await this.pool
-      ).execute<mysql.RowDataPacket[]>(query, [userId]);
+      const selectResult = await conn.execute<mysql.RowDataPacket[]>(query, [
+        userId,
+      ]);
 
       const record = selectResult[0];
       if (!record.length) {
@@ -130,6 +128,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
   };
 
   fetchPlaylistByPlaylistTitleAndUserId = async (
+    conn: Connection,
     playlistTitle: string,
     userId: string,
   ): Promise<
@@ -144,9 +143,10 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     try {
       const query = "select * from playlists where title = ? and owner_id = ?";
       const value = [playlistTitle, userId];
-      const selectResult = await (
-        await this.pool
-      ).execute<mysql.RowDataPacket[]>(query, value);
+      const selectResult = await conn.execute<mysql.RowDataPacket[]>(
+        query,
+        value,
+      );
 
       const record = selectResult[0][0];
       if (!record) {
@@ -169,12 +169,16 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     }
   };
 
-  insertPlaylist = async (title: string, ownerId: string): Promise<void> => {
+  insertPlaylist = async (
+    conn: Connection,
+    title: string,
+    ownerId: string,
+  ): Promise<void> => {
     try {
       const query = `INSERT INTO playlists (playlist_id, title, owner_id) VALUES (?, ?, ?)`;
       const playlist_id = nanoid(15);
       const value = [playlist_id, title, ownerId];
-      await (await this.pool).execute<mysql.ResultSetHeader>(query, value);
+      await conn.execute<mysql.ResultSetHeader>(query, value);
 
       console.log(`create new playlist with userId:${ownerId}`);
     } catch (err) {
@@ -188,6 +192,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
   };
 
   insertPlaylistMemberByPlaylistIdsAndVideoId = async (
+    conn: Connection,
     videoId: string,
     playlistIds: string[],
   ): Promise<void> => {
@@ -196,11 +201,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       return;
     }
 
-    const connection = await (await this.pool).getConnection();
     try {
-      // トランザクション開始
-      await connection.beginTransaction();
-
       const value = playlistIds.flatMap((playlistId) => {
         const memberId = nanoid(15);
         return [memberId, playlistId, videoId];
@@ -210,28 +211,24 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
         .map(() => "(?, ?, ?)")
         .join(",")}`;
 
-      await connection.execute<mysql.ResultSetHeader>(query, value);
-
-      await connection.commit();
+      await conn.execute<mysql.ResultSetHeader>(query, value);
     } catch (err) {
-      await connection.rollback();
-      console.error("Transaction rolled back due to error:", err);
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
-        `An unexpected error occurred. Please try again later`,
+        `failed to insert playlist member in process 'insertPlaylistMemberByPlaylistIdsAndVideoId' due to: ${JSON.stringify(
+          err,
+        )}`,
       );
-    } finally {
-      // 接続を解放
-      connection.release();
     }
   };
 
-  deletePlaylistByPlaylistId = async (playlistId: string): Promise<void> => {
+  deletePlaylistByPlaylistId = async (
+    conn: Connection,
+    playlistId: string,
+  ): Promise<void> => {
     try {
       const query = `DELETE FROM playlists WHERE playlist_id = ?`;
-      await (
-        await this.pool
-      ).execute<mysql.ResultSetHeader>(query, [playlistId]);
+      await conn.execute<mysql.ResultSetHeader>(query, [playlistId]);
       console.log(`delete playlist playlistId: ${playlistId}`);
     } catch (err) {
       throw new MySQLError(
@@ -243,10 +240,13 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     }
   };
 
-  deletePlaylistMemberByMemberId = async (memberId: string): Promise<void> => {
+  deletePlaylistMemberByMemberId = async (
+    conn: Connection,
+    memberId: string,
+  ): Promise<void> => {
     try {
       const query = `DELETE FROM playlist_members WHERE member_id = ?`;
-      await (await this.pool).execute<mysql.ResultSetHeader>(query, [memberId]);
+      await conn.execute<mysql.ResultSetHeader>(query, [memberId]);
       console.log(`delete playlist member memberId: ${memberId}}`);
     } catch (err) {
       throw new MySQLError(
@@ -259,14 +259,16 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
   };
 
   changePlaylistTitleByPlaylistId = async (
+    conn: Connection,
     playlistId: string,
     newTitle: string,
   ): Promise<void> => {
     try {
       const query = `UPDATE playlists SET title = ? WHERE playlist_id = ?`;
-      const updateResult = await (
-        await this.pool
-      ).execute<mysql.ResultSetHeader>(query, [newTitle, playlistId]);
+      const updateResult = await conn.execute<mysql.ResultSetHeader>(query, [
+        newTitle,
+        playlistId,
+      ]);
       console.log(
         `change the playlist title to ${newTitle} playlistId: ${playlistId}`,
       );

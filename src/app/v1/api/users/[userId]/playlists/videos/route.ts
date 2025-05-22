@@ -8,7 +8,9 @@ import { RegisterNewPlaylistMemberByPlaylistIds } from "@/src/backend/applicatio
 import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
 import { Session } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
 
+const pool = await createConnectionPool();
 const playlistRepository = new MySQLPlaylistRepository();
 
 const registerNewPlaylistMember = new RegisterNewPlaylistMemberByPlaylistIds(
@@ -41,7 +43,7 @@ export const POST = async (
       );
     }
 
-    await registerNewPlaylistMember.run(playlistIds, userId, videoId);
+    await registerNewPlaylistMember.run(pool, playlistIds, userId, videoId);
 
     return new NextResponse(
       JSON.stringify({

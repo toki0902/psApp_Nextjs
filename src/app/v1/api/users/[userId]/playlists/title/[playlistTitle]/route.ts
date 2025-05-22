@@ -11,7 +11,9 @@ import {
 } from "@/src/backend/interface/error/errors";
 import { Session } from "next-auth";
 import { auth } from "@/src/backend/interface/auth/auth";
+import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
 
+const pool = await createConnectionPool();
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
 
@@ -26,6 +28,7 @@ export const GET = async (
   { params }: { params: Promise<{ userId: string; playlistTitle: string }> },
 ): Promise<NextResponse> => {
   try {
+    const start = Date.now();
     const { userId, playlistTitle } = await params;
 
     if (!userId || !playlistTitle) {
@@ -47,10 +50,15 @@ export const GET = async (
     }
 
     const playlist = await fetchPlaylistAndVideosByUserIdAndPlaylistTitle.run(
+      pool,
       userId,
       playlistTitle,
     );
 
+    const end = Date.now();
+    console.log(
+      `GET /v1/api/users/[userId]/playlists/title/[playlistTitle] took ${end - start}ms`,
+    );
     return new NextResponse(JSON.stringify({ playlist: playlist }), {
       status: 200,
       headers: { "Content-Type": "application/json" },

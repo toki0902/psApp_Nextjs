@@ -12,7 +12,9 @@ import {
 import { RegisterNewPlaylist } from "@/src/backend/application/playlist/RegisterNewPlaylist";
 import { Session } from "next-auth";
 import { auth } from "@/src/backend/interface/auth/auth";
+import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
 
+const pool = await createConnectionPool();
 const playlistRepository = new MySQLPlaylistRepository();
 const videoRepository = new MySQLVideoRepository();
 
@@ -27,6 +29,7 @@ export const GET = async (
   { params }: { params: Promise<{ userId: string }> },
 ): Promise<NextResponse> => {
   try {
+    const start = Date.now();
     const { userId } = await params;
 
     if (!userId) {
@@ -49,8 +52,10 @@ export const GET = async (
       );
     }
 
-    const playlists = await fetchPlaylistsAndVideos.run(userId);
+    const playlists = await fetchPlaylistsAndVideos.run(pool, userId);
 
+    const end = Date.now();
+    console.log(`GET took ${end - start}ms`);
     return new NextResponse(JSON.stringify({ playlists: playlists }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -85,7 +90,7 @@ export const POST = async (
       );
     }
 
-    await registerNewPlaylist.run(playlistTitle, userId);
+    await registerNewPlaylist.run(pool, playlistTitle, userId);
 
     return new NextResponse(
       JSON.stringify({ message: "お気に入りを追加しました。" }),

@@ -43,7 +43,7 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const cookie = await getAllCookies();
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${userId}/playlists`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/${userId}/playlists`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json", Cookie: cookie },
@@ -73,7 +73,7 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
             <p
               className={`${Kaisei.className} line-clamp-1 text-lg font-bold lg:text-2xl`}
             >
-              {session?.name}さんのお気に入り
+              お気に入り
             </p>
             <p className="text-mg ml-4 hidden min-w-fit lg:block">
               {playlists.length}件のお気に入り

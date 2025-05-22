@@ -3,20 +3,29 @@ import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVi
 import Fuse from "fuse.js";
 import { auth } from "../../interface/auth/auth";
 import { endOfMonth, startOfMonth } from "date-fns";
+import { Pool } from "mysql2/promise";
 
 export class FindVideosByKeyword {
   constructor(private _videoRepository: IVideoRepository) {}
 
-  run = async (keyword: string, isAllVideo: boolean): Promise<Video[]> => {
-    const allUploadedVideos = await this._videoRepository.fetchVideos();
+  run = async (
+    pool: Pool,
+    keyword: string,
+    isAllVideo: boolean,
+  ): Promise<Video[]> => {
+    const conn = await pool.getConnection();
+    const allUploadedVideos = await this._videoRepository.fetchAllVideos(conn);
+    conn.release();
 
     let targetVideos = [...allUploadedVideos];
 
     const session = await auth();
+
     const graduationYear =
-      session?.graduationYear || new Date().getMonth() > 3
+      session?.graduationYear ||
+      (new Date().getMonth() > 3
         ? new Date().getFullYear() + 1
-        : new Date().getFullYear();
+        : new Date().getFullYear());
 
     const startDate = startOfMonth(new Date(graduationYear - 4, 3));
     const endDate = endOfMonth(new Date(graduationYear, 3));
@@ -26,8 +35,6 @@ export class FindVideosByKeyword {
         (video) => video.publishedAt > startDate && video.publishedAt < endDate,
       );
     }
-
-    console.log(targetVideos);
 
     const fuseOptions = {
       keys: ["title"],
