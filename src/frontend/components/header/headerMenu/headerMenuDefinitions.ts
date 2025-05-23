@@ -7,7 +7,7 @@ export const headerMenuDefinitions = {
   login: {
     text: "ログインする",
     icon: "/images/login_2c4a52.svg",
-    getHref: () => "/api/auth/signin",
+    getHref: () => "/login",
   },
   setting: {
     text: "設定",
@@ -32,7 +32,7 @@ export const headerMenuDefinitions = {
   mobileLogin: {
     text: "ログインする",
     icon: "/images/login_f1EBE5.svg",
-    getHref: () => "/api/auth/signin",
+    getHref: () => "/login",
   },
   mobileHome: {
     text: "ホームに戻る",

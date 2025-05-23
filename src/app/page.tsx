@@ -47,7 +47,7 @@ const App = async () => {
         ) : (
           <>
             <Button inVisible>FAVORITE</Button>
-            <Button href="/api/auth/signin">LOGIN</Button>
+            <Button href="login">LOGIN</Button>
           </>
         )}
       </div>

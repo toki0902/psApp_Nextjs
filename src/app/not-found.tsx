@@ -21,7 +21,7 @@ const notfound = () => {
             存在しないか、アクセスする権限がありません。
             <br />
             <Link
-              href="/api/auth/signin"
+              href="/login"
               className="font-bold text-red opacity-60 hover:opacity-100"
             >
               ログイン
