@@ -12,7 +12,7 @@ const Page = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       signIn(undefined, { callbackUrl: "/" }); // 5秒後に /login に遷移
-    }, 5000);
+    }, 50000);
     const countdown = setInterval(() => {
       setCount((prevCount) => {
         if (prevCount <= 1) {
@@ -41,24 +41,24 @@ const Page = () => {
             プライベートブラウザの場合、
             <br />
             この後のログインがうまくいかない場合があります。
-            <br />
-            プライベートモードを解除してから
-            <br />
-            ログインしてください。
           </p>
         </div>
       </div>
-      <p
-        className={`${Caveat_thin.className} absolute left-1/2 top-[66%] flex -translate-x-1/2 text-5xl text-red`}
+      <div
+        className={`${Caveat_thin.className} absolute left-1/2 top-[66%] flex -translate-x-1/2 flex-col text-5xl text-red lg:flex-row`}
       >
-        Loading
-        <span className="mx-2">
-          <span className="animate-dot-first">.</span>
-          <span className="animate-dot-second">.</span>
-          <span className="animate-dot-third">.</span>
-        </span>
-        {count} seconds left
-      </p>
+        <div className="flex items-center justify-center">
+          <p>Loading</p>
+          <span className="ml-2">
+            <span className="animate-dot-first">.</span>
+            <span className="animate-dot-second">.</span>
+            <span className="animate-dot-third">.</span>
+          </span>
+        </div>
+        <p className="flex items-center text-2xl lg:ml-2">
+          {count} seconds left
+        </p>
+      </div>
     </div>
   );
 };
