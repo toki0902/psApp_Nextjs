@@ -1,9 +1,7 @@
 import { CardMenuData } from "@/src/frontend/types/cardMenu";
 import { ModalContextType } from "@/src/frontend/types/modal";
-import { isMobile } from "@/src/frontend/utils/device";
+import { isMobile } from "@/src/frontend/utils/device.client";
 import { useRouter } from "next/navigation";
-//fix : router の型定義
-
 //getOnClickはそれぞれの通過後の処理を記述する
 
 export const menuDefinitions = {

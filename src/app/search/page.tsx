@@ -6,7 +6,7 @@ import CardWrapper from "@/src/frontend/components/card/CardWrapper";
 
 import { Session } from "next-auth";
 import { auth } from "@/src/backend/interface/auth/auth";
-import { getAllCookies } from "@/src/frontend/utils/cookie";
+import { getAllCookies } from "@/src/frontend/utils/cookie.server";
 import { Kaisei } from "@/src/frontend/assets/fonts/fonts";
 
 const Search = async ({

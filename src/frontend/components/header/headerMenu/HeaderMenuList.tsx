@@ -5,6 +5,8 @@ import { headerMenuDefinitions } from "./headerMenuDefinitions";
 import HeaderMenuItem from "./HeaderMenuItem";
 import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
+import { isCookieRestricted } from "@/src/frontend/utils/cookie.client";
+import { useModal } from "@/src/frontend/hooks/useModal";
 
 const HeaderMenuList = ({
   session,
@@ -16,6 +18,7 @@ const HeaderMenuList = ({
   closeUserMenu: () => void;
 }) => {
   const router = useRouter();
+  const openModal = useModal().openModal;
 
   const { userId } = session || { userId: "" };
 
@@ -34,6 +37,21 @@ const HeaderMenuList = ({
         icon={icon}
         onClick={() => {
           closeUserMenu();
+          if (
+            key === "logout" ||
+            key === "login" ||
+            key === "mobileLogin" ||
+            key === "mobileLogout"
+          ) {
+            if (isCookieRestricted()) {
+              openModal("notice", {
+                message:
+                  "Cookieが無効なため、ログインできません。シークレットモードを解除してみてください。",
+                type: "error",
+              });
+              return;
+            }
+          }
           router.push(getHref(userId));
         }}
       />
