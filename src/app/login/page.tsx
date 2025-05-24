@@ -12,7 +12,7 @@ const Page = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       signIn(undefined, { callbackUrl: "/" }); // 5秒後に /login に遷移
-    }, 50000);
+    }, 5000);
     const countdown = setInterval(() => {
       setCount((prevCount) => {
         if (prevCount <= 1) {
