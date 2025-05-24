@@ -2,10 +2,7 @@ import { Kaisei } from "@/fonts";
 import { auth } from "@/src/backend/interface/auth/auth";
 import { playlist } from "@/src/frontend/types/playlist";
 import { CardMenuOption } from "@/src/frontend/types/cardMenu";
-import {
-  checkSession,
-  getAllCookies,
-} from "@/src/frontend/utils/cookie.server";
+import { getAllCookies } from "@/src/frontend/utils/cookie.server";
 import { Session } from "next-auth";
 import PlaylistCard from "@/src/frontend/components/card/PlaylistCard";
 import CardWrapper from "@/src/frontend/components/card/CardWrapper";
@@ -40,8 +37,6 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
       createdAt: "lajdljfas",
     },
   ];
-
-  await checkSession(userId);
 
   const cookie = await getAllCookies();
 

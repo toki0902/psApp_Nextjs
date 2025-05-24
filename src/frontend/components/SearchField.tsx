@@ -1,9 +1,11 @@
 "use client";
 import React, { useRef, useState } from "react";
-import { buildEncodedUrl } from "../utils/url";
+
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
+
+import { isVerifiedPassPhrase } from "../utils/cookie.client";
+import { useModal } from "../hooks/useModal";
 
 const SearchField = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -11,14 +13,29 @@ const SearchField = () => {
   const [isAllVideo, setIsAllVideo] = useState<boolean>(false);
 
   const router = useRouter();
+  const openModal = useModal().openModal;
+
+  const handleSearch = async () => {
+    const isVerified = await isVerifiedPassPhrase();
+    if (isVerified) {
+      openModal("notice", {
+        message: "合言葉を承認しました。",
+        type: "normal",
+      });
+      return router.push(
+        `/search?q=${keyword}${isAllVideo ? "&isAllVideo=true" : ""}`,
+      );
+    } else
+      return router.push(
+        `/search/check?q=${keyword}${isAllVideo ? "&isAllVideo=true" : ""}`,
+      );
+  };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && e.currentTarget === document.activeElement) {
       e.preventDefault();
       inputRef.current?.blur();
-      router.push(
-        `/search?q=${e.currentTarget.value}${isAllVideo ? "&isAllVideo=true" : ""}`,
-      );
+      handleSearch();
     }
   };
 
@@ -46,16 +63,14 @@ const SearchField = () => {
           <span className="absolute left-1/2 top-1/2 block h-[1px] w-full -translate-x-1/2 -translate-y-1/2 -rotate-45 bg-blue"></span>
         </button>
       </div>
-      <Link
-        href={buildEncodedUrl(
-          `/search?q=${keyword}${isAllVideo ? "&isAllVideo=true" : ""}`,
-        )}
+      <button
+        onClick={handleSearch}
         className="flex h-full w-14 cursor-pointer items-center justify-center border-l border-blue"
       >
         <div className="relative h-[70%] w-[70%]">
           <Image src="/images/searchIcon.svg" alt="searchIcon" fill />
         </div>
-      </Link>
+      </button>
       <label className="absolute bottom-0 flex translate-y-[120%] items-center justify-center text-sm">
         <input
           type="checkbox"

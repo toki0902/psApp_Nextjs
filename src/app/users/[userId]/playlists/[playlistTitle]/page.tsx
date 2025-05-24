@@ -4,10 +4,7 @@ import { playlist } from "@/src/frontend/types/playlist";
 import { CardMenuOption } from "@/src/frontend/types/cardMenu";
 
 import { Kaisei } from "@/fonts";
-import {
-  checkSession,
-  getAllCookies,
-} from "@/src/frontend/utils/cookie.server";
+import { getAllCookies } from "@/src/frontend/utils/cookie.server";
 import CardWrapper from "@/src/frontend/components/card/CardWrapper";
 import {
   PageMenuNeedData,
@@ -28,8 +25,6 @@ const Playlist = async ({
   const playlistTitle = decodeURIComponent(beforePlaylistTitle);
 
   const session = await auth();
-
-  await checkSession(userId);
 
   const cookie = await getAllCookies();
 

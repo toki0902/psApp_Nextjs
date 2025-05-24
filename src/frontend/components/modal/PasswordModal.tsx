@@ -30,7 +30,6 @@ const PasswordModal = ({ onPassCheck, close }: props) => {
       onPassCheck();
     } else {
       onIncorrect();
-      console.log("失敗！！");
     }
   };
 

@@ -1,7 +1,5 @@
-import { auth } from "@/src/backend/interface/auth/auth";
-import { Session } from "next-auth";
+"use server";
 import { cookies } from "next/headers";
-import { notFound, redirect } from "next/navigation";
 
 //サーバサイドコンポーネントでapiリクエストする時に、クッキーを取り出してリクエストに付与する用
 export const getAllCookies = async (): Promise<string> => {
@@ -13,17 +11,25 @@ export const getAllCookies = async (): Promise<string> => {
   return cookie;
 };
 
-export const checkSession = async (userId: string): Promise<void> => {
-  "use server";
-  const session: Session | null = await auth();
-  if (!session) {
-    console.log("no session");
-    redirect("/login");
-  }
+export const isVerifiedPassPhrase = async () => {
+  const cookie = await getAllCookies();
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/cookies/pass-phrase`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: { Cookie: cookie },
+      cache: "no-store",
+    },
+  );
 
-  if (session.userId !== userId) {
-    console.log("diff userId");
-    console.log(userId, session.userId);
-    notFound();
+  if (!res.ok) {
+    const errorData = await res.json();
+    console.log(`${errorData.errorType!}: ${errorData.message}`);
+    return false;
+  } else {
+    const data = await res.json();
+
+    return data.success;
   }
 };
