@@ -5,7 +5,6 @@ import { headerMenuDefinitions } from "./headerMenuDefinitions";
 import HeaderMenuItem from "./HeaderMenuItem";
 import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
-import { useModal } from "@/src/frontend/hooks/useModal";
 
 const HeaderMenuList = ({
   session,
