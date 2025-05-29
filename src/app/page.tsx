@@ -1,5 +1,4 @@
 import "@/src/frontend/assets/styles/global.css";
-import Image from "next/image";
 
 import Button from "@/components/Button";
 
@@ -19,11 +18,11 @@ const App = async () => {
       <div className="flex w-1/3 flex-col items-center justify-center border-red">
         <div className="flex w-full items-center justify-center">
           <div className="mr-10 hidden h-full items-center justify-center lg:flex">
-            <Image
-              src={coffeeLogo}
+            <img
+              src={coffeeLogo.src}
               alt="coffee~"
               className="w-24 lg:w-28"
-            ></Image>
+            ></img>
           </div>
           <div
             className={`${Noto_Serif_bold.className} flex h-full items-center justify-center text-center text-3xl lg:text-4xl 2xl:text-5xl`}

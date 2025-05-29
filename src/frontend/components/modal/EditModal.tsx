@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 
 import { Noto_Serif_bold } from "../../assets/fonts/fonts";
-import Image from "next/image";
 
 type Props = {
   onPassCheck: (newTitle: string) => void;
@@ -84,7 +83,11 @@ const EditModal = ({ onPassCheck, close }: Props) => {
           {isValid === false ? (
             <div className="absolute left-1/2 top-0 flex w-fit -translate-x-1/2 -translate-y-[150%] items-center text-nowrap text-red">
               <div className="relative mr-1 aspect-square w-3 lg:mr-2 lg:w-5">
-                <Image src="/images/warning.svg" alt="warningIcon" fill />
+                <img
+                  src="/images/warning.svg"
+                  alt="warningIcon"
+                  className="h-full w-full"
+                />
               </div>
               <p className="text-sm lg:text-base">
                 お気に入りのタイトルは1文字以上が有効です。

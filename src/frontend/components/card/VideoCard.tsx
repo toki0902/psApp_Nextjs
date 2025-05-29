@@ -5,8 +5,6 @@ import { playlist, video } from "../../types/playlist";
 import { CardMenuNeedData, CardMenuOption } from "../../types/cardMenu";
 import CardMenu from "./menu/CardMenu";
 
-import Image from "next/image";
-
 type Props = {
   videoInfo: video;
   videoMemberId?: string;
@@ -55,7 +53,7 @@ const VideoCard = ({
   return (
     <div
       onClick={() => {
-        window.open(videoInfo.url, "_blank")
+        window.open(videoInfo.url, "_blank");
       }}
       className={
         ownerPlaylist
@@ -70,11 +68,10 @@ const VideoCard = ({
             : "relative aspect-[16/9] w-full"
         }
       >
-        <Image
+        <img
           src={videoInfo.thumbnail || "/images/failedImage.svg"}
           alt="videoImage"
-          className="rounded-lg object-cover"
-          fill
+          className="h-full w-full rounded-lg object-cover"
         />
       </div>
       <div

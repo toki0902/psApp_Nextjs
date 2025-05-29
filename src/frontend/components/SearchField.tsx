@@ -2,7 +2,6 @@
 import React, { useRef, useState } from "react";
 
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 import { isVerifiedPassPhrase } from "../utils/cookie.client";
 import { useModal } from "../hooks/useModal";
@@ -68,7 +67,11 @@ const SearchField = () => {
         className="flex h-full w-14 cursor-pointer items-center justify-center border-l border-blue"
       >
         <div className="relative h-[70%] w-[70%]">
-          <Image src="/images/searchIcon.svg" alt="searchIcon" fill />
+          <img
+            src="/images/searchIcon.svg"
+            className="h-full w-full"
+            alt="searchIcon"
+          />
         </div>
       </button>
       <label className="absolute bottom-0 flex translate-y-[120%] items-center justify-center text-sm">

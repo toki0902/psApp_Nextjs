@@ -2,7 +2,6 @@
 import { Session } from "next-auth";
 import React from "react";
 import HeaderMenuList from "./HeaderMenuList";
-import Image from "next/image";
 
 const HeaderMenu = ({
   session,
@@ -29,11 +28,10 @@ const HeaderMenu = ({
           <div className="flex h-10 w-full items-center justify-start text-xl">
             <p>{session.name}</p>
             <div className="relative ml-2 aspect-square w-10">
-              <Image
+              <img
                 src={session?.image || ""}
                 alt="icon"
-                className="rounded-full"
-                fill
+                className="h-full w-full rounded-full"
               />
             </div>
           </div>
@@ -58,11 +56,10 @@ const HeaderMenu = ({
           <div className="flex h-10 w-full items-center justify-start text-base">
             <p>ユーザ: {session.name}</p>
             <div className="relative ml-3 aspect-square w-10">
-              <Image
+              <img
                 src={session?.image || ""}
                 alt="icon"
-                className="rounded-full"
-                fill
+                className="h-full w-full rounded-full"
               />
             </div>
           </div>

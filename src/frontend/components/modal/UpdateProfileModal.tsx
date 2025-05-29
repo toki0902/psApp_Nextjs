@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { Noto_Serif_bold } from "../../assets/fonts/fonts";
-import Image from "next/image";
 
 type Props = {
   onPassCheck: (arg: {
@@ -108,7 +107,11 @@ const UpdateProfileModal = ({ onPassCheck, close }: Props) => {
             {isValidName ? null : (
               <div className="absolute -bottom-2 left-0 flex w-fit translate-y-full items-center text-nowrap text-red">
                 <div className="relative mr-1 aspect-square w-3 lg:mr-2 lg:w-5">
-                  <Image src="/images/warning.svg" alt="warningIcon" fill />
+                  <img
+                    src="/images/warning.svg"
+                    alt="warningIcon"
+                    className="h-full w-full"
+                  />
                 </div>
                 <p className="text-sm">名前は1文字以上が有効です。</p>
               </div>
@@ -151,7 +154,11 @@ const UpdateProfileModal = ({ onPassCheck, close }: Props) => {
             {isValidYear ? null : (
               <div className="absolute -bottom-2 left-0 flex w-fit translate-y-full items-center text-nowrap text-red">
                 <div className="relative mr-1 aspect-square w-3 lg:mr-2 lg:w-5">
-                  <Image src="/images/warning.svg" alt="warningIcon" fill />
+                  <img
+                    src="/images/warning.svg"
+                    alt="warningIcon"
+                    className="h-full w-full"
+                  />
                 </div>
                 <p className="text-sm">2000年 ~ 2200年でお選びください。</p>
               </div>

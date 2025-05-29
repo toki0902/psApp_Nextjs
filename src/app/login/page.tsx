@@ -1,7 +1,7 @@
 "use client";
 import { Caveat_thin } from "@/src/frontend/assets/fonts/fonts";
 import { signIn } from "next-auth/react";
-import Image from "next/image";
+
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
@@ -33,7 +33,7 @@ const Page = () => {
     <div className="h-full w-full">
       <div className="flex h-fit w-full flex-col items-center justify-center rounded-md border-4 border-red p-14 md:flex-row md:space-x-10">
         <div className="relative aspect-square h-40 w-40 lg:h-60 lg:w-60">
-          <Image src="/images/loading-11.png" fill alt="notFound" />
+          <img src="/images/loading-11.png" alt="notFound" />
         </div>
         <div className="flex flex-col items-start justify-center space-y-5">
           <h2 className="font-bold text-red lg:text-2xl">注意!!</h2>

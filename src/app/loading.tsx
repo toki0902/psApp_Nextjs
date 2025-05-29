@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Caveat_thin } from "@/fonts";
 
 import psLogo from "public/images/p.s.logo.png";
@@ -61,11 +60,11 @@ const Loading = async () => {
       <div className="animate-slowSpin">
         {randomImage && (
           <div className="h-32 w-32 lg:h-48 lg:w-48">
-            <Image
-              src={randomImage}
+            <img
+              src={randomImage.src}
               className="h-full w-full"
               alt="Official LOGO"
-            ></Image>
+            ></img>
           </div>
         )}
       </div>

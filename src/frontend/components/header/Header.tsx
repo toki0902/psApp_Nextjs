@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
 import HeaderMenu from "./headerMenu/HeaderMenu";
 import { NavMenuList } from "./navigation/NavMenuList";
-import Image from "next/image";
 
 const Header = ({ session }: { session: Session | null }) => {
   const [isOpenUserMenu, setIsOpenUserMenu] = useState(false);
@@ -22,7 +21,7 @@ const Header = ({ session }: { session: Session | null }) => {
         className="relative hidden h-full w-[180px] cursor-pointer lg:flex"
         onClick={() => router.push("/")}
       >
-        <Image src="/images/h1.logo.svg" alt="psLogo" fill />
+        <img src="/images/h1.logo.svg" className="h-full w-full" alt="psLogo" />
       </h1>
       <div className="left-1/2 top-1/2 h-fit w-[80%] lg:absolute lg:w-1/3 lg:-translate-x-1/2 lg:-translate-y-1/2">
         <SearchField />
@@ -42,11 +41,10 @@ const Header = ({ session }: { session: Session | null }) => {
                 }}
               >
                 <div className="relative h-10 w-10">
-                  <Image
+                  <img
                     src={session?.image || ""}
                     alt="userIcon"
-                    fill
-                    className="rounded-full"
+                    className="h-full w-full rounded-full"
                   />
                 </div>
               </button>

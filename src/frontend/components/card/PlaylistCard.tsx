@@ -5,7 +5,6 @@ import { CardMenuNeedData, CardMenuOption } from "../../types/cardMenu";
 
 import CardMenu from "./menu/CardMenu";
 import Link from "next/link";
-import Image from "next/image";
 
 type Props = {
   playlistInfo: playlist;
@@ -48,11 +47,10 @@ const PlaylistCard = ({
         className="mx-[calc(0.5%)] mb-10 flex w-full cursor-pointer rounded-lg sm:block sm:w-half-divided lg:w-third-divided 2xl:w-fourth-divided 3xl:w-fifth-divided 4xl:w-sixth-divided"
       >
         <div className="relative aspect-[16/9] w-1/2 rounded-lg sm:w-full">
-          <Image
-            src={thumbnail || "/images/failedImage.svg"}
+          <img
+            src={thumbnail}
             alt="image"
-            className="rounded-lg object-cover"
-            fill
+            className="h-full w-full rounded-lg object-cover"
           />
         </div>
         <div className="flex w-1/2 p-2 align-middle sm:w-full">

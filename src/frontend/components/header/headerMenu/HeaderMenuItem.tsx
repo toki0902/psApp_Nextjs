@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import React from "react";
 
 const HeaderMenuItem = ({
@@ -18,7 +17,7 @@ const HeaderMenuItem = ({
         onClick={onClick}
       >
         <div className="relative mr-2 h-6 w-6">
-          <Image src={icon} alt="icon" fill />
+          <img src={icon} alt="icon" className="h-full w-full" />
         </div>
         <p className="text-base">{text}</p>
       </button>

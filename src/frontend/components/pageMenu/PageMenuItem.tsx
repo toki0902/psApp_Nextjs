@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 
 const PageMenuItem = ({
@@ -15,7 +14,7 @@ const PageMenuItem = ({
       onClick={onClick}
     >
       <div className="relative aspect-square w-6">
-        <Image src={icon} alt="icon" fill />
+        <img src={icon} alt="icon" className="h-full w-full" />
       </div>
     </li>
   );

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 
 const AddFavoriteItem = ({
@@ -18,14 +17,14 @@ const AddFavoriteItem = ({
         className="relative aspect-square w-5 cursor-pointer"
         onClick={() => togglePlaylist(id)}
       >
-        <Image
+        <img
           src={
             selectedPlaylistIds.includes(id)
               ? "/images/checked_823A42.svg"
               : "/images/checkbox_823A42.svg"
           }
           alt="checkIcon"
-          fill
+          className="h-full w-full"
         />
       </div>
       <p

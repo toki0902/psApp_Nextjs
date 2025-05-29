@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { playlist } from "../../../types/playlist";
 import { Noto_Serif_bold } from "../../../assets/fonts/fonts";
 import AddFavoriteItem from "./AddFavoriteItem";
-import Image from "next/image";
 
 type Props = {
   onPassCheck: (addPlaylistIds: string[]) => void;
@@ -83,7 +82,11 @@ const AddFavoriteModal = ({ onPassCheck, close, payload }: Props) => {
           {isValid === false ? (
             <div className="absolute left-1/2 top-0 flex w-full -translate-x-1/2 -translate-y-[150%] items-center justify-center">
               <div className="relative mr-1 aspect-square w-3 lg:mr-2 lg:w-5">
-                <Image src="/images/warning.svg" alt="warningIcon" fill />
+                <img
+                  src="/images/warning.svg"
+                  alt="warningIcon"
+                  className="h-full w-full"
+                />
               </div>
               <p className="line-clamp-2 text-red">
                 動画を追加するお気に入りを選択してください。

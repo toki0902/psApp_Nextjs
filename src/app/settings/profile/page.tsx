@@ -1,6 +1,6 @@
 import React from "react";
 import { Noto_Serif_bold } from "@/src/frontend/assets/fonts/fonts";
-import Image from "next/image";
+
 import { auth } from "@/src/backend/interface/auth/auth";
 import { notFound } from "next/navigation";
 import SettingMenu from "@/src/frontend/components/settingMenu/SettingMenu";
@@ -37,7 +37,7 @@ const page = async () => {
               <li className="flex w-full items-center justify-between px-4 lg:px-0">
                 <p>プロバイダー内のアイコン:</p>
                 <div className="relative aspect-square w-10 overflow-hidden rounded-full lg:w-14">
-                  <Image src={session.provider.image} alt="userIcon" fill />
+                  <img src={session.provider.image} alt="userIcon" />
                 </div>
               </li>
             </ul>

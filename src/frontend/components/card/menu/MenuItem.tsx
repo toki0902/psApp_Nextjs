@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 const MenuItem = ({
@@ -36,11 +35,11 @@ const MenuItem = ({
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <div className="relative mr-2 min-h-5 min-w-5 group-hover:animate-shake">
-        <Image
+      <div className="relative mr-2 h-5 min-h-5 w-5 min-w-5 group-hover:animate-shake">
+        <img
           src={isMobile ? hoverIcon : isHover ? hoverIcon : icon}
           alt="text"
-          fill
+          className="h-full w-full"
         />
       </div>
       <div className="">{text}</div>

@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import React, { useState } from "react";
 
 const NavItem = ({
@@ -26,7 +25,11 @@ const NavItem = ({
         onClick={onClick}
       >
         <div className="relative mr-1 aspect-square w-5">
-          <Image src={isHover ? hoverIcon : icon} alt="icon" fill />
+          <img
+            src={isHover ? hoverIcon : icon}
+            alt="icon"
+            className="h-full w-full"
+          />
         </div>
         <p className="group-hover:text-red">{text}</p>
       </button>
