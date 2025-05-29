@@ -14,7 +14,7 @@ const UpdateProfileButton = () => {
       });
 
     const patchRes = await fetch(
-      `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/profile`,
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/me/profile`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

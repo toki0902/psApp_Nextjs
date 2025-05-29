@@ -14,7 +14,7 @@ export const getAllCookies = async (): Promise<string> => {
 export const isVerifiedPassPhrase = async () => {
   const cookie = await getAllCookies();
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/cookies/pass-phrase`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/auth/verify-passphrase`,
     {
       method: "GET",
       credentials: "include",

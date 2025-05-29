@@ -4,20 +4,15 @@ import React from "react";
 import { headerMenuDefinitions } from "./headerMenuDefinitions";
 import HeaderMenuItem from "./HeaderMenuItem";
 import { useRouter } from "next/navigation";
-import { Session } from "next-auth";
 
 const HeaderMenuList = ({
-  session,
   headerMenuOption,
   closeUserMenu,
 }: {
-  session: Session | null;
   headerMenuOption: HeaderMenuOption;
   closeUserMenu: () => void;
 }) => {
   const router = useRouter();
-
-  const { userId } = session || { userId: "" };
 
   const defKeys = Object.keys(headerMenuOption).filter(
     (key): key is keyof typeof headerMenuDefinitions =>
@@ -34,7 +29,7 @@ const HeaderMenuList = ({
         icon={icon}
         onClick={() => {
           closeUserMenu();
-          router.push(getHref(userId));
+          router.push(getHref());
         }}
       />
     );

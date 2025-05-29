@@ -1,16 +1,14 @@
 "use client";
 import { NavMenuOption } from "@/src/frontend/types/header";
-import { Session } from "next-auth";
+
 import React from "react";
 import { navItemDefinitions } from "./navItemDefinitions";
 import { useRouter } from "next/navigation";
 import NavItem from "./NavItem";
 
-type Props = { session: Session | null; navMenuOption: NavMenuOption };
+type Props = { navMenuOption: NavMenuOption };
 
-export const NavMenuList = ({ session, navMenuOption }: Props) => {
-  const { userId } = session || { userId: "" };
-
+export const NavMenuList = ({ navMenuOption }: Props) => {
   const router = useRouter();
 
   const defKeys = Object.keys(navMenuOption).filter(
@@ -35,7 +33,7 @@ export const NavMenuList = ({ session, navMenuOption }: Props) => {
           hoverIcon={hoverIcon}
           icon={defaultIcon}
           onClick={() => {
-            router.push(getHref(userId));
+            router.push(getHref());
           }}
         />
       );

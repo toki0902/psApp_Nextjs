@@ -18,7 +18,7 @@ export const menuDefinitions = {
         const onPassCheck = async (newTitle: string) => {
           if (data.edit) {
             const res = await fetch(
-              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${data.edit.ownerId}/playlists/id/${data.edit.playlistId}`,
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/me/playlists/id/${data.edit.playlistId}`,
               {
                 method: "PATCH",
                 body: JSON.stringify({ newTitle }),
@@ -66,7 +66,7 @@ export const menuDefinitions = {
         const onPassCheck = async () => {
           if (data.deletePlaylist) {
             const res = await fetch(
-              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${data.deletePlaylist.ownerId}/playlists/id/${data.deletePlaylist.playlistId}`,
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/me/playlists/id/${data.deletePlaylist.playlistId}`,
               { method: "DELETE" },
             );
 
@@ -115,7 +115,7 @@ export const menuDefinitions = {
               playlistIds: addPlaylistIds,
             };
             const res = await fetch(
-              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${data.addFavorite.userPlaylistsInfo[0].ownerId}/playlists/videos`,
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/me/playlists/videos`,
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -199,7 +199,7 @@ export const menuDefinitions = {
         const onPassCheck = async () => {
           if (data.deleteFromPlaylist) {
             const res = await fetch(
-              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${data.deleteFromPlaylist.ownerPlaylistInfo.ownerId}/playlists/id/${data.deleteFromPlaylist.ownerPlaylistInfo.playlistId}/videos/${data.deleteFromPlaylist.memberId}`,
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/me/playlists/id/${data.deleteFromPlaylist.ownerPlaylistInfo.playlistId}/videos/${data.deleteFromPlaylist.memberId}`,
               { method: "DELETE" },
             );
 

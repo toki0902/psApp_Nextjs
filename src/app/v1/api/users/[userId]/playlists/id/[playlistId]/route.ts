@@ -36,10 +36,9 @@ export const GET = async (
   { params }: { params: Promise<{ userId: string; playlistId: string }> },
 ): Promise<NextResponse> => {
   try {
-    const { userId, playlistId } = await params;
+    const { userId: userIdParam, playlistId } = await params;
 
-    if (!userId || !playlistId) {
-      console.log("Required parameter is missing");
+    if (!userIdParam || !playlistId) {
       throw new MissingParamsError(
         "パラメータが不足しています。",
         "Required parameter is missing",
@@ -48,12 +47,14 @@ export const GET = async (
 
     const session: Session | null = await auth();
 
-    if (session?.userId !== userId) {
+    if ((session?.userId !== userIdParam && userIdParam !== "me") || !session) {
       throw new UnAuthorizeError(
         "認証に失敗しました。もう一度ログインし直してください。",
         "You are not authenticated. Please log in and try again",
       );
     }
+
+    const userId = userIdParam === "me" ? session.userId : userIdParam;
 
     const playlist = await FetchPlaylistsAndVideosByPlaylistId.run(
       pool,
@@ -75,9 +76,9 @@ export const DELETE = async (
   { params }: { params: Promise<{ userId: string; playlistId: string }> },
 ): Promise<NextResponse> => {
   try {
-    const { userId, playlistId } = await params;
+    const { userId: userIdParam, playlistId } = await params;
 
-    if (!userId || !playlistId) {
+    if (!userIdParam || !playlistId) {
       throw new MissingParamsError(
         "パラメータが不足しています。",
         "Required parameter is missing",
@@ -86,12 +87,14 @@ export const DELETE = async (
 
     const session: Session | null = await auth();
 
-    if (session?.userId !== userId) {
+    if ((session?.userId !== userIdParam && userIdParam !== "me") || !session) {
       throw new UnAuthorizeError(
         "認証に失敗しました。もう一度ログインし直してください。",
         "You are not authenticated. Please log in and try again",
       );
     }
+
+    const userId = userIdParam === "me" ? session.userId : userIdParam;
 
     await deletePlaylistByPlaylistId.run(pool, playlistId, userId);
 
@@ -109,13 +112,11 @@ export const PATCH = async (
   { params }: { params: Promise<{ userId: string; playlistId: string }> },
 ): Promise<NextResponse> => {
   try {
-    const { userId, playlistId } = await params;
+    const { userId: userIdParam, playlistId } = await params;
     const { newTitle } = await req.json();
 
-    console.log(userId, playlistId, newTitle);
-
     if (
-      !userId ||
+      !userIdParam ||
       !playlistId ||
       typeof newTitle !== "string" ||
       newTitle.trim() === ""
@@ -128,12 +129,15 @@ export const PATCH = async (
 
     const session: Session | null = await auth();
 
-    if (session?.userId !== userId) {
+    if ((session?.userId !== userIdParam && userIdParam !== "me") || !session) {
+      console.log("Unauthorized!");
       throw new UnAuthorizeError(
         "認証に失敗しました。もう一度ログインし直してください。",
         "You are not authenticated. Please log in and try again",
       );
     }
+
+    const userId = userIdParam === "me" ? session.userId : userIdParam;
 
     await changePlaylistTitleByPlaylistId.run(
       pool,

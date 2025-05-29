@@ -27,7 +27,7 @@ export const headerMenuDefinitions = {
   mobileFavorite: {
     text: "お気に入りを閲覧する",
     icon: "/images/favorite_f1EBE5.svg",
-    getHref: (userId: string) => `/users/${userId}/playlists`,
+    getHref: () => `/playlists`,
   },
   mobileLogin: {
     text: "ログインする",

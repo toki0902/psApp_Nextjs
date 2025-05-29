@@ -7,7 +7,7 @@ export const navItemDefinitions = {
   },
   favorite: {
     text: "お気に入り",
-    getHref: (userId: string) => `/users/${userId}/playlists`,
+    getHref: () => `/playlists`,
     hoverIcon: "/images/favorite_823A42.svg",
     defaultIcon: "/images/favorite_2c4a52.svg",
   },

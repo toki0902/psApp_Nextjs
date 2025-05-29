@@ -10,6 +10,7 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
     private _videoRepository: IVideoRepository,
   ) {}
 
+  //fix : 最初に見つかったタイトルに一致するプレイリストしか返せない。
   run = async (
     pool: Pool,
     userId: string,

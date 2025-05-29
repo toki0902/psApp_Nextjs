@@ -49,7 +49,7 @@ const Search = async ({
   let playlists: playlist[] = [];
 
   const playlistResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/${session?.userId}/playlists`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/me/playlists`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json", Cookie: cookie },

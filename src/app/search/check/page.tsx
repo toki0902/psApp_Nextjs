@@ -12,7 +12,7 @@ const Page = () => {
 
   const onPassModalCheck = async () => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/cookies/pass-phrase`,
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/auth/verify-passphrase`,
       { method: "POST", credentials: "include" },
     );
 

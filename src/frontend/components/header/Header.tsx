@@ -29,10 +29,7 @@ const Header = ({ session }: { session: Session | null }) => {
       {session ? (
         <nav>
           <ul className="hidden h-fit w-fit items-center text-blue lg:flex">
-            <NavMenuList
-              session={session}
-              navMenuOption={{ home: true, favorite: true }}
-            />
+            <NavMenuList navMenuOption={{ home: true, favorite: true }} />
             <li className="cursor-pointer">
               <button
                 className="group flex w-fit items-center"
@@ -55,7 +52,6 @@ const Header = ({ session }: { session: Session | null }) => {
         <nav>
           <ul className="hidden h-fit w-fit items-center text-blue lg:flex">
             <NavMenuList
-              session={session}
               navMenuOption={{
                 home: true,
                 login: true,

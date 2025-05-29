@@ -28,10 +28,9 @@ export const GET = async (
   { params }: { params: Promise<{ userId: string; playlistTitle: string }> },
 ): Promise<NextResponse> => {
   try {
-    const { userId, playlistTitle } = await params;
+    const { userId: userIdParam, playlistTitle } = await params;
 
-    if (!userId || !playlistTitle) {
-      console.log("Required parameter is missing");
+    if (!userIdParam || !playlistTitle) {
       throw new MissingParamsError(
         "パラメータが不足しています。",
         "Required parameter is missing",
@@ -40,13 +39,14 @@ export const GET = async (
 
     const session: Session | null = await auth();
 
-    if (session?.userId !== userId) {
-      console.log("Unauthorized!");
+    if ((session?.userId !== userIdParam && userIdParam !== "me") || !session) {
       throw new UnAuthorizeError(
         "認証に失敗しました。もう一度ログインし直してください。",
         "You are not authenticated. Please log in and try again",
       );
     }
+
+    const userId = userIdParam === "me" ? session.userId : userIdParam;
 
     const playlist = await fetchPlaylistAndVideosByUserIdAndPlaylistTitle.run(
       pool,

@@ -38,13 +38,11 @@ const HeaderMenu = ({
         ) : null}
         <ul className="w-full space-y-2">
           <HeaderMenuList
-            session={session}
             closeUserMenu={closeUserMenu}
             headerMenuOption={{ logout: true, login: true }}
           />
           <hr className="h-[1px] border-none bg-blue" />
           <HeaderMenuList
-            session={session}
             closeUserMenu={closeUserMenu}
             headerMenuOption={{ setting: true }}
           />
@@ -66,7 +64,6 @@ const HeaderMenu = ({
         ) : null}
         <ul className="w-full space-y-4">
           <HeaderMenuList
-            session={session}
             headerMenuOption={
               session
                 ? { mobileLogin: true, mobileLogout: true }
@@ -81,7 +78,6 @@ const HeaderMenu = ({
             <h2 className="text-base font-bold">設定</h2>
             <ul className="w-full space-y-4">
               <HeaderMenuList
-                session={session}
                 headerMenuOption={
                   session
                     ? {
@@ -98,7 +94,6 @@ const HeaderMenu = ({
         <h2 className="text-base font-bold">アプリ</h2>
         <ul className="w-full space-y-4">
           <HeaderMenuList
-            session={session}
             headerMenuOption={
               session
                 ? {

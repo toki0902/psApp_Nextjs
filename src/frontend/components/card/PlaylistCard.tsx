@@ -43,7 +43,7 @@ const PlaylistCard = ({
   return (
     <>
       <Link
-        href={`/users/${playlistInfo.ownerId}/playlists/${playlistInfo.title}`}
+        href={`/playlists/${playlistInfo.title}`}
         className="mx-[calc(0.5%)] mb-10 flex w-full cursor-pointer rounded-lg sm:block sm:w-half-divided lg:w-third-divided 2xl:w-fourth-divided 3xl:w-fifth-divided 4xl:w-sixth-divided"
       >
         <div className="relative aspect-[16/9] w-1/2 rounded-lg sm:w-full">

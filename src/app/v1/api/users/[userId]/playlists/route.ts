@@ -29,10 +29,9 @@ export const GET = async (
   { params }: { params: Promise<{ userId: string }> },
 ): Promise<NextResponse> => {
   try {
-    const { userId } = await params;
+    const { userId: userIdParam } = await params;
 
-    if (!userId) {
-      console.log("Required parameter is missing");
+    if (!userIdParam) {
       throw new MissingParamsError(
         "パラメータが不足しています。",
         "Required parameter is missing",
@@ -41,13 +40,14 @@ export const GET = async (
 
     const session: Session | null = await auth();
 
-    if (!(session?.userId === userId)) {
-      console.log("Unauthorized!");
+    if ((session?.userId !== userIdParam && userIdParam !== "me") || !session) {
       throw new UnAuthorizeError(
         "認証に失敗しました。もう一度ログインし直してください。",
         "You are not authenticated. Please log in and try again",
       );
     }
+
+    const userId = userIdParam === "me" ? session.userId : userIdParam;
 
     const playlists = await fetchPlaylistsAndVideos.run(pool, userId);
 
@@ -66,9 +66,9 @@ export const POST = async (
 ): Promise<NextResponse> => {
   try {
     const { playlistTitle } = await req.json();
-    const { userId } = await params;
+    const { userId: userIdParam } = await params;
 
-    if (!userId || !playlistTitle) {
+    if (!userIdParam || !playlistTitle) {
       throw new MissingParamsError(
         "パラメータが不足しています。",
         "Required parameter is missing",
@@ -77,13 +77,14 @@ export const POST = async (
 
     const session: Session | null = await auth();
 
-    if (!(session?.userId === userId)) {
-      console.log("Unauthorized!");
+    if ((session?.userId !== userIdParam && userIdParam !== "me") || !session) {
       throw new UnAuthorizeError(
         "認証に失敗しました。もう一度ログインし直してください。",
         "You are not authenticated. Please log in and try again",
       );
     }
+
+    const userId = userIdParam === "me" ? session.userId : userIdParam;
 
     await registerNewPlaylist.run(pool, playlistTitle, userId);
 

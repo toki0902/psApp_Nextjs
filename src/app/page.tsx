@@ -42,7 +42,7 @@ const App = async () => {
         className={`${Caveat_thin.className} flex w-1/3 flex-col items-center justify-center space-y-5 border-red lg:space-y-10`}
       >
         {session ? (
-          <Button href={`/users/${session.userId}/playlists`}>FAVORITE</Button>
+          <Button href={`/playlists`}>FAVORITE</Button>
         ) : (
           <>
             <Button inVisible>FAVORITE</Button>

@@ -13,8 +13,7 @@ import {
 
 import PageMenu from "@/src/frontend/components/pageMenu/PageMenu";
 
-const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
-  const { userId } = await params;
+const page = async () => {
   const session: Session | null = await auth();
 
   let playlists: playlist[] = [
@@ -33,7 +32,7 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
       ],
       title: "何",
       playlistId: "safasdfasdhnom",
-      ownerId: userId,
+      ownerId: session?.userId ?? "",
       createdAt: "lajdljfas",
     },
   ];
@@ -41,7 +40,7 @@ const page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const cookie = await getAllCookies();
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/${userId}/playlists`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/me/playlists`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json", Cookie: cookie },

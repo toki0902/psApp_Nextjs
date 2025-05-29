@@ -18,9 +18,9 @@ import { notFound } from "next/navigation";
 const Playlist = async ({
   params,
 }: {
-  params: Promise<{ userId: string; playlistTitle: string }>;
+  params: Promise<{ playlistTitle: string }>;
 }) => {
-  const { userId, playlistTitle: beforePlaylistTitle } = await params;
+  const { playlistTitle: beforePlaylistTitle } = await params;
 
   const playlistTitle = decodeURIComponent(beforePlaylistTitle);
 
@@ -31,7 +31,7 @@ const Playlist = async ({
   let playlist: playlist | null = null;
 
   const videoResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/${userId}/playlists/title/${beforePlaylistTitle}`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/me/playlists/title/${beforePlaylistTitle}`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json", Cookie: cookie },
@@ -52,30 +52,11 @@ const Playlist = async ({
     playlist = playlistData.playlist;
   }
 
-  let playlists: playlist[] = [
-    {
-      videos: [
-        {
-          video: {
-            videoId: "HLkbX0YhToY",
-            thumbnail: "https://i.ytimg.com/vi/HLkbX0YhToY/sddefault.jpg",
-            title: "エマ/go!go!vanillas【2024/08/07 P.S.エレキライブ】",
-            url: "https://www.youtube.com/watch?v=HLkbX0YhToY",
-            views: 32,
-          },
-          videoMemberId: "sagadgaasd",
-        },
-      ],
-      title: "何",
-      playlistId: "safasdfasdhnom",
-      ownerId: userId,
-      createdAt: "lajdljfas",
-    },
-  ];
+  let playlists: playlist[] = [];
 
   //APIリクエスト
   const playlistResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/${userId}/playlists`,
+    `${process.env.NEXT_PUBLIC_ROOT_URL ?? window.location.origin}/v1/api/users/me/playlists`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json", Cookie: cookie },

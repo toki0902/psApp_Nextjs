@@ -22,7 +22,7 @@ export const PATCH = async (
   { params }: { params: Promise<{ userId: string }> },
 ) => {
   try {
-    const { userId } = await params;
+    const { userId: userIdParam } = await params;
     const { graduationYear } = await req.json();
 
     const isValid =
@@ -30,7 +30,7 @@ export const PATCH = async (
       Number.isInteger(graduationYear) &&
       graduationYear >= 1000 &&
       graduationYear <= 9999 &&
-      userId;
+      userIdParam;
 
     if (isValid) {
       throw new MissingParamsError(
@@ -41,13 +41,14 @@ export const PATCH = async (
 
     const session: Session | null = await auth();
 
-    if (!(session?.userId === userId)) {
-      console.log("Unauthorized!");
+    if ((session?.userId !== userIdParam && userIdParam !== "me") || !session) {
       throw new UnAuthorizeError(
         "認証に失敗しました。もう一度ログインし直してください。",
         "You are not authenticated. Please log in and try again",
       );
     }
+
+    const userId = userIdParam === "me" ? session.userId : userIdParam;
 
     await changeGraduationYearByUserId.run(pool, graduationYear, userId);
 
