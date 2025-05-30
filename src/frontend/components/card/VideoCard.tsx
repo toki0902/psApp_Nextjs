@@ -32,6 +32,7 @@ const VideoCard = ({
 
   const onClick: (e: React.MouseEvent<HTMLInputElement>) => void = (e) => {
     e.stopPropagation();
+
     if (whichMenuIsOpen === videoInfo.videoId) {
       if (closeMenu) closeMenu();
     } else {

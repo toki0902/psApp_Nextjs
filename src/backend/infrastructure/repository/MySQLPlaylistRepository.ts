@@ -179,8 +179,6 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       const playlist_id = nanoid(15);
       const value = [playlist_id, title, ownerId];
       await conn.execute<mysql.ResultSetHeader>(query, value);
-
-      console.log(`create new playlist with userId:${ownerId}`);
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
@@ -229,7 +227,6 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     try {
       const query = `DELETE FROM playlists WHERE playlist_id = ?`;
       await conn.execute<mysql.ResultSetHeader>(query, [playlistId]);
-      console.log(`delete playlist playlistId: ${playlistId}`);
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
@@ -247,7 +244,6 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
     try {
       const query = `DELETE FROM playlist_members WHERE member_id = ?`;
       await conn.execute<mysql.ResultSetHeader>(query, [memberId]);
-      console.log(`delete playlist member memberId: ${memberId}}`);
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
@@ -269,11 +265,6 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
         newTitle,
         playlistId,
       ]);
-      console.log(
-        `change the playlist title to ${newTitle} playlistId: ${playlistId}`,
-      );
-
-      console.log(JSON.stringify(updateResult));
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
