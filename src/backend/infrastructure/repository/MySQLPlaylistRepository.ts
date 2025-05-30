@@ -261,10 +261,7 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
   ): Promise<void> => {
     try {
       const query = `UPDATE playlists SET title = ? WHERE playlist_id = ?`;
-      const updateResult = await conn.execute<mysql.ResultSetHeader>(query, [
-        newTitle,
-        playlistId,
-      ]);
+      await conn.execute<mysql.ResultSetHeader>(query, [newTitle, playlistId]);
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",

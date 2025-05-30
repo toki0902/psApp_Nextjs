@@ -74,7 +74,7 @@ export const PageMenuDefinition = {
             if (!res.ok) {
               const errorData = await res.json();
               console.log(`${errorData.errorType!}: ${errorData.message}`);
-              console.log(errorData.message);
+
               openModal("notice", {
                 message: errorData.message,
                 type: "error",

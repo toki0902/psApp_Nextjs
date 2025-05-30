@@ -3,7 +3,6 @@ import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/
 import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";
 import { Playlist } from "@/src/backend/domain/entities/Playlist";
 import { Pool } from "mysql2/promise";
-import { pl } from "date-fns/locale";
 
 export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
   constructor(
@@ -11,7 +10,6 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
     private _videoRepository: IVideoRepository,
   ) {}
 
-  //fix : 参照先がずれている。。フロントとは別のやつ、、なぜ？？
   //fix : 最初に見つかったタイトルに一致するプレイリストしか返せない。
   run = async (
     pool: Pool,
@@ -54,7 +52,7 @@ export class FetchPlaylistAndVideosByUserIdAndPlaylistTitle {
         conn,
         playlistMemberObj.videos.map((i) => i.videoId),
       )
-    ).map((video, index) => {
+    ).map((video) => {
       return {
         videoMemberId:
           playlistMemberObj.videos.find((i) => i.videoId === video.videoId)
