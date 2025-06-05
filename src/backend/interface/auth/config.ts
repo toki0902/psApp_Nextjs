@@ -10,6 +10,7 @@ import { JWT } from "next-auth/jwt";
 
 import { createConnectionPool } from "../../infrastructure/db/MySQLConnection";
 import { Pool } from "mysql2/promise";
+import Google from "next-auth/providers/google";
 
 const userRepository = new MySQLUserRepository();
 const fetchUserAndRegister = new FetchUserAndRegister(userRepository);
@@ -19,7 +20,7 @@ export const nextAuthOptions: NextAuthConfig = {
   debug: false,
   secret: process.env.AUTH_SECRET,
   //googleは認可が降りるまでなしで。
-  providers: [LINE({ checks: ["state"] })],
+  providers: [LINE({ checks: ["state"] }), Google],
   session: {
     strategy: "jwt",
   },
