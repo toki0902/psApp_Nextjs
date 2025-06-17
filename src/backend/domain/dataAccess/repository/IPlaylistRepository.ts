@@ -1,5 +1,5 @@
 import { Connection } from "mysql2/promise";
-import { Playlist, PlaylistSummery } from "../../entities/Playlist";
+import { PlaylistSummery } from "../../entities/Playlist";
 
 export interface IPlaylistRepository {
   fetchPlaylistsByPlaylistIds: (

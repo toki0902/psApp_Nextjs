@@ -3,7 +3,6 @@ import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVi
 import { Playlist } from "@/src/backend/domain/entities/Playlist";
 import { Pool } from "mysql2/promise";
 import { User } from "../../domain/entities/User";
-import { Video } from "../../domain/entities/Video";
 import { PlaylistFactory } from "./PlaylistFactory";
 
 export class FetchPlaylistsAndVideosByUserId {

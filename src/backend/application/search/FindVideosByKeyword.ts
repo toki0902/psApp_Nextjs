@@ -1,11 +1,10 @@
 import { Video } from "@/src/backend/domain/entities/Video";
 import { IVideoRepository } from "@/src/backend/domain/dataAccess/repository/IVideoRepository";
 import Fuse from "fuse.js";
-import { auth } from "../../interface/auth/auth";
+
 import { endOfMonth, startOfMonth } from "date-fns";
 import { Pool } from "mysql2/promise";
 import { User } from "../../domain/entities/User";
-import { Session } from "next-auth";
 
 export class FindVideosByKeyword {
   constructor(private _videoRepository: IVideoRepository) {}

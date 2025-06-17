@@ -9,7 +9,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
 import { DeletePlaylistByPlaylistId } from "@/src/backend/application/playlist/DeletePlaylistByPlaylistId";
-import { ChangePlaylistTitleByPlaylistId } from "@/src/backend/application/playlist/ChangePlaylistTitleByPlaylistId";
 
 import { FetchPlaylistAndVideosByUserIdAndPlaylistId } from "@/src/backend/application/playlist/FetchPlaylistAndVideosByUserIdAndPlaylistId";
 import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
@@ -26,10 +25,6 @@ const FetchPlaylistsAndVideosByPlaylistId =
     videoRepository,
   );
 const deletePlaylistByPlaylistId = new DeletePlaylistByPlaylistId(
-  playlistRepository,
-);
-
-const changePlaylistTitleByPlaylistId = new ChangePlaylistTitleByPlaylistId(
   playlistRepository,
 );
 
