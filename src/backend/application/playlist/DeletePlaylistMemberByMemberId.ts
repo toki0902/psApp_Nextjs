@@ -4,29 +4,30 @@ import {
 } from "@/src/backend/interface/error/errors";
 import { IPlaylistRepository } from "../../domain/dataAccess/repository/IPlaylistRepository";
 import { Pool } from "mysql2/promise";
+import { User } from "../../domain/entities/User";
 
 export class DeletePlaylistMemberByMemberId {
   constructor(private _playlistRepository: IPlaylistRepository) {}
   run = async (
     pool: Pool,
     playlistId: string,
-    userId: string,
+    user: User,
     memberId: string,
   ): Promise<void> => {
     const conn = await pool.getConnection();
-    const playlistData =
+    const [playlistSummery] =
       await this._playlistRepository.fetchPlaylistsByPlaylistIds(conn, [
         playlistId,
       ]);
 
-    if (!playlistData?.length) {
+    if (!playlistSummery.length) {
       throw new NotFoundError(
         "お気に入りが存在しません。",
         "playlist is not found",
       );
     }
 
-    if (playlistData[0].ownerId !== userId) {
+    if (!playlistSummery[0].isOwner(user.userId)) {
       throw new UnAuthorizeError(
         "このお気に入りを所持していません。",
         "you don't own this playlist",
@@ -38,7 +39,6 @@ export class DeletePlaylistMemberByMemberId {
       memberId,
     );
     conn.release();
-
     return;
   };
 }

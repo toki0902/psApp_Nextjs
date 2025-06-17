@@ -1,40 +1,39 @@
+import { ChangePlaylistTitleByPlaylistId } from "@/src/backend/application/playlist/ChangePlaylistTitleByPlaylistId";
 import { auth } from "@/src/backend/interface/auth/auth";
 import { errorHandler } from "@/src/backend/interface/error/errorHandler";
 import {
   MissingParamsError,
   UnAuthorizeError,
 } from "@/src/backend/interface/error/errors";
-import { DeletePlaylistMemberByMemberId } from "@/src/backend/application/playlist/DeletePlaylistMemberByMemberId";
-import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
 import { Session } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
+import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository/MySQLPlaylistRepository";
 import { User } from "@/src/backend/domain/entities/User";
 
 const pool = await createConnectionPool();
 const playlistRepository = new MySQLPlaylistRepository();
-const deletePlaylistMemberByMemberId = new DeletePlaylistMemberByMemberId(
+
+const changePlaylistTitleByPlaylistId = new ChangePlaylistTitleByPlaylistId(
   playlistRepository,
 );
 
-export const DELETE = async (
+export const PATCH = async (
   req: NextRequest,
-  {
-    params,
-  }: {
-    params: Promise<{ userId: string; playlistId: string; memberId: string }>;
-  },
+  { params }: { params: Promise<{ userId: string; playlistId: string }> },
 ): Promise<NextResponse> => {
   try {
-    const {
-      userId: userIdParam,
-      playlistId,
-      memberId,
-    }: { userId: string; playlistId: string; memberId: string } = await params;
+    const { userId: userIdParam, playlistId } = await params;
+    const { newTitle } = await req.json();
 
-    if (!userIdParam || !playlistId || !memberId) {
+    if (
+      !userIdParam ||
+      !playlistId ||
+      typeof newTitle !== "string" ||
+      newTitle.trim() === ""
+    ) {
       throw new MissingParamsError(
-        "パラメータが不足しています。",
+        "パラメータが不足または無効です。",
         "Required parameter is missing or invalid",
       );
     }
@@ -58,10 +57,10 @@ export const DELETE = async (
         "You are not authorized. Please operate on your own resources",
       );
 
-    await deletePlaylistMemberByMemberId.run(pool, playlistId, user, memberId);
+    await changePlaylistTitleByPlaylistId.run(pool, playlistId, user, newTitle);
 
     return new NextResponse(
-      JSON.stringify({ message: "お気に入りから動画を削除しました。" }),
+      JSON.stringify({ message: "お気に入りのタイトルを変更しました。" }),
       { status: 200 },
     );
   } catch (err) {

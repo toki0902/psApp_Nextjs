@@ -1,48 +1,52 @@
 import { Connection } from "mysql2/promise";
+import { Playlist, PlaylistSummery } from "../../entities/Playlist";
 
 export interface IPlaylistRepository {
   fetchPlaylistsByPlaylistIds: (
     conn: Connection,
     playlistId: string[],
   ) => Promise<
-    | {
+    [
+      PlaylistSummery[],
+      {
         playlistId: string;
-        createdAt: string;
-        title: string;
-        ownerId: string;
-      }[]
-    | undefined
+        videos: { videoId: string; memberId: string }[];
+      }[],
+    ]
   >;
   fetchPlaylistsByUserId: (
     conn: Connection,
     userId: string,
   ) => Promise<
-    | {
+    [
+      PlaylistSummery[],
+      {
         playlistId: string;
-        createdAt: string;
-        title: string;
-        ownerId: string;
-      }[]
-    | undefined
-  >;
-  fetchPlaylistMembersByPlaylistIds: (
-    conn: Connection,
-    playlistIds: string[],
-  ) => Promise<
-    { playlistId: string; videos: { videoId: string; memberId: string }[] }[]
+        videos: { videoId: string; memberId: string }[];
+      }[],
+    ]
   >;
   fetchPlaylistByPlaylistTitleAndUserId: (
     conn: Connection,
     playlistTitle: string,
     userId: string,
   ) => Promise<
-    | {
-        playlistId: string;
-        createdAt: string;
-        title: string;
-        ownerId: string;
-      }
-    | undefined
+    [
+      PlaylistSummery | undefined,
+      (
+        | {
+            playlistId: string;
+            videos: { videoId: string; memberId: string }[];
+          }
+        | undefined
+      ),
+    ]
+  >;
+  fetchPlaylistMembersByPlaylistIds: (
+    conn: Connection,
+    playlistIds: string[],
+  ) => Promise<
+    { playlistId: string; videos: { videoId: string; memberId: string }[] }[]
   >;
   insertPlaylist: (
     conn: Connection,

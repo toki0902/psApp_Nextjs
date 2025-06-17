@@ -16,7 +16,7 @@ export const PageMenuDefinition = {
         const onPassCheck = async (newTitle: string) => {
           if (pageMenuData.edit) {
             const res = await fetch(
-              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/me/playlists/id/${pageMenuData.edit.playlistId}`,
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/me/playlists/id/${pageMenuData.edit.playlistId}/title`,
               {
                 method: "PATCH",
                 body: JSON.stringify({ newTitle }),

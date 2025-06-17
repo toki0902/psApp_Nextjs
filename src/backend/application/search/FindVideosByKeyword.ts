@@ -4,6 +4,8 @@ import Fuse from "fuse.js";
 import { auth } from "../../interface/auth/auth";
 import { endOfMonth, startOfMonth } from "date-fns";
 import { Pool } from "mysql2/promise";
+import { User } from "../../domain/entities/User";
+import { Session } from "next-auth";
 
 export class FindVideosByKeyword {
   constructor(private _videoRepository: IVideoRepository) {}
@@ -12,6 +14,7 @@ export class FindVideosByKeyword {
     pool: Pool,
     keyword: string,
     isAllVideo: boolean,
+    user?: User,
   ): Promise<Video[]> => {
     const conn = await pool.getConnection();
     const allUploadedVideos = await this._videoRepository.fetchAllVideos(conn);
@@ -19,16 +22,17 @@ export class FindVideosByKeyword {
 
     let targetVideos = [...allUploadedVideos];
 
-    const session = await auth();
-
-    const graduationYear =
-      session?.graduationYear ||
-      (new Date().getMonth() > 3
+    const targetYear =
+      new Date().getMonth() > 3
         ? new Date().getFullYear() + 1
-        : new Date().getFullYear());
+        : new Date().getFullYear();
 
-    const startDate = startOfMonth(new Date(graduationYear - 4, 3));
-    const endDate = endOfMonth(new Date(graduationYear, 3));
+    const [startDate, endDate] = user
+      ? user.getSearchRange()
+      : [
+          startOfMonth(new Date(targetYear - 5, 3)),
+          endOfMonth(new Date(targetYear, 3)),
+        ];
 
     if (!isAllVideo) {
       targetVideos = targetVideos.filter(

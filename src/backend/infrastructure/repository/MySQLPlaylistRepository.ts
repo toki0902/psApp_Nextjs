@@ -3,46 +3,151 @@ import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/
 import { MySQLError } from "@/src/backend/interface/error/errors";
 import mysql, { Connection } from "mysql2/promise";
 import { nanoid } from "nanoid";
+import { PlaylistSummery } from "../../domain/entities/Playlist";
 
 export class MySQLPlaylistRepository implements IPlaylistRepository {
   fetchPlaylistsByPlaylistIds = async (
     conn: Connection,
     playlistIds: string[],
   ): Promise<
-    | {
+    [
+      PlaylistSummery[],
+      {
         playlistId: string;
-        createdAt: string;
-        title: string;
-        ownerId: string;
-      }[]
-    | undefined
+        videos: { videoId: string; memberId: string }[];
+      }[],
+    ]
   > => {
     try {
       const query = `select * from playlists where playlist_id in (${playlistIds.map(() => "?").join(", ")})`;
 
-      const selectResult = await conn.execute<mysql.RowDataPacket[]>(
+      const [selectResult] = await conn.execute<mysql.RowDataPacket[]>(
         query,
         playlistIds,
       );
 
-      if (selectResult[0].length !== playlistIds.length) {
-        return undefined;
+      if (selectResult.length !== playlistIds.length) {
+        return [[], []];
       }
 
-      const returnObj = selectResult[0].map((item) => {
-        return {
-          playlistId: item.playlist_id,
-          createdAt: item.created_at,
-          title: item.title,
-          ownerId: item.owner_id,
-        };
+      const playlistMembers = await this.fetchPlaylistMembersByPlaylistIds(
+        conn,
+        playlistIds,
+      );
+
+      const playlistSummery = selectResult.map((item) => {
+        return new PlaylistSummery(
+          item.playlist_id,
+          item.title,
+          item.created_at,
+          item.owner_id,
+        );
       });
 
-      return returnObj;
+      return [playlistSummery, playlistMembers];
     } catch (err) {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
         `failed to fetch playlistsInfo in process 'fetchPlaylistsByPlaylistIds' due to: ${JSON.stringify(err)}`,
+      );
+    }
+  };
+
+  fetchPlaylistsByUserId = async (
+    conn: Connection,
+    userId: string,
+  ): Promise<
+    [
+      PlaylistSummery[],
+      {
+        playlistId: string;
+        videos: { videoId: string; memberId: string }[];
+      }[],
+    ]
+  > => {
+    try {
+      const query = "select * from playlists where owner_id = ?";
+      const [selectResult] = await conn.execute<mysql.RowDataPacket[]>(query, [
+        userId,
+      ]);
+
+      if (!selectResult.length) {
+        return [[], []];
+      }
+
+      const playlistIds = selectResult.map((item) => item.playlist_id);
+      const playlistMembers = await this.fetchPlaylistMembersByPlaylistIds(
+        conn,
+        playlistIds,
+      );
+
+      const playlistSummery = selectResult.map((item) => {
+        return new PlaylistSummery(
+          item.playlist_id,
+          item.title,
+          item.created_at,
+          item.owner_id,
+        );
+      });
+
+      return [playlistSummery, playlistMembers];
+    } catch (err) {
+      throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
+        `failed to fetch playlistInfo in process 'fetchPlaylistByUserId' due to: ${JSON.stringify(err)}`,
+      );
+    }
+  };
+
+  fetchPlaylistByPlaylistTitleAndUserId = async (
+    conn: Connection,
+    playlistTitle: string,
+    userId: string,
+  ): Promise<
+    [
+      PlaylistSummery | undefined,
+      (
+        | {
+            playlistId: string;
+            videos: { videoId: string; memberId: string }[];
+          }
+        | undefined
+      ),
+    ]
+  > => {
+    try {
+      const query = "select * from playlists where title = ? and owner_id = ?";
+      const value = [playlistTitle, userId];
+      const selectResult = await conn.execute<mysql.RowDataPacket[]>(
+        query,
+        value,
+      );
+
+      const record = selectResult[0][0];
+      if (!record) {
+        return [undefined, undefined];
+      }
+
+      const [playlistMembers] = await this.fetchPlaylistMembersByPlaylistIds(
+        conn,
+        [record.playlist_id],
+      );
+
+      return [
+        new PlaylistSummery(
+          record.playlist_id,
+          record.title,
+          record.created_at,
+          record.owner_id,
+        ),
+        playlistMembers,
+      ];
+    } catch (err) {
+      throw new MySQLError(
+        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
+        `failed to fetch playlistInfo in process 'fetchPlaylistByPlaylistTitleAndUserId' due to: ${JSON.stringify(
+          err,
+        )}`,
       );
     }
   };
@@ -79,90 +184,6 @@ export class MySQLPlaylistRepository implements IPlaylistRepository {
       throw new MySQLError(
         "データベースが不具合を起こしました。時間が経ってからやり直してください。",
         `failed to fetch playlistInfo in process 'fetchPlaylistMembersIdsByPlaylistIds' due to: ${JSON.stringify(
-          err,
-        )}`,
-      );
-    }
-  };
-
-  fetchPlaylistsByUserId = async (
-    conn: Connection,
-    userId: string,
-  ): Promise<
-    {
-      playlistId: string;
-      createdAt: string;
-      title: string;
-      ownerId: string;
-    }[]
-  > => {
-    try {
-      const query = "select * from playlists where owner_id = ?";
-      const selectResult = await conn.execute<mysql.RowDataPacket[]>(query, [
-        userId,
-      ]);
-
-      const record = selectResult[0];
-      if (!record.length) {
-        return [];
-      }
-
-      const playlistData = record.map((item) => {
-        return {
-          playlistId: item.playlist_id,
-          createdAt: item.created_at,
-          title: item.title,
-          ownerId: item.owner_id,
-        };
-      });
-
-      return playlistData;
-    } catch (err) {
-      throw new MySQLError(
-        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
-        `failed to fetch playlistInfo in process 'fetchPlaylistByUserId' due to: ${JSON.stringify(
-          err,
-        )}`,
-      );
-    }
-  };
-
-  fetchPlaylistByPlaylistTitleAndUserId = async (
-    conn: Connection,
-    playlistTitle: string,
-    userId: string,
-  ): Promise<
-    | {
-        playlistId: string;
-        createdAt: string;
-        title: string;
-        ownerId: string;
-      }
-    | undefined
-  > => {
-    try {
-      const query = "select * from playlists where title = ? and owner_id = ?";
-      const value = [playlistTitle, userId];
-      const selectResult = await conn.execute<mysql.RowDataPacket[]>(
-        query,
-        value,
-      );
-
-      const record = selectResult[0][0];
-      if (!record) {
-        return undefined;
-      }
-
-      return {
-        playlistId: record.playlist_id,
-        createdAt: record.created_at,
-        title: record.title,
-        ownerId: record.owner_id,
-      };
-    } catch (err) {
-      throw new MySQLError(
-        "データベースが不具合を起こしました。時間が経ってからやり直してください。",
-        `failed to fetch playlistInfo in process 'fetchPlaylistByPlaylistTitleAndUserId' due to: ${JSON.stringify(
           err,
         )}`,
       );

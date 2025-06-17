@@ -5,32 +5,45 @@ import {
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 import { Pool } from "mysql2/promise";
 import { withTransaction } from "../../utils/dbUtils";
+import { User } from "../../domain/entities/User";
+import { IVideoRepository } from "../../domain/dataAccess/repository/IVideoRepository";
+import { PlaylistFactory } from "./PlaylistFactory";
 
 export class RegisterNewPlaylistMemberByPlaylistIds {
-  constructor(private _playlistRepository: IPlaylistRepository) {}
+  constructor(
+    private _playlistRepository: IPlaylistRepository,
+    private _videoRepository: IVideoRepository,
+  ) {}
 
   run = async (
     pool: Pool,
     playlistIds: string[],
-    userId: string,
+    user: User,
     videoId: string,
   ): Promise<void> => {
     await withTransaction(pool, async (conn) => {
-      const playlistData =
+      const [playlistSummery, playlistMembers] =
         await this._playlistRepository.fetchPlaylistsByPlaylistIds(
           conn,
           playlistIds,
         );
 
-      if (!playlistData) {
+      if (!playlistSummery.length) {
         throw new NotFoundError(
           "お気に入りが存在しません。",
           "playlist is not found",
         );
       }
 
-      const allOwnedByUser = playlistData.every(
-        (playlist) => playlist.ownerId === userId,
+      const factory = new PlaylistFactory(this._videoRepository);
+      const playlists = await factory.createMultipleFromSummeryAndMembers(
+        conn,
+        playlistSummery,
+        playlistMembers,
+      );
+
+      const allOwnedByUser = playlists.every((playlist) =>
+        playlist.isOwner(user.userId),
       );
 
       if (!allOwnedByUser) {
@@ -40,16 +53,8 @@ export class RegisterNewPlaylistMemberByPlaylistIds {
         );
       }
 
-      const playlistMemberData =
-        await this._playlistRepository.fetchPlaylistMembersByPlaylistIds(
-          conn,
-          playlistIds,
-        );
-
-      const videoNotIncludedPlaylistIds = playlistMemberData
-        .filter((member) =>
-          member.videos.every((item) => item.videoId !== videoId),
-        )
+      const videoNotIncludedPlaylistIds = playlists
+        .filter((playlist) => !playlist.hasVideo(videoId))
         .map((playlist) => playlist.playlistId);
 
       await this._playlistRepository.insertPlaylistMemberByPlaylistIdsAndVideoId(

@@ -4,6 +4,7 @@ import {
 } from "@/src/backend/interface/error/errors";
 import { IPlaylistRepository } from "@/src/backend/domain/dataAccess/repository/IPlaylistRepository";
 import { Pool } from "mysql2/promise";
+import { User } from "../../domain/entities/User";
 
 export class RegisterNewPlaylistMemberByPlaylistTitle {
   constructor(private _playlistRepository: IPlaylistRepository) {}
@@ -11,25 +12,25 @@ export class RegisterNewPlaylistMemberByPlaylistTitle {
   run = async (
     pool: Pool,
     playlistTitle: string,
-    userId: string,
+    user: User,
     videoId: string,
   ) => {
     const conn = await pool.getConnection();
-    const playlistData =
+    const [playlistSummery, playlistMember] =
       await this._playlistRepository.fetchPlaylistByPlaylistTitleAndUserId(
         conn,
         playlistTitle,
-        userId,
+        user.userId,
       );
 
-    if (!playlistData) {
+    if (!playlistSummery) {
       throw new NotFoundError(
         "お気に入りが存在しません。",
         "playlist is not found",
       );
     }
 
-    if (playlistData.ownerId !== userId) {
+    if (!playlistSummery.isOwner(user.userId)) {
       throw new UnAuthorizeError(
         "このお気に入りを所持していません。",
         "you don't own this playlist",
@@ -39,7 +40,7 @@ export class RegisterNewPlaylistMemberByPlaylistTitle {
     await this._playlistRepository.insertPlaylistMemberByPlaylistIdsAndVideoId(
       conn,
       videoId,
-      [playlistData.playlistId],
+      [playlistSummery.playlistId],
     );
     conn.release();
     return;

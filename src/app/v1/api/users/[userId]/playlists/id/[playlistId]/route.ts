@@ -14,6 +14,7 @@ import { ChangePlaylistTitleByPlaylistId } from "@/src/backend/application/playl
 import { FetchPlaylistAndVideosByUserIdAndPlaylistId } from "@/src/backend/application/playlist/FetchPlaylistAndVideosByUserIdAndPlaylistId";
 import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
 import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
+import { User } from "@/src/backend/domain/entities/User";
 
 const pool = await createConnectionPool();
 const playlistRepository = new MySQLPlaylistRepository();
@@ -27,6 +28,7 @@ const FetchPlaylistsAndVideosByPlaylistId =
 const deletePlaylistByPlaylistId = new DeletePlaylistByPlaylistId(
   playlistRepository,
 );
+
 const changePlaylistTitleByPlaylistId = new ChangePlaylistTitleByPlaylistId(
   playlistRepository,
 );
@@ -46,19 +48,27 @@ export const GET = async (
     }
 
     const session: Session | null = await auth();
-
-    if ((session?.userId !== userIdParam && userIdParam !== "me") || !session) {
+    if (!session)
       throw new UnAuthorizeError(
-        "認証に失敗しました。もう一度ログインし直してください。",
+        "認証されていません。ログインしてください",
         "You are not authenticated. Please log in and try again",
       );
-    }
 
-    const userId = userIdParam === "me" ? session.userId : userIdParam;
+    const user = new User(
+      session.userId,
+      session.name,
+      session.image || "",
+      session.graduationYear,
+    );
+    if (!user.isMe(userIdParam))
+      throw new UnAuthorizeError(
+        "認可が降りていません。自身のリソースを操作してください。",
+        "You are not authorized. Please operate on your own resources",
+      );
 
     const playlist = await FetchPlaylistsAndVideosByPlaylistId.run(
       pool,
-      userId,
+      user,
       playlistId,
     );
 
@@ -86,67 +96,28 @@ export const DELETE = async (
     }
 
     const session: Session | null = await auth();
-
-    if ((session?.userId !== userIdParam && userIdParam !== "me") || !session) {
+    if (!session)
       throw new UnAuthorizeError(
-        "認証に失敗しました。もう一度ログインし直してください。",
+        "認証されていません。ログインしてください",
         "You are not authenticated. Please log in and try again",
       );
-    }
 
-    const userId = userIdParam === "me" ? session.userId : userIdParam;
+    const user = new User(
+      session.userId,
+      session.name,
+      session.image || "",
+      session.graduationYear,
+    );
+    if (!user.isMe(userIdParam))
+      throw new UnAuthorizeError(
+        "認可が降りていません。自身のリソースを操作してください。",
+        "You are not authorized. Please operate on your own resources",
+      );
 
-    await deletePlaylistByPlaylistId.run(pool, playlistId, userId);
+    await deletePlaylistByPlaylistId.run(pool, playlistId, user);
 
     return new NextResponse(
       JSON.stringify({ message: "お気に入りを削除しました。" }),
-      { status: 200 },
-    );
-  } catch (err) {
-    return errorHandler(err);
-  }
-};
-
-export const PATCH = async (
-  req: NextRequest,
-  { params }: { params: Promise<{ userId: string; playlistId: string }> },
-): Promise<NextResponse> => {
-  try {
-    const { userId: userIdParam, playlistId } = await params;
-    const { newTitle } = await req.json();
-
-    if (
-      !userIdParam ||
-      !playlistId ||
-      typeof newTitle !== "string" ||
-      newTitle.trim() === ""
-    ) {
-      throw new MissingParamsError(
-        "パラメータが不足または無効です。",
-        "Required parameter is missing or invalid",
-      );
-    }
-
-    const session: Session | null = await auth();
-
-    if ((session?.userId !== userIdParam && userIdParam !== "me") || !session) {
-      throw new UnAuthorizeError(
-        "認証に失敗しました。もう一度ログインし直してください。",
-        "You are not authenticated. Please log in and try again",
-      );
-    }
-
-    const userId = userIdParam === "me" ? session.userId : userIdParam;
-
-    await changePlaylistTitleByPlaylistId.run(
-      pool,
-      playlistId,
-      userId,
-      newTitle,
-    );
-
-    return new NextResponse(
-      JSON.stringify({ message: "お気に入りのタイトルを変更しました。" }),
       { status: 200 },
     );
   } catch (err) {

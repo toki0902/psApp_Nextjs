@@ -9,12 +9,16 @@ import { MySQLPlaylistRepository } from "@/src/backend/infrastructure/repository
 import { Session } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
+import { User } from "@/src/backend/domain/entities/User";
+import { MySQLVideoRepository } from "@/src/backend/infrastructure/repository/MySQLVideoRepository";
 
 const pool = await createConnectionPool();
 const playlistRepository = new MySQLPlaylistRepository();
+const videoRepository = new MySQLVideoRepository();
 
 const registerNewPlaylistMember = new RegisterNewPlaylistMemberByPlaylistIds(
   playlistRepository,
+  videoRepository,
 );
 
 export const POST = async (
@@ -33,17 +37,25 @@ export const POST = async (
     }
 
     const session: Session | null = await auth();
-
-    if ((session?.userId !== userIdParam && userIdParam !== "me") || !session) {
+    if (!session)
       throw new UnAuthorizeError(
-        "認証に失敗しました。もう一度ログインし直してください。",
+        "認証されていません。ログインしてください",
         "You are not authenticated. Please log in and try again",
       );
-    }
 
-    const userId = userIdParam === "me" ? session.userId : userIdParam;
+    const user = new User(
+      session.userId,
+      session.name,
+      session.image || "",
+      session.graduationYear,
+    );
+    if (!user.isMe(userIdParam))
+      throw new UnAuthorizeError(
+        "認可が降りていません。自身のリソースを操作してください。",
+        "You are not authorized. Please operate on your own resources",
+      );
 
-    await registerNewPlaylistMember.run(pool, playlistIds, userId, videoId);
+    await registerNewPlaylistMember.run(pool, playlistIds, user, videoId);
 
     return new NextResponse(
       JSON.stringify({

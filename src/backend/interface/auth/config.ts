@@ -51,7 +51,14 @@ export const nextAuthOptions: NextAuthConfig = {
         );
 
       const userData = { ...user, id: account.providerAccountId };
-      const userToken = await fetchUserAndRegister.run(pool, userData);
+      const userObj = await fetchUserAndRegister.run(pool, userData);
+      const userToken = {
+        userId: userObj.userId,
+        name: userObj.name,
+        image: userObj.image,
+        graduationYear: userObj.graduationYear,
+      };
+
       const providerInfo: JWT["provider"] = {
         provider: account.provider,
         displayName: user.name,

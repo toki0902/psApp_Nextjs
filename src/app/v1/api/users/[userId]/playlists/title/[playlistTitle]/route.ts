@@ -12,6 +12,7 @@ import {
 import { Session } from "next-auth";
 import { auth } from "@/src/backend/interface/auth/auth";
 import { createConnectionPool } from "@/src/backend/infrastructure/db/MySQLConnection";
+import { User } from "@/src/backend/domain/entities/User";
 
 const pool = await createConnectionPool();
 const playlistRepository = new MySQLPlaylistRepository();
@@ -38,19 +39,27 @@ export const GET = async (
     }
 
     const session: Session | null = await auth();
-
-    if ((session?.userId !== userIdParam && userIdParam !== "me") || !session) {
+    if (!session)
       throw new UnAuthorizeError(
-        "認証に失敗しました。もう一度ログインし直してください。",
+        "認証されていません。ログインしてください",
         "You are not authenticated. Please log in and try again",
       );
-    }
 
-    const userId = userIdParam === "me" ? session.userId : userIdParam;
+    const user = new User(
+      session.userId,
+      session.name,
+      session.image || "",
+      session.graduationYear,
+    );
+    if (!user.isMe(userIdParam))
+      throw new UnAuthorizeError(
+        "認可が降りていません。自身のリソースを操作してください。",
+        "You are not authorized. Please operate on your own resources",
+      );
 
     const playlist = await fetchPlaylistAndVideosByUserIdAndPlaylistTitle.run(
       pool,
-      userId,
+      user,
       playlistTitle,
     );
 

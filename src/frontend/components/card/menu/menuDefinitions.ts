@@ -18,7 +18,7 @@ export const menuDefinitions = {
         const onPassCheck = async (newTitle: string) => {
           if (data.edit) {
             const res = await fetch(
-              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/me/playlists/id/${data.edit.playlistId}`,
+              `${process.env.NEXT_PUBLIC_ROOT_URL}/v1/api/users/me/playlists/id/${data.edit.playlistId}/title`,
               {
                 method: "PATCH",
                 body: JSON.stringify({ newTitle }),

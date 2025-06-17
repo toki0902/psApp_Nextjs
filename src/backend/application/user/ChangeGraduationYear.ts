@@ -1,5 +1,6 @@
 import { IUserRepository } from "@/src/backend/domain/dataAccess/repository/IUserRepository";
 import { Pool } from "mysql2/promise";
+import { User } from "../../domain/entities/User";
 
 export class ChangeGraduationYearByUserId {
   constructor(private _userRepository: IUserRepository) {}
@@ -7,13 +8,13 @@ export class ChangeGraduationYearByUserId {
   run = async (
     pool: Pool,
     graduationYear: number,
-    userId: string,
+    user: User,
   ): Promise<void> => {
     const conn = await pool.getConnection();
     await this._userRepository.changeGraduationYearByUserId(
       conn,
       graduationYear,
-      userId,
+      user.userId,
     );
 
     conn.release();
